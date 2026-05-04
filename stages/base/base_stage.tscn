@@ -1,0 +1,44 @@
+[gd_scene format=3 uid="uid://d0orsfnele3h"]
+
+[ext_resource type="Script" uid="uid://bq3c05jublnup" path="res://stages/base/base_stage.gd" id="1_ufi35"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lfwbe"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_b1pbe"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_whkjb"]
+
+[node name="BaseStage" type="Node2D" unique_id=1006598254]
+script = ExtResource("1_ufi35")
+
+[node name="Background" type="Sprite2D" parent="." unique_id=204945492]
+
+[node name="Floor" type="StaticBody2D" parent="." unique_id=2139320947]
+position = Vector2(0, 503)
+scale = Vector2(79.35999, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor" unique_id=1428753916]
+shape = SubResource("RectangleShape2D_lfwbe")
+
+[node name="LeftWall" type="StaticBody2D" parent="." unique_id=535788336]
+position = Vector2(-760, 0)
+scale = Vector2(1, 67.03999)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftWall" unique_id=339145292]
+shape = SubResource("RectangleShape2D_b1pbe")
+
+[node name="RightWall" type="StaticBody2D" parent="." unique_id=293801501]
+position = Vector2(775, 0)
+scale = Vector2(1, 66.44)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RightWall" unique_id=1412884361]
+shape = SubResource("RectangleShape2D_whkjb")
+
+[node name="P1_Spawn" type="Marker2D" parent="." unique_id=892597011]
+position = Vector2(-498, 390)
+
+[node name="P2_Spawn" type="Marker2D" parent="." unique_id=1527172959]
+position = Vector2(444, 380)
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=868683707]
+position_smoothing_enabled = true

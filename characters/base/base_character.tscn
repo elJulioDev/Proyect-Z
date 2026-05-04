@@ -1,0 +1,44 @@
+[gd_scene format=3 uid="uid://b7epvnwgpetc1"]
+
+[ext_resource type="Script" uid="uid://0eogl8qy8kjk" path="res://characters/base/base_character.gd" id="1_6iufq"]
+[ext_resource type="Texture2D" uid="uid://cokslyrhc56k4" path="res://assets/vfx/shadow.png" id="2_phtj6"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ggkgm"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_sf3xc"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6iufq"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_phtj6"]
+
+[node name="BaseCharacter" type="CharacterBody2D" unique_id=1154726735]
+scale = Vector2(2, 2)
+script = ExtResource("1_6iufq")
+
+[node name="Shadow" type="Sprite2D" parent="." unique_id=843225097]
+modulate = Color(0, 0, 0, 1)
+material = SubResource("ShaderMaterial_ggkgm")
+texture = ExtResource("2_phtj6")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=807296657]
+region_enabled = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=2024954145]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=529441652]
+shape = SubResource("RectangleShape2D_sf3xc")
+
+[node name="Hurtbox" type="Area2D" parent="." unique_id=233469905]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox" unique_id=2081556380]
+shape = SubResource("RectangleShape2D_6iufq")
+
+[node name="Hitbox" type="Area2D" parent="." unique_id=1900823731]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox" unique_id=1058456785]
+shape = SubResource("RectangleShape2D_phtj6")
+
+[node name="StateMachine" type="Node" parent="." unique_id=11388096]
+
+[node name="FloorRay" type="RayCast2D" parent="." unique_id=260936648]
+target_position = Vector2(0, 1000)

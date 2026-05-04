@@ -1,0 +1,13 @@
+{
+	"id": "archipelago",
+	"name": "Archipelago",
+	"assets": {
+		"background": "res://stages/Archipelago/sprites/Stage.png",
+		"music": "" 
+	},
+	"dimensions": {
+		"floor_y": 200.0,
+		"wall_limit": 675.0,
+		"spawn_distance": 380.0
+	}
+}

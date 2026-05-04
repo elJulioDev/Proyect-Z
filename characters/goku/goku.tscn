@@ -1,0 +1,68 @@
+[gd_scene format=3 uid="uid://c4yng2uay1bs"]
+
+[ext_resource type="PackedScene" uid="uid://b7epvnwgpetc1" path="res://characters/base/base_character.tscn" id="1_efxp4"]
+[ext_resource type="Texture2D" uid="uid://dvwjup44in4e5" path="res://characters/goku/forms/base/Goku_Sheet.png" id="2_rshay"]
+
+[sub_resource type="Animation" id="Animation_rshay"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:region_rect")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Rect2(391, 137, 36, 45)]
+}
+
+[sub_resource type="Animation" id="Animation_efxp4"]
+resource_name = "idle"
+length = 0.001
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:region_rect")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [Rect2(391, 137, 36, 45)]
+}
+
+[sub_resource type="Animation" id="Animation_288uq"]
+resource_name = "jump"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:region_rect")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.18, 0.36, 0.52, 0.71, 0.84),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [Rect2(66, 356, 34, 44), Rect2(111, 344, 32, 56), Rect2(158, 345, 32, 45), Rect2(201, 346, 31, 52), Rect2(243, 343, 28, 57), Rect2(284, 356, 34, 44)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_rshay"]
+_data = {
+&"RESET": SubResource("Animation_rshay"),
+&"idle": SubResource("Animation_efxp4"),
+&"jump": SubResource("Animation_288uq")
+}
+
+[node name="BaseCharacter" unique_id=1154726735 instance=ExtResource("1_efxp4")]
+char_json_path = "res://characters/goku/char.json"
+
+[node name="Sprite2D" parent="." index="1" unique_id=807296657]
+texture = ExtResource("2_rshay")
+region_rect = Rect2(391, 137, 36, 45)
+
+[node name="AnimationPlayer" parent="." index="2" unique_id=2024954145]
+libraries/ = SubResource("AnimationLibrary_rshay")

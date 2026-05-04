@@ -1,0 +1,21 @@
+{
+	"id": "goku",
+	"name": "Son Goku",
+	"base_statistics": {
+		"speed": 420.0,
+		"life": 100.0,
+		"defense": 17.0,
+		"taunt_speed": 12.0
+	},
+	"global_mechanics": {
+		"slot_1": "mui",
+		"slot_2": "kaiokenx4",
+		"slot_3": "teleport",
+		"slot_4": "dodge_ui"
+	},
+	"transformations": {
+		"base": "res://characters/goku/forms/base/moveset.json",
+		"ssj": "res://characters/goku/forms/ssj/moveset.json",
+		"ssj2": "res://characters/goku/forms/ssj2/moveset.json"
+	}
+}

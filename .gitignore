@@ -1,0 +1,49 @@
+# ==========================================
+# Godot 4+ específicos
+# ==========================================
+.godot/
+
+# ==========================================
+# Exportaciones y Builds (Ejecutables)
+# ==========================================
+# Ignora las carpetas donde normalmente exportarías el juego
+/build/
+/builds/
+/export/
+/exports/
+/bin/
+
+# Extensiones de archivos compilados/empaquetados pesados
+*.apk
+*.aab
+*.ipa
+*.exe
+*.mac.zip
+*.pck
+*.tar.gz
+*.zip
+*.rar
+*.7z
+
+# ==========================================
+# Android (Plantillas y Builds)
+# ==========================================
+# Si estás usando plantillas personalizadas de Android, normalmente solo quieres ignorar los builds.
+# Si no necesitas nada de la carpeta android en tu repositorio, puedes dejar el /android/ completo.
+/android/build/
+.gradle/
+local.properties
+/android/
+
+# ==========================================
+# Archivos del Sistema Operativo
+# ==========================================
+.DS_Store
+.AppleDouble
+.LSOverride
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.cab
+Desktop.ini
