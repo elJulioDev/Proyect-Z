@@ -7,4 +7,4 @@
 stage_config_path = "res://stages/Archipelago/stage.json"
 
 [node name="BaseCharacter" parent="." index="7" unique_id=1154726735 instance=ExtResource("2_pef0u")]
-position = Vector2(-459, -182)
+position = Vector2(-470, -198)

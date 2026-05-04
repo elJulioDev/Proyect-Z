@@ -2,6 +2,8 @@
 
 [ext_resource type="Script" uid="uid://0eogl8qy8kjk" path="res://characters/base/base_character.gd" id="1_6iufq"]
 [ext_resource type="Texture2D" uid="uid://cokslyrhc56k4" path="res://assets/vfx/shadow.png" id="2_phtj6"]
+[ext_resource type="Script" uid="uid://egky2rorer21" path="res://characters/base/combat_system.gd" id="3_ggkgm"]
+[ext_resource type="Script" uid="uid://cjtrrslysdsjg" path="res://characters/base/health_system.gd" id="4_agrol"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ggkgm"]
 
@@ -42,3 +44,9 @@ shape = SubResource("RectangleShape2D_phtj6")
 
 [node name="FloorRay" type="RayCast2D" parent="." unique_id=260936648]
 target_position = Vector2(0, 1000)
+
+[node name="CombatSystem" type="Node" parent="." unique_id=2008189989]
+script = ExtResource("3_ggkgm")
+
+[node name="HealthSystem" type="Node" parent="." unique_id=68288154]
+script = ExtResource("4_agrol")
