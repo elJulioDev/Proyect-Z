@@ -13,15 +13,14 @@ const ACTION_LABELS := {
 	"move_up":      "Arriba / Menú",
 	"move_down":    "Abajo / Agacharse",
 	"jump":         "Saltar",
-	"dash":         "Dash",
 	"block":        "Guardia",
-	"attack_light": "Ataque Ligero",
-	"attack_mid":   "Ataque Medio",
-	"attack_heavy": "Ataque Fuerte",
+	"attack_punch": "Golpe (Combo)",
+	"attack_kick":  "Patada (Combo)",
+	"attack_ki":    "Ki",
 	"special_1":    "Mecánica Global 1",
 	"special_2":    "Mecánica Global 2",
-	"special_3":    "Mecánica Global 3",
-	"special_4":    "Mecánica Global 4",
+	"special_3":    "Dragon Rush",
+	"special_4":    "Cargar Ki",
 }
 
 # Teclas por defecto (backup para resetear)

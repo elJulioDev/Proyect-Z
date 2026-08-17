@@ -1,0 +1,429 @@
+[gd_resource type="Resource" script_class="CharacterData" format=3 uid="uid://derv6nxteoxo7"]
+
+[ext_resource type="Script" uid="uid://dbjvh4twsl1fo" path="res://core/character_data.gd" id="1_cdata"]
+[ext_resource type="Script" uid="uid://3txiyue5yqb4" path="res://core/anim_data.gd" id="2_adata"]
+[ext_resource type="Script" uid="uid://dho4t7hl5pwit" path="res://core/attack_data.gd" id="3_atkdata"]
+[ext_resource type="Texture2D" uid="uid://cegxpbm6fwa60" path="res://characters/goku/forms/spritesheet.png" id="4_sprite"]
+
+[sub_resource type="Resource" id="anim_aerial_hammer"]
+script = ExtResource("2_adata")
+frames = Array[Rect2]([Rect2(1020, 736, 170, 92), Rect2(1190, 736, 170, 92), Rect2(1360, 736, 170, 92), Rect2(1530, 736, 170, 92)])
+fps = 12.0
+loop = false
+
+[sub_resource type="Resource" id="anim_aerial_heavy"]
+script = ExtResource("2_adata")
+frames = Array[Rect2]([Rect2(340, 736, 170, 92), Rect2(510, 736, 170, 92), Rect2(680, 736, 170, 92), Rect2(850, 736, 170, 92)])
+fps = 12.0
+loop = false
+
+[sub_resource type="Resource" id="anim_aerial_kick"]
+script = ExtResource("2_adata")
+frames = Array[Rect2]([Rect2(680, 828, 170, 92), Rect2(850, 828, 170, 92), Rect2(1020, 828, 170, 92), Rect2(1190, 828, 170, 92)])
+fps = 12.0
+loop = false
+
+[sub_resource type="Resource" id="anim_aerial_light"]
+script = ExtResource("2_adata")
+frames = Array[Rect2]([Rect2(0, 828, 170, 92), Rect2(170, 828, 170, 92), Rect2(340, 828, 170, 92), Rect2(510, 828, 170, 92)])
+fps = 12.0
+loop = false
+
+[sub_resource type="Resource" id="anim_block"]
+script = ExtResource("2_adata")
+frames = Array[Rect2]([Rect2(680, 276, 170, 92)])
+loop = false
+
+[sub_resource type="Resource" id="anim_block_air"]
+script = ExtResource("2_adata")
+frames = Array[Rect2]([Rect2(1020, 276, 170, 92)])
+loop = false
+
+[sub_resource type="Resource" id="anim_block_crouch"]
+script = ExtResource("2_adata")
+frames = Array[Rect2]([Rect2(850, 276, 170, 92)])
+loop = false
+
+[sub_resource type="Resource" id="anim_crouch"]
+script = ExtResource("2_adata")
+frames = Array[Rect2]([Rect2(680, 0, 170, 92), Rect2(850, 0, 170, 92)])
+loop = false
+
+[sub_resource type="Resource" id="anim_crouch_heavy"]
+script = ExtResource("2_adata")
+frames = Array[Rect2]([Rect2(1360, 644, 170, 92), Rect2(1530, 644, 170, 92), Rect2(0, 736, 170, 92), Rect2(170, 736, 170, 92)])
+fps = 12.0
+loop = false
+
+[sub_resource type="Resource" id="anim_crouch_light"]
+script = ExtResource("2_adata")
+frames = Array[Rect2]([Rect2(170, 644, 170, 92), Rect2(340, 644, 170, 92), Rect2(510, 644, 170, 92)])
+fps = 12.0
+loop = false
+
+[sub_resource type="Resource" id="anim_crouch_medium"]
+script = ExtResource("2_adata")
+frames = Array[Rect2]([Rect2(680, 644, 170, 92), Rect2(850, 644, 170, 92), Rect2(1020, 644, 170, 92), Rect2(1190, 644, 170, 92)])
+fps = 12.0
+loop = false
+
+[sub_resource type="Resource" id="anim_dead"]
+script = ExtResource("2_adata")
+frames = Array[Rect2]([Rect2(510, 920, 170, 92)])
+fps = 8.0
+loop = false
+
+[sub_resource type="Resource" id="anim_dive_kick"]
+script = ExtResource("2_adata")
+frames = Array[Rect2]([Rect2(850, 1012, 170, 92), Rect2(1020, 1012, 170, 92), Rect2(1190, 1012, 170, 92)])
+fps = 12.0
+loop = false
+
+[sub_resource type="Resource" id="anim_dragon_rush"]
+script = ExtResource("2_adata")
+frames = Array[Rect2]([Rect2(0, 184, 170, 92), Rect2(170, 184, 170, 92), Rect2(340, 184, 170, 92)])
+offsets = Array[Vector2]([Vector2(0, 0), Vector2(-1, 3), Vector2(-3, 3)])
+fps = 16.0
+loop = false
+
+[sub_resource type="Resource" id="anim_dragon_rush_pos"]
+script = ExtResource("2_adata")
+frames = Array[Rect2]([Rect2(510, 184, 170, 92)])
+offsets = Array[Vector2]([Vector2(0, 0)])
+fps = 16.0
+loop = false
+
+[sub_resource type="Resource" id="anim_dragon_rush_loop"]
+script = ExtResource("2_adata")
+frames = Array[Rect2]([Rect2(680, 184, 170, 92), Rect2(850, 184, 170, 92)])
+offsets = Array[Vector2]([Vector2(-5, 15), Vector2(-5, 18)])
+fps = 16.0
+loop = true
+
+[sub_resource type="Resource" id="anim_fall"]
+script = ExtResource("2_adata")
+frames = Array[Rect2]([Rect2(1020, 920, 170, 92), Rect2(1190, 920, 170, 92), Rect2(1360, 920, 170, 92), Rect2(1530, 920, 170, 92)])
+fps = 8.0
+loop = false
+
+[sub_resource type="Resource" id="anim_heavy"]
+script = ExtResource("2_adata")
+frames = Array[Rect2]([Rect2(1190, 552, 170, 92), Rect2(1360, 552, 170, 92), Rect2(1530, 552, 170, 92), Rect2(0, 644, 170, 92)])
+fps = 12.0
+loop = false
+
+[sub_resource type="Resource" id="anim_heavy_hit"]
+script = ExtResource("2_adata")
+frames = Array[Rect2]([Rect2(510, 920, 170, 92)])
+loop = false
+
+[sub_resource type="Resource" id="anim_hit"]
+script = ExtResource("2_adata")
+frames = Array[Rect2]([Rect2(1360, 828, 170, 92), Rect2(1530, 828, 170, 92), Rect2(0, 920, 170, 92), Rect2(170, 920, 170, 92), Rect2(340, 920, 170, 92)])
+fps = 12.0
+loop = false
+
+[sub_resource type="Resource" id="anim_idle"]
+script = ExtResource("2_adata")
+frames = Array[Rect2]([Rect2(0, 0, 170, 92), Rect2(170, 0, 170, 92), Rect2(340, 0, 170, 92), Rect2(510, 0, 170, 92)])
+offsets = Array[Vector2]([Vector2(0, 0), Vector2(0, 0), Vector2(1, 0), Vector2(0, 0)])
+fps = 8.0
+
+[sub_resource type="Resource" id="anim_jump_fall"]
+script = ExtResource("2_adata")
+frames = Array[Rect2]([Rect2(1190, 92, 170, 92), Rect2(1360, 92, 170, 92)])
+fps = 8.0
+loop = false
+
+[sub_resource type="Resource" id="anim_jump_peak"]
+script = ExtResource("2_adata")
+frames = Array[Rect2]([Rect2(1020, 92, 170, 92)])
+loop = false
+
+[sub_resource type="Resource" id="anim_jump_rise"]
+script = ExtResource("2_adata")
+frames = Array[Rect2]([Rect2(850, 92, 170, 92)])
+fps = 8.0
+loop = false
+
+[sub_resource type="Resource" id="anim_ki_blast"]
+script = ExtResource("2_adata")
+frames = Array[Rect2]([Rect2(1190, 276, 170, 92), Rect2(1360, 276, 170, 92), Rect2(1530, 276, 170, 92), Rect2(0, 368, 170, 92)])
+offsets = Array[Vector2]([Vector2(4, 0), Vector2(4, 0), Vector2(4, 0), Vector2(4, 0)])
+fps = 12.0
+loop = false
+
+[sub_resource type="Resource" id="anim_ki_charge_end"]
+script = ExtResource("2_adata")
+frames = Array[Rect2]([Rect2(510, 276, 170, 92)])
+offsets = Array[Vector2]([Vector2(0, 7)])
+loop = false
+
+[sub_resource type="Resource" id="anim_ki_charge_loop"]
+script = ExtResource("2_adata")
+frames = Array[Rect2]([Rect2(1530, 184, 170, 92), Rect2(0, 276, 170, 92), Rect2(170, 276, 170, 92), Rect2(340, 276, 170, 92)])
+offsets = Array[Vector2]([Vector2(0, 9), Vector2(0, 10), Vector2(0, 9), Vector2(0, 9)])
+
+[sub_resource type="Resource" id="anim_ki_charge_prep"]
+script = ExtResource("2_adata")
+frames = Array[Rect2]([Rect2(1020, 184, 170, 92), Rect2(1190, 184, 170, 92)])
+offsets = Array[Vector2]([Vector2(-4, 0), Vector2(-4, 0)])
+loop = false
+
+[sub_resource type="Resource" id="anim_ki_charge_start"]
+script = ExtResource("2_adata")
+frames = Array[Rect2]([Rect2(1360, 184, 170, 92)])
+loop = false
+
+[sub_resource type="Resource" id="anim_land"]
+script = ExtResource("2_adata")
+frames = Array[Rect2]([Rect2(1530, 92, 170, 92)])
+loop = false
+
+[sub_resource type="Resource" id="anim_launch"]
+script = ExtResource("2_adata")
+frames = Array[Rect2]([Rect2(680, 920, 170, 92)])
+loop = false
+
+[sub_resource type="Resource" id="anim_light"]
+script = ExtResource("2_adata")
+frames = Array[Rect2]([Rect2(170, 368, 170, 92), Rect2(340, 368, 170, 92), Rect2(510, 368, 170, 92), Rect2(680, 368, 170, 92), Rect2(850, 368, 170, 92), Rect2(1020, 368, 170, 92), Rect2(1190, 368, 170, 92), Rect2(1360, 368, 170, 92), Rect2(1530, 368, 170, 92), Rect2(0, 460, 170, 92), Rect2(170, 460, 170, 92), Rect2(340, 460, 170, 92), Rect2(510, 460, 170, 92), Rect2(680, 460, 170, 92), Rect2(850, 460, 170, 92), Rect2(1020, 460, 170, 92), Rect2(1190, 460, 170, 92), Rect2(1360, 460, 170, 92), Rect2(1530, 460, 170, 92), Rect2(0, 552, 170, 92), Rect2(170, 552, 170, 92), Rect2(340, 552, 170, 92)])
+fps = 12.0
+loop = false
+
+[sub_resource type="Resource" id="anim_medium"]
+script = ExtResource("2_adata")
+frames = Array[Rect2]([Rect2(510, 552, 170, 92), Rect2(680, 552, 170, 92), Rect2(850, 552, 170, 92), Rect2(1020, 552, 170, 92)])
+fps = 12.0
+loop = false
+
+[sub_resource type="Resource" id="anim_move_left"]
+script = ExtResource("2_adata")
+frames = Array[Rect2]([Rect2(0, 92, 170, 92)])
+offsets = Array[Vector2]([Vector2(0, -4)])
+
+[sub_resource type="Resource" id="anim_move_right"]
+script = ExtResource("2_adata")
+frames = Array[Rect2]([Rect2(340, 92, 170, 92)])
+offsets = Array[Vector2]([Vector2(3, -6)])
+
+[sub_resource type="Resource" id="anim_parry"]
+script = ExtResource("2_adata")
+frames = Array[Rect2]([Rect2(1360, 1012, 170, 92), Rect2(1530, 1012, 170, 92), Rect2(0, 1104, 170, 92)])
+loop = false
+
+[sub_resource type="Resource" id="anim_recovery"]
+script = ExtResource("2_adata")
+frames = Array[Rect2]([Rect2(0, 1012, 170, 92), Rect2(170, 1012, 170, 92), Rect2(340, 1012, 170, 92), Rect2(510, 1012, 170, 92), Rect2(680, 1012, 170, 92)])
+loop = false
+
+[sub_resource type="Resource" id="anim_teleport_horizontal"]
+script = ExtResource("2_adata")
+frames = Array[Rect2]([Rect2(1360, 0, 170, 92), Rect2(1530, 0, 170, 92)])
+fps = 14.0
+loop = false
+
+[sub_resource type="Resource" id="anim_teleport_vertical"]
+script = ExtResource("2_adata")
+frames = Array[Rect2]([Rect2(1020, 0, 170, 92), Rect2(1190, 0, 170, 92)])
+fps = 14.0
+loop = false
+
+[sub_resource type="Resource" id="anim_wall_bounce"]
+script = ExtResource("2_adata")
+frames = Array[Rect2]([Rect2(850, 920, 170, 92)])
+loop = false
+
+[sub_resource type="Resource" id="atk_air_ki"]
+script = ExtResource("3_atkdata")
+id = "air_ki"
+damage = 12.0
+knockback = Vector2(360, -240)
+stun = 0.28
+active_time = 0.2
+lockout = 0.3
+anim = "ki_blast"
+
+[sub_resource type="Resource" id="atk_air_kick"]
+script = ExtResource("3_atkdata")
+id = "air_kick"
+damage = 8.0
+knockback = Vector2(280, -180)
+stun = 0.2
+active_time = 0.14
+anim = "aerial_kick"
+
+[sub_resource type="Resource" id="atk_air_punch"]
+script = ExtResource("3_atkdata")
+id = "air_punch"
+damage = 5.0
+knockback = Vector2(200, -120)
+stun = 0.14
+active_time = 0.12
+anim = "aerial_light"
+
+[sub_resource type="Resource" id="atk_ki"]
+script = ExtResource("3_atkdata")
+id = "ki"
+damage = 14.0
+knockback = Vector2(420, -200)
+stun = 0.3
+active_time = 0.2
+lockout = 0.3
+anim = "ki_blast"
+
+[sub_resource type="Resource" id="atk_kick"]
+script = ExtResource("3_atkdata")
+id = "kick"
+damage = 9.0
+knockback = Vector2(340, -120)
+stun = 0.22
+active_time = 0.14
+anim = "light"
+
+[sub_resource type="Resource" id="atk_kick_finish"]
+script = ExtResource("3_atkdata")
+id = "kick_finish"
+damage = 16.0
+knockback = Vector2(460, -240)
+stun = 0.32
+active_time = 0.2
+lockout = 0.22
+anim = "medium"
+
+[sub_resource type="Resource" id="atk_kick_finish3"]
+script = ExtResource("3_atkdata")
+id = "kick_finish3"
+damage = 22.0
+knockback = Vector2(540, -300)
+stun = 0.4
+active_time = 0.24
+lockout = 0.24
+anim = "heavy"
+
+[sub_resource type="Resource" id="atk_punch"]
+script = ExtResource("3_atkdata")
+id = "punch"
+damage = 6.0
+knockback = Vector2(240, -80)
+stun = 0.15
+active_time = 0.12
+lockout = 0.18
+anim = "light"
+
+[sub_resource type="Resource" id="atk_punch_finish"]
+script = ExtResource("3_atkdata")
+id = "punch_finish"
+damage = 14.0
+knockback = Vector2(420, -220)
+stun = 0.3
+active_time = 0.2
+lockout = 0.22
+anim = "medium"
+
+[sub_resource type="Resource" id="atk_punch_finish3"]
+script = ExtResource("3_atkdata")
+id = "punch_finish3"
+damage = 20.0
+knockback = Vector2(500, -280)
+stun = 0.36
+active_time = 0.22
+lockout = 0.24
+anim = "heavy"
+
+[sub_resource type="Resource" id="atk_rush"]
+script = ExtResource("3_atkdata")
+id = "rush"
+damage = 12.0
+knockback = Vector2(520, -160)
+stun = 0.25
+active_time = 0.18
+lockout = 0.3
+anim = "dragon_rush"
+
+[resource]
+script = ExtResource("1_cdata")
+id = "goku"
+display_name = "Son Goku"
+sprite = ExtResource("4_sprite")
+stats = {
+"defense": 17.0,
+"life": 100.0,
+"speed": 420.0
+}
+animations = {
+"aerial_hammer": SubResource("anim_aerial_hammer"),
+"aerial_heavy": SubResource("anim_aerial_heavy"),
+"aerial_kick": SubResource("anim_aerial_kick"),
+"aerial_light": SubResource("anim_aerial_light"),
+"block": SubResource("anim_block"),
+"block_air": SubResource("anim_block_air"),
+"block_crouch": SubResource("anim_block_crouch"),
+"crouch": SubResource("anim_crouch"),
+"crouch_heavy": SubResource("anim_crouch_heavy"),
+"crouch_light": SubResource("anim_crouch_light"),
+"crouch_medium": SubResource("anim_crouch_medium"),
+"dead": SubResource("anim_dead"),
+"dive_kick": SubResource("anim_dive_kick"),
+"dragon_rush": SubResource("anim_dragon_rush"),
+"dragon_rush_pos": SubResource("anim_dragon_rush_pos"),
+"dragon_rush_loop": SubResource("anim_dragon_rush_loop"),
+"fall": SubResource("anim_fall"),
+"heavy": SubResource("anim_heavy"),
+"heavy_hit": SubResource("anim_heavy_hit"),
+"hit": SubResource("anim_hit"),
+"idle": SubResource("anim_idle"),
+"jump_fall": SubResource("anim_jump_fall"),
+"jump_peak": SubResource("anim_jump_peak"),
+"jump_rise": SubResource("anim_jump_rise"),
+"ki_blast": SubResource("anim_ki_blast"),
+"ki_charge_end": SubResource("anim_ki_charge_end"),
+"ki_charge_loop": SubResource("anim_ki_charge_loop"),
+"ki_charge_prep": SubResource("anim_ki_charge_prep"),
+"ki_charge_start": SubResource("anim_ki_charge_start"),
+"land": SubResource("anim_land"),
+"launch": SubResource("anim_launch"),
+"light": SubResource("anim_light"),
+"medium": SubResource("anim_medium"),
+"move_left": SubResource("anim_move_left"),
+"move_right": SubResource("anim_move_right"),
+"parry": SubResource("anim_parry"),
+"recovery": SubResource("anim_recovery"),
+"teleport_horizontal": SubResource("anim_teleport_horizontal"),
+"teleport_vertical": SubResource("anim_teleport_vertical"),
+"wall_bounce": SubResource("anim_wall_bounce")
+}
+attacks = {
+"air_ki": SubResource("atk_air_ki"),
+"air_kick": SubResource("atk_air_kick"),
+"air_punch": SubResource("atk_air_punch"),
+"ki": SubResource("atk_ki"),
+"kick": SubResource("atk_kick"),
+"kick_finish": SubResource("atk_kick_finish"),
+"kick_finish3": SubResource("atk_kick_finish3"),
+"punch": SubResource("atk_punch"),
+"punch_finish": SubResource("atk_punch_finish"),
+"punch_finish3": SubResource("atk_punch_finish3"),
+"rush": SubResource("atk_rush")
+}
+combos = [{
+"finisher": "punch_finish",
+"sequence": ["punch", "punch"]
+}, {
+"finisher": "punch_finish3",
+"sequence": ["punch", "punch", "punch"]
+}, {
+"finisher": "kick_finish",
+"sequence": ["kick", "kick"]
+}, {
+"finisher": "kick_finish3",
+"sequence": ["kick", "kick", "kick"]
+}]
+mechanics = {
+"special_3": {
+"id": "rush"
+},
+"special_4": {
+"id": "charge"
+}
+}

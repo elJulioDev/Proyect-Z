@@ -1,52 +1,110 @@
 [gd_scene format=3 uid="uid://b7epvnwgpetc1"]
 
-[ext_resource type="Script" uid="uid://0eogl8qy8kjk" path="res://characters/base/base_character.gd" id="1_6iufq"]
-[ext_resource type="Texture2D" uid="uid://cokslyrhc56k4" path="res://assets/vfx/shadow.png" id="2_phtj6"]
-[ext_resource type="Script" uid="uid://egky2rorer21" path="res://characters/base/combat_system.gd" id="3_ggkgm"]
-[ext_resource type="Script" uid="uid://cjtrrslysdsjg" path="res://characters/base/health_system.gd" id="4_agrol"]
+[ext_resource type="Script" uid="uid://0eogl8qy8kjk" path="res://characters/base/base_character.gd" id="1_base"]
+[ext_resource type="Script" uid="uid://dnwm3c7qjxcne" path="res://core/character_animator.gd" id="2_anim"]
+[ext_resource type="Script" uid="uid://g1333741iewg" path="res://core/state_machine.gd" id="3_fsm"]
+[ext_resource type="Script" uid="uid://egky2rorer21" path="res://characters/base/combat_system.gd" id="4_combat"]
+[ext_resource type="Script" uid="uid://cjtrrslysdsjg" path="res://characters/base/health_system.gd" id="5_health"]
+[ext_resource type="Script" uid="uid://4ufb2bnmtdxf" path="res://core/mechanic_system.gd" id="6_mech"]
+[ext_resource type="Texture2D" uid="uid://cokslyrhc56k4" path="res://assets/vfx/shadow.png" id="7_shadow"]
+[ext_resource type="Script" uid="uid://byfw7va54andk" path="res://characters/base/states/locomotion_state.gd" id="8_st_loc"]
+[ext_resource type="Script" uid="uid://d0nh2wxhj2rcg" path="res://characters/base/states/jump_state.gd" id="9_st_jump"]
+[ext_resource type="Script" uid="uid://bd5pfw6i6hxra" path="res://characters/base/states/air_state.gd" id="10_st_air"]
+[ext_resource type="Script" uid="uid://b5npxsr1qlhp3" path="res://characters/base/states/dash_state.gd" id="11_st_dash"]
+[ext_resource type="Script" uid="uid://dmwvej8wx1c2i" path="res://characters/base/states/block_state.gd" id="12_st_block"]
+[ext_resource type="Script" uid="uid://mhbjm13wg8jk" path="res://characters/base/states/attack_state.gd" id="13_st_attack"]
+[ext_resource type="Script" uid="uid://dw33hom4tllfj" path="res://characters/base/states/hit_state.gd" id="14_st_hit"]
+[ext_resource type="Script" uid="uid://wy8ci7qeqt56" path="res://characters/base/states/dead_state.gd" id="15_st_dead"]
+[ext_resource type="Script" uid="uid://b87koodecitkr" path="res://characters/base/states/teleport_state.gd" id="16_st_tp"]
+[ext_resource type="Script" uid="uid://cbuodtccwgayy" path="res://characters/base/states/transform_state.gd" id="17_st_xform"]
+[ext_resource type="Script" uid="uid://ccyythl7g1rq2" path="res://characters/base/states/moving_state.gd" id="19_st_mvg"]
+[ext_resource type="Script" uid="uid://c608ylgheski4" path="res://characters/base/states/charge_state.gd" id="20_st_chg"]
+[ext_resource type="Script" uid="uid://b4v7ag8gycifr" path="res://characters/base/states/rush_state.gd" id="21_st_rush"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_ggkgm"]
+[sub_resource type="RectangleShape2D" id="shape_body"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_sf3xc"]
+[sub_resource type="RectangleShape2D" id="shape_hurtbox"]
+size = Vector2(30, 45)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_6iufq"]
+[sub_resource type="RectangleShape2D" id="shape_hitbox"]
+size = Vector2(50, 40)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_phtj6"]
-
-[node name="BaseCharacter" type="CharacterBody2D" unique_id=1154726735]
+[node name="BaseCharacter" type="CharacterBody2D" unique_id=1002059290]
 scale = Vector2(2, 2)
-script = ExtResource("1_6iufq")
+collision_layer = 2
+script = ExtResource("1_base")
 
-[node name="Shadow" type="Sprite2D" parent="." unique_id=843225097]
+[node name="Shadow" type="Sprite2D" parent="." unique_id=822631669]
 modulate = Color(0, 0, 0, 1)
-material = SubResource("ShaderMaterial_ggkgm")
-texture = ExtResource("2_phtj6")
+texture = ExtResource("7_shadow")
 
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=807296657]
-region_enabled = true
+[node name="Animator" type="AnimatedSprite2D" parent="." unique_id=10929339]
+position = Vector2(0, -22.5)
+script = ExtResource("2_anim")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=2024954145]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=772950534]
+shape = SubResource("shape_body")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=529441652]
-shape = SubResource("RectangleShape2D_sf3xc")
+[node name="Hurtbox" type="Area2D" parent="." unique_id=1137159153]
 
-[node name="Hurtbox" type="Area2D" parent="." unique_id=233469905]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox" unique_id=1427200969]
+shape = SubResource("shape_hurtbox")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox" unique_id=2081556380]
-shape = SubResource("RectangleShape2D_6iufq")
+[node name="Hitbox" type="Area2D" parent="." unique_id=58032541]
 
-[node name="Hitbox" type="Area2D" parent="." unique_id=1900823731]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox" unique_id=154712135]
+shape = SubResource("shape_hitbox")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox" unique_id=1058456785]
-shape = SubResource("RectangleShape2D_phtj6")
-
-[node name="FloorRay" type="RayCast2D" parent="." unique_id=260936648]
+[node name="FloorRay" type="RayCast2D" parent="." unique_id=1238651012]
 target_position = Vector2(0, 1000)
 
-[node name="StateMachine" type="Node" parent="." unique_id=11388096]
+[node name="StateMachine" type="Node" parent="." unique_id=393467239]
+script = ExtResource("3_fsm")
 
-[node name="CombatSystem" type="Node" parent="." unique_id=2008189989]
-script = ExtResource("3_ggkgm")
+[node name="locomotion" type="Node" parent="StateMachine" unique_id=1128521429]
+script = ExtResource("8_st_loc")
 
-[node name="HealthSystem" type="Node" parent="." unique_id=68288154]
-script = ExtResource("4_agrol")
+[node name="jump" type="Node" parent="StateMachine" unique_id=1978014798]
+script = ExtResource("9_st_jump")
+
+[node name="air" type="Node" parent="StateMachine" unique_id=1061282938]
+script = ExtResource("10_st_air")
+
+[node name="dash" type="Node" parent="StateMachine" unique_id=1607078719]
+script = ExtResource("11_st_dash")
+
+[node name="block" type="Node" parent="StateMachine" unique_id=2070326485]
+script = ExtResource("12_st_block")
+
+[node name="attack" type="Node" parent="StateMachine" unique_id=672831752]
+script = ExtResource("13_st_attack")
+
+[node name="hit" type="Node" parent="StateMachine" unique_id=73434411]
+script = ExtResource("14_st_hit")
+
+[node name="dead" type="Node" parent="StateMachine" unique_id=227627251]
+script = ExtResource("15_st_dead")
+
+[node name="teleport" type="Node" parent="StateMachine" unique_id=285564726]
+script = ExtResource("16_st_tp")
+
+[node name="transform" type="Node" parent="StateMachine" unique_id=239811281]
+script = ExtResource("17_st_xform")
+
+[node name="moving" type="Node" parent="StateMachine" unique_id=1927157321]
+script = ExtResource("19_st_mvg")
+
+[node name="charge" type="Node" parent="StateMachine" unique_id=256243880]
+script = ExtResource("20_st_chg")
+
+[node name="rush" type="Node" parent="StateMachine" unique_id=2083430453]
+script = ExtResource("21_st_rush")
+
+[node name="CombatSystem" type="Node" parent="." unique_id=897951449]
+script = ExtResource("4_combat")
+
+[node name="HealthSystem" type="Node" parent="." unique_id=1849277534]
+script = ExtResource("5_health")
+
+[node name="MechanicSystem" type="Node" parent="." unique_id=922034658]
+script = ExtResource("6_mech")
