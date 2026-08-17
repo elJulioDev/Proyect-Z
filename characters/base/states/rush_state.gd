@@ -4,7 +4,7 @@ class_name RushState extends BaseState
 
 const PREP_HEIGHT := 150.0
 const PREP_RISE_SPEED := 500.0
-const FLY_SPEED := 850.0
+const FLY_SPEED := 1000.0
 
 var _phase := 0
 var _timer := 0.0

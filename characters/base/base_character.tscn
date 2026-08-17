@@ -20,6 +20,7 @@
 [ext_resource type="Script" uid="uid://ccyythl7g1rq2" path="res://characters/base/states/moving_state.gd" id="19_st_mvg"]
 [ext_resource type="Script" uid="uid://c608ylgheski4" path="res://characters/base/states/charge_state.gd" id="20_st_chg"]
 [ext_resource type="Script" uid="uid://b4v7ag8gycifr" path="res://characters/base/states/rush_state.gd" id="21_st_rush"]
+[ext_resource type="Script" path="res://characters/base/states/crouch_state.gd" id="22_st_crouch"]
 
 [sub_resource type="RectangleShape2D" id="shape_body"]
 
@@ -99,6 +100,9 @@ script = ExtResource("20_st_chg")
 
 [node name="rush" type="Node" parent="StateMachine" unique_id=2083430453]
 script = ExtResource("21_st_rush")
+
+[node name="crouch" type="Node" parent="StateMachine"]
+script = ExtResource("22_st_crouch")
 
 [node name="CombatSystem" type="Node" parent="." unique_id=897951449]
 script = ExtResource("4_combat")

@@ -23,6 +23,9 @@ func physics(_delta: float) -> void:
 	if c.controller.block_held:
 		c.state_machine.change("block")
 		return
+	if c.controller.crouch_held:
+		c.state_machine.change("crouch")
+		return
 	if c.controller.jump_pressed:
 		c.state_machine.change("jump")
 		return

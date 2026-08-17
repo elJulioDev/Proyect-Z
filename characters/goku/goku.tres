@@ -32,6 +32,7 @@ loop = false
 [sub_resource type="Resource" id="anim_block"]
 script = ExtResource("2_adata")
 frames = Array[Rect2]([Rect2(680, 276, 170, 92)])
+offsets = Array[Vector2]([Vector2(1, 0)])
 loop = false
 
 [sub_resource type="Resource" id="anim_block_air"]
@@ -46,7 +47,8 @@ loop = false
 
 [sub_resource type="Resource" id="anim_crouch"]
 script = ExtResource("2_adata")
-frames = Array[Rect2]([Rect2(680, 0, 170, 92), Rect2(850, 0, 170, 92)])
+frames = Array[Rect2]([Rect2(850, 0, 170, 92)])
+offsets = Array[Vector2]([Vector2(-1, 0)])
 loop = false
 
 [sub_resource type="Resource" id="anim_crouch_heavy"]
@@ -98,7 +100,6 @@ script = ExtResource("2_adata")
 frames = Array[Rect2]([Rect2(680, 184, 170, 92), Rect2(850, 184, 170, 92)])
 offsets = Array[Vector2]([Vector2(-5, 15), Vector2(-5, 18)])
 fps = 16.0
-loop = true
 
 [sub_resource type="Resource" id="anim_fall"]
 script = ExtResource("2_adata")
@@ -366,8 +367,8 @@ animations = {
 "dead": SubResource("anim_dead"),
 "dive_kick": SubResource("anim_dive_kick"),
 "dragon_rush": SubResource("anim_dragon_rush"),
-"dragon_rush_pos": SubResource("anim_dragon_rush_pos"),
 "dragon_rush_loop": SubResource("anim_dragon_rush_loop"),
+"dragon_rush_pos": SubResource("anim_dragon_rush_pos"),
 "fall": SubResource("anim_fall"),
 "heavy": SubResource("anim_heavy"),
 "heavy_hit": SubResource("anim_heavy_hit"),

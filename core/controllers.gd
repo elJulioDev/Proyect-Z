@@ -18,6 +18,7 @@ var special_2_pressed: bool = false
 var special_3_pressed: bool = false
 var special_4_pressed: bool = false
 var charge_held: bool = false
+var crouch_held: bool = false
 
 
 func tick() -> void:
@@ -45,6 +46,7 @@ class KeyboardController:
 		special_3_pressed = Input.is_action_just_pressed("special_3")
 		special_4_pressed = Input.is_action_just_pressed("special_4")
 		charge_held = Input.is_action_pressed("special_4")
+		crouch_held = Input.is_action_pressed("move_down")
 		dash_pressed = _check_double_tap()
 
 	func _check_double_tap() -> bool:
