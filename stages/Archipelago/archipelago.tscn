@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://c4yng2uay1bs" path="res://characters/goku/goku.tscn" id="2_pef0u"]
 
 [node name="Archipelago" unique_id=1006598254 instance=ExtResource("1_kmwpn")]
+position = Vector2(1, 0)
 stage_config_path = "res://stages/Archipelago/stage.json"
 
 [node name="BaseCharacter" parent="." index="7" unique_id=1154726735 instance=ExtResource("2_pef0u")]

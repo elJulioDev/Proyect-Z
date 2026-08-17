@@ -40,10 +40,10 @@ shape = SubResource("RectangleShape2D_6iufq")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox" unique_id=1058456785]
 shape = SubResource("RectangleShape2D_phtj6")
 
-[node name="StateMachine" type="Node" parent="." unique_id=11388096]
-
 [node name="FloorRay" type="RayCast2D" parent="." unique_id=260936648]
 target_position = Vector2(0, 1000)
+
+[node name="StateMachine" type="Node" parent="." unique_id=11388096]
 
 [node name="CombatSystem" type="Node" parent="." unique_id=2008189989]
 script = ExtResource("3_ggkgm")
