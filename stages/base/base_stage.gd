@@ -68,7 +68,7 @@ func _spawn_fighters() -> void:
 	if not has_node("Player2") and gm.p2_scene:
 		player2 = _spawn_fighter("Player2", gm.p2_scene)
 	if player2 and gm.p2_dummy:
-		player2.set_controller(Controllers.DummyController.new())
+		player2.set_controller(Controllers.KeyboardControllerP2.new())
 	if player1 and player2:
 		player1.controller.opponent = player2
 		player2.controller.opponent = player1

@@ -11,6 +11,6 @@ var p2_dummy := true
 func start_fight(stage: PackedScene, fighter1: PackedScene, fighter2: PackedScene) -> void:
 	p1_scene = fighter1
 	p2_scene = fighter2
-	TransitionManager.transition(0.8, 1.5, 0.8, func():
+	TransitionManager.transition(0.8, 0.5, 0.8, func():
 		get_tree().change_scene_to_packed(stage)
 	)

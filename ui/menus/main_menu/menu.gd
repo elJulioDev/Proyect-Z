@@ -14,6 +14,8 @@ var click_player: AudioStreamPlayer
 var last_hover_time: int = 0
 var last_click_time: int = 0
 
+var _busy := false
+
 func _ready():
 	_setup_audio()
 	_connect_buttons()
@@ -42,15 +44,31 @@ func _connect_buttons():
 			button.pressed.connect(_on_exit_pressed)
 
 
+func _set_busy(value: bool) -> void:
+	_busy = value
+	for button in buttons_container.get_children():
+		if button is Button:
+			button.mouse_filter = Control.MOUSE_FILTER_IGNORE if value else Control.MOUSE_FILTER_STOP
+
+
 func _on_play_pressed():
+	if _busy:
+		return
+	_set_busy(true)
 	const GOKU := preload("res://characters/goku/goku.tscn")
 	const ARCHIPELAGO := preload("res://stages/Archipelago/archipelago.tscn")
 	GameManager.start_fight(ARCHIPELAGO, GOKU, GOKU)
 
 func _on_settings_pressed():
+	if _busy:
+		return
+	_set_busy(true)
 	get_tree().change_scene_to_file(CONTROLS_MENU_PATH)
 
 func _on_exit_pressed():
+	if _busy:
+		return
+	_set_busy(true)
 	get_tree().quit()
 
 func _on_button_hover():

@@ -5,9 +5,6 @@
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_1"]
 shader = ExtResource("2")
-shader_parameter/base_color = Color(0, 0, 0, 1)
-shader_parameter/node_resolution = Vector2(1152, 648)
-shader_parameter/factor = 0.0
 shader_parameter/spacing = 25.0
 shader_parameter/dot_size = 1.0
 

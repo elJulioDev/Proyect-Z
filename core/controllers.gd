@@ -71,6 +71,19 @@ class DummyController:
 	## Blanco de prueba: no lee entrada, solo permanece quieto y recibe golpes.
 
 
+class KeyboardControllerP2:
+	extends FighterController
+	## Solo movimiento: flechas izq/der + salto con flecha arriba.
+
+	var _prev_up := false
+
+	func tick() -> void:
+		move_axis = float(Input.is_physical_key_pressed(KEY_RIGHT)) - float(Input.is_physical_key_pressed(KEY_LEFT))
+		var cur_up := Input.is_physical_key_pressed(KEY_UP)
+		jump_pressed = cur_up and not _prev_up
+		_prev_up = cur_up
+
+
 class AIController:
 	extends FighterController
 	## IA muy básica: persigue al rival y ataca si está cerca.
