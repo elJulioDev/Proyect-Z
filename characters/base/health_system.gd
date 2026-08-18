@@ -1,5 +1,6 @@
 class_name HealthSystem extends Node
 ## Vida, daño, hitstun y knockback. Lee las stats del CharacterData.
+## Soporta bloqueo: daño reducido + blockstun en vez de hitstun completo.
 
 signal health_changed(current: float, max_hp: float)
 signal character_died()
@@ -27,21 +28,26 @@ func _physics_process(delta: float) -> void:
 	_tick_hitstun(delta)
 
 
-## Llamado por CombatSystem del atacante.
-func receive_hit(damage: float, knockback: Vector2, stun_duration: float) -> void:
+func receive_hit(damage: float, knockback: Vector2, stun_duration: float, block_damage: float, blockstun: float, is_blocking: bool) -> void:
 	if is_dead:
 		return
 	var defense: float = character.data.stats.get("defense", 0.0)
-	var actual_damage := maxf(1.0, damage - defense * 0.15)
-
-	current_hp = maxf(0.0, current_hp - actual_damage)
-	health_changed.emit(current_hp, max_hp)
-
-	character.velocity = knockback
-	is_in_hitstun = true
-	hitstun_timer = stun_duration
-	character.force_state("hit")
-
+	if is_blocking:
+		var chip := maxf(1.0, block_damage - defense * 0.15)
+		current_hp = maxf(0.0, current_hp - chip)
+		health_changed.emit(current_hp, max_hp)
+		character.velocity = Vector2(knockback.x * 0.3, 0.0)
+		is_in_hitstun = true
+		hitstun_timer = blockstun
+		character.force_state("hit")
+	else:
+		var actual_damage := maxf(1.0, damage - defense * 0.15)
+		current_hp = maxf(0.0, current_hp - actual_damage)
+		health_changed.emit(current_hp, max_hp)
+		character.velocity = knockback
+		is_in_hitstun = true
+		hitstun_timer = stun_duration
+		character.force_state("hit")
 	if current_hp <= 0.0:
 		_die()
 

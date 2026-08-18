@@ -19,13 +19,13 @@ loop = false
 
 [sub_resource type="Resource" id="anim_aerial_kick"]
 script = ExtResource("2_adata")
-frames = Array[Rect2]([Rect2(680, 828, 170, 92), Rect2(850, 828, 170, 92), Rect2(1020, 828, 170, 92), Rect2(1190, 828, 170, 92)])
+frames = Array[Rect2]([Rect2(1530, 736, 170, 92), Rect2(0, 828, 170, 92), Rect2(170, 828, 170, 92), Rect2(340, 828, 170, 92)])
 fps = 12.0
 loop = false
 
 [sub_resource type="Resource" id="anim_aerial_light"]
 script = ExtResource("2_adata")
-frames = Array[Rect2]([Rect2(0, 828, 170, 92), Rect2(170, 828, 170, 92), Rect2(340, 828, 170, 92), Rect2(510, 828, 170, 92)])
+frames = Array[Rect2]([Rect2(850, 736, 170, 92), Rect2(1020, 736, 170, 92), Rect2(1190, 736, 170, 92), Rect2(1360, 736, 170, 92)])
 fps = 12.0
 loop = false
 
@@ -66,6 +66,24 @@ loop = false
 [sub_resource type="Resource" id="anim_crouch_medium"]
 script = ExtResource("2_adata")
 frames = Array[Rect2]([Rect2(680, 644, 170, 92), Rect2(850, 644, 170, 92), Rect2(1020, 644, 170, 92), Rect2(1190, 644, 170, 92)])
+fps = 12.0
+loop = false
+
+[sub_resource type="Resource" id="anim_light_1"]
+script = ExtResource("2_adata")
+frames = Array[Rect2]([Rect2(0, 368, 170, 92), Rect2(170, 368, 170, 92), Rect2(340, 368, 170, 92), Rect2(0, 368, 170, 92)])
+fps = 12.0
+loop = false
+
+[sub_resource type="Resource" id="anim_light_2"]
+script = ExtResource("2_adata")
+frames = Array[Rect2]([Rect2(510, 368, 170, 92), Rect2(680, 368, 170, 92), Rect2(850, 368, 170, 92), Rect2(1020, 368, 170, 92), Rect2(1190, 368, 170, 92), Rect2(1360, 368, 170, 92), Rect2(1530, 368, 170, 92), Rect2(0, 460, 170, 92)])
+fps = 12.0
+loop = false
+
+[sub_resource type="Resource" id="anim_light_3"]
+script = ExtResource("2_adata")
+frames = Array[Rect2]([Rect2(0, 460, 170, 92), Rect2(170, 460, 170, 92), Rect2(340, 460, 170, 92), Rect2(510, 460, 170, 92), Rect2(680, 460, 170, 92), Rect2(850, 460, 170, 92), Rect2(1020, 460, 170, 92), Rect2(1190, 460, 170, 92)])
 fps = 12.0
 loop = false
 
@@ -149,8 +167,8 @@ loop = false
 
 [sub_resource type="Resource" id="anim_ki_blast"]
 script = ExtResource("2_adata")
-frames = Array[Rect2]([Rect2(1190, 276, 170, 92), Rect2(1360, 276, 170, 92), Rect2(1530, 276, 170, 92), Rect2(0, 368, 170, 92)])
-offsets = Array[Vector2]([Vector2(4, 0), Vector2(4, 0), Vector2(4, 0), Vector2(4, 0)])
+frames = Array[Rect2]([Rect2(1190, 276, 170, 92), Rect2(1360, 276, 170, 92), Rect2(1530, 276, 170, 92)])
+offsets = Array[Vector2]([Vector2(4, 0), Vector2(4, 0), Vector2(4, 0)])
 fps = 12.0
 loop = false
 
@@ -241,9 +259,14 @@ id = "air_ki"
 damage = 12.0
 knockback = Vector2(360, -240)
 stun = 0.28
-active_time = 0.2
 lockout = 0.3
 anim = "ki_blast"
+weight = 2
+startup_frames = 1
+active_frames = 1
+recovery_frames = 1
+block_damage = 3.0
+blockstun = 0.22
 
 [sub_resource type="Resource" id="atk_air_kick"]
 script = ExtResource("3_atkdata")
@@ -251,8 +274,14 @@ id = "air_kick"
 damage = 8.0
 knockback = Vector2(280, -180)
 stun = 0.2
-active_time = 0.14
+lockout = 0.2
 anim = "aerial_kick"
+weight = 1
+startup_frames = 1
+active_frames = 2
+recovery_frames = 1
+block_damage = 2.0
+blockstun = 0.14
 
 [sub_resource type="Resource" id="atk_air_punch"]
 script = ExtResource("3_atkdata")
@@ -260,8 +289,14 @@ id = "air_punch"
 damage = 5.0
 knockback = Vector2(200, -120)
 stun = 0.14
-active_time = 0.12
+lockout = 0.18
 anim = "aerial_light"
+weight = 0
+startup_frames = 1
+active_frames = 2
+recovery_frames = 1
+block_damage = 1.0
+blockstun = 0.08
 
 [sub_resource type="Resource" id="atk_ki"]
 script = ExtResource("3_atkdata")
@@ -269,9 +304,14 @@ id = "ki"
 damage = 14.0
 knockback = Vector2(420, -200)
 stun = 0.3
-active_time = 0.2
 lockout = 0.3
 anim = "ki_blast"
+weight = 2
+startup_frames = 1
+active_frames = 1
+recovery_frames = 1
+block_damage = 3.0
+blockstun = 0.22
 
 [sub_resource type="Resource" id="atk_kick"]
 script = ExtResource("3_atkdata")
@@ -279,8 +319,14 @@ id = "kick"
 damage = 9.0
 knockback = Vector2(340, -120)
 stun = 0.22
-active_time = 0.14
+lockout = 0.2
 anim = "light"
+weight = 1
+startup_frames = 6
+active_frames = 4
+recovery_frames = 6
+block_damage = 2.0
+blockstun = 0.14
 
 [sub_resource type="Resource" id="atk_kick_finish"]
 script = ExtResource("3_atkdata")
@@ -288,9 +334,14 @@ id = "kick_finish"
 damage = 16.0
 knockback = Vector2(460, -240)
 stun = 0.32
-active_time = 0.2
 lockout = 0.22
 anim = "medium"
+weight = 1
+startup_frames = 5
+active_frames = 5
+recovery_frames = 6
+block_damage = 2.5
+blockstun = 0.16
 
 [sub_resource type="Resource" id="atk_kick_finish3"]
 script = ExtResource("3_atkdata")
@@ -298,9 +349,14 @@ id = "kick_finish3"
 damage = 22.0
 knockback = Vector2(540, -300)
 stun = 0.4
-active_time = 0.24
 lockout = 0.24
 anim = "heavy"
+weight = 2
+startup_frames = 6
+active_frames = 6
+recovery_frames = 8
+block_damage = 3.0
+blockstun = 0.20
 
 [sub_resource type="Resource" id="atk_punch"]
 script = ExtResource("3_atkdata")
@@ -308,9 +364,44 @@ id = "punch"
 damage = 6.0
 knockback = Vector2(240, -80)
 stun = 0.15
-active_time = 0.12
 lockout = 0.18
-anim = "light"
+anim = "light_1"
+weight = 0
+startup_frames = 1
+active_frames = 2
+recovery_frames = 1
+block_damage = 1.0
+blockstun = 0.08
+
+[sub_resource type="Resource" id="atk_punch_2"]
+script = ExtResource("3_atkdata")
+id = "punch_2"
+damage = 7.0
+knockback = Vector2(260, -90)
+stun = 0.16
+lockout = 0.18
+anim = "light_2"
+weight = 0
+startup_frames = 2
+active_frames = 4
+recovery_frames = 2
+block_damage = 1.5
+blockstun = 0.10
+
+[sub_resource type="Resource" id="atk_punch_3"]
+script = ExtResource("3_atkdata")
+id = "punch_3"
+damage = 10.0
+knockback = Vector2(380, -160)
+stun = 0.24
+lockout = 0.22
+anim = "light_3"
+weight = 0
+startup_frames = 2
+active_frames = 4
+recovery_frames = 2
+block_damage = 2.0
+blockstun = 0.12
 
 [sub_resource type="Resource" id="atk_punch_finish"]
 script = ExtResource("3_atkdata")
@@ -318,9 +409,14 @@ id = "punch_finish"
 damage = 14.0
 knockback = Vector2(420, -220)
 stun = 0.3
-active_time = 0.2
 lockout = 0.22
 anim = "medium"
+weight = 1
+startup_frames = 5
+active_frames = 5
+recovery_frames = 6
+block_damage = 2.5
+blockstun = 0.16
 
 [sub_resource type="Resource" id="atk_punch_finish3"]
 script = ExtResource("3_atkdata")
@@ -328,9 +424,14 @@ id = "punch_finish3"
 damage = 20.0
 knockback = Vector2(500, -280)
 stun = 0.36
-active_time = 0.22
 lockout = 0.24
 anim = "heavy"
+weight = 2
+startup_frames = 6
+active_frames = 6
+recovery_frames = 8
+block_damage = 3.0
+blockstun = 0.20
 
 [sub_resource type="Resource" id="atk_rush"]
 script = ExtResource("3_atkdata")
@@ -338,9 +439,14 @@ id = "rush"
 damage = 12.0
 knockback = Vector2(520, -160)
 stun = 0.25
-active_time = 0.18
 lockout = 0.3
 anim = "dragon_rush"
+weight = 3
+startup_frames = 10
+active_frames = 4
+recovery_frames = 6
+block_damage = 0.0
+blockstun = 0.0
 
 [resource]
 script = ExtResource("1_cdata")
@@ -385,6 +491,9 @@ animations = {
 "land": SubResource("anim_land"),
 "launch": SubResource("anim_launch"),
 "light": SubResource("anim_light"),
+"light_1": SubResource("anim_light_1"),
+"light_2": SubResource("anim_light_2"),
+"light_3": SubResource("anim_light_3"),
 "medium": SubResource("anim_medium"),
 "move_left": SubResource("anim_move_left"),
 "move_right": SubResource("anim_move_right"),
@@ -403,11 +512,15 @@ attacks = {
 "kick_finish": SubResource("atk_kick_finish"),
 "kick_finish3": SubResource("atk_kick_finish3"),
 "punch": SubResource("atk_punch"),
+"punch_2": SubResource("atk_punch_2"),
+"punch_3": SubResource("atk_punch_3"),
 "punch_finish": SubResource("atk_punch_finish"),
 "punch_finish3": SubResource("atk_punch_finish3"),
 "rush": SubResource("atk_rush")
 }
 combos = [{
+"sequence": ["punch", "punch_2", "punch_3"]
+}, {
 "finisher": "punch_finish",
 "sequence": ["punch", "punch"]
 }, {

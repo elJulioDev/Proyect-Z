@@ -110,7 +110,7 @@ func _on_hit(area: Area2D) -> void:
 		return
 	_hit_landed = true
 	var kb_dir := 1.0 if character.facing_right else -1.0
-	target.receive_hit(12.0, Vector2(520.0 * kb_dir, -160.0), 0.25)
+	target.receive_hit(12.0, Vector2(520.0 * kb_dir, -160.0), 0.25, 0.0, 0.0, false)
 
 
 func _do_hit() -> void:
@@ -120,7 +120,7 @@ func _do_hit() -> void:
 	var c := character
 	if c.controller and c.controller.opponent:
 		var kb_dir := 1.0 if c.facing_right else -1.0
-		c.controller.opponent.receive_hit(12.0, Vector2(520.0 * kb_dir, -160.0), 0.25)
+		c.controller.opponent.receive_hit(12.0, Vector2(520.0 * kb_dir, -160.0), 0.25, 0.0, 0.0, false)
 
 
 func _end_rush() -> void:

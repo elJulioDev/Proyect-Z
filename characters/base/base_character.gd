@@ -134,8 +134,8 @@ func transform_to(form_id: String) -> void:
 
 # ── Golpes ──────────────────────────────────────────────────────────────────
 ## Llamado por CombatSystem del atacante sobre este personaje.
-func receive_hit(damage: float, knockback: Vector2, stun: float) -> void:
-	health.receive_hit(damage, knockback, stun)
+func receive_hit(damage: float, knockback: Vector2, stun: float, block_damage: float = 0.0, blockstun: float = 0.0, is_blocking: bool = false) -> void:
+	health.receive_hit(damage, knockback, stun, block_damage, blockstun, is_blocking)
 
 
 # ── VFX ─────────────────────────────────────────────────────────────────────

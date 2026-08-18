@@ -17,7 +17,7 @@ func _ready() -> void:
 
 func change(state_id: String, args: Dictionary = {}) -> void:
 	var next := get_node_or_null(state_id.to_lower()) as BaseState
-	if next == null or next == current:
+	if next == null:
 		return
 	if current:
 		current.exit()

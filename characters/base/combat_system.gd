@@ -1,22 +1,16 @@
 class_name CombatSystem extends Node
-## Combate data-driven: lee los ataques y cadenas del CharacterData.
-## Lee el input de ataque, decide el ataque (suelo/aire, remates de combo)
-## y aplica daño/knockback cuando la hitbox toca una hurtbox.
-
-const COMBO_WINDOW := 0.55
-const BUFFER_TIME := 0.3
+## Combate data-driven con frame data, cancelaciones por peso y cadenas de combo.
+## Startup → Active → Recovery. Cancelaciones: peso nuevo >= peso actual.
+## Combos: al presionar el mismo botón durante cancel, avanza en la cadena.
 
 var character: BaseCharacter
 @onready var hitbox: Area2D = get_parent().get_node("Hitbox")
 
 var is_attacking := false
-var attack_timer := 0.0
-var lockout_timer := 0.0
-var combo_timer := 0.0
-var combo_sequence: Array = []
 var current_attack: AttackData
-var buffered_attack := ""
-var buffer_timer := 0.0
+var lockout_timer := 0.0
+var _current_weight: int = -1
+var _combo_chain: Array = []
 
 
 func _ready() -> void:
@@ -26,26 +20,9 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
-	_tick(delta)
-	_read_input()
-
-
-func _tick(delta: float) -> void:
-	if attack_timer > 0.0:
-		attack_timer -= delta
-		if attack_timer <= 0.0:
-			hitbox.monitoring = false
-			is_attacking = false
 	if lockout_timer > 0.0:
 		lockout_timer -= delta
-	if combo_timer > 0.0:
-		combo_timer -= delta
-		if combo_timer <= 0.0:
-			combo_sequence.clear()
-	if buffer_timer > 0.0:
-		buffer_timer -= delta
-		if buffer_timer <= 0.0:
-			buffered_attack = ""
+	_read_input()
 
 
 func _read_input() -> void:
@@ -58,16 +35,40 @@ func _read_input() -> void:
 		pressed = _pick("kick", "air_kick", airborne)
 	elif c.controller.attack_ki_pressed:
 		pressed = _pick("ki", "air_ki", airborne)
-	if pressed != "":
-		if lockout_timer > 0.0 or not c.can_act():
-			buffered_attack = pressed
-			buffer_timer = BUFFER_TIME
-			return
-		_do_attack(pressed)
-	elif buffered_attack != "" and lockout_timer <= 0.0 and c.can_act():
-		var id := buffered_attack
-		buffered_attack = ""
-		_do_attack(id)
+	if pressed == "":
+		return
+	if _can_cancel_with(pressed):
+		var current_id := current_attack.id if current_attack != null else ""
+		var next_id := _get_combo_next(current_id)
+		if next_id != "":
+			_do_attack(next_id)
+		else:
+			_combo_chain = _find_combo_chain(pressed)
+			if _combo_chain.size() > 0:
+				_do_attack(_combo_chain[0])
+			else:
+				_do_attack(pressed)
+	elif c.can_act():
+		_combo_chain = _find_combo_chain(pressed)
+		if _combo_chain.size() > 0:
+			_do_attack(_combo_chain[0])
+		else:
+			_do_attack(pressed)
+
+
+func _can_cancel_with(new_attack_id: String) -> bool:
+	var c := character
+	if c.state_id() != "attack":
+		return false
+	var atk_state: AttackState = c.state_machine.current
+	if atk_state == null or not atk_state is AttackState:
+		return false
+	if not atk_state.can_cancel():
+		return false
+	var new_data: AttackData = c.data.attacks.get(new_attack_id, null)
+	if new_data == null:
+		return false
+	return new_data.weight >= _current_weight
 
 
 func _pick(ground_id: String, air_id: String, airborne: bool) -> String:
@@ -77,45 +78,40 @@ func _pick(ground_id: String, air_id: String, airborne: bool) -> String:
 	return ground_id if ground_id in data.attacks else air_id
 
 
+func _find_combo_chain(attack_id: String) -> Array:
+	for combo in character.data.combos:
+		var seq: Array = combo.get("sequence", [])
+		if seq.is_empty() or seq[0] != attack_id:
+			continue
+		var chain: Array = seq.duplicate()
+		if combo.has("finisher") and chain.size() > 0:
+			chain[chain.size() - 1] = combo.finisher
+		return chain
+	return []
+
+
+func _get_combo_next(current_id: String) -> String:
+	if _combo_chain.is_empty():
+		return ""
+	var idx := _combo_chain.find(current_id)
+	if idx < 0 or idx >= _combo_chain.size() - 1:
+		return ""
+	return _combo_chain[idx + 1]
+
+
 func _do_attack(attack_id: String) -> void:
 	var c := character
-	if not c.is_airborne():
-		combo_sequence.append(attack_id)
-		combo_timer = COMBO_WINDOW
-		var finisher := _check_combo_chain()
-		if finisher != "":
-			combo_sequence.clear()
-			attack_id = finisher
 	if not c.data.attacks.has(attack_id):
 		return
-	lockout_timer = c.data.attacks[attack_id].lockout
+	var data: AttackData = c.data.attacks[attack_id]
+	lockout_timer = data.lockout
+	_current_weight = data.weight
+	current_attack = data
 	c.state_machine.change("attack", {"id": attack_id})
 
 
-func _check_combo_chain() -> String:
-	var best := ""
-	var best_len := 0
-	for chain in character.data.combos:
-		var sequence: Array = chain.get("sequence", [])
-		if sequence.size() <= best_len or combo_sequence.size() < sequence.size():
-			continue
-		if combo_sequence.slice(-sequence.size()) == sequence:
-			best = chain.get("finisher", "")
-			best_len = sequence.size()
-	return best
-
-
-## Llamado por AttackState al entrar: activa hitbox y animación.
-func start_attack(attack_id: String) -> void:
-	var data: AttackData = character.data.attacks.get(attack_id, null)
-	if data == null:
-		return
-	current_attack = data
-	is_attacking = true
-	attack_timer = data.active_time
-	hitbox.scale = data.hitbox_scale
-	hitbox.monitoring = true
-	character.animator.play_anim(data.anim)
+func get_current_weight() -> int:
+	return _current_weight
 
 
 func _on_hitbox_area_entered(area: Area2D) -> void:
@@ -128,5 +124,6 @@ func _on_hitbox_area_entered(area: Area2D) -> void:
 		return
 	var kb_dir := 1.0 if character.facing_right else -1.0
 	var knockback := Vector2(current_attack.knockback.x * kb_dir, current_attack.knockback.y)
-	target.receive_hit(current_attack.damage, knockback, current_attack.stun)
+	var is_blocking: bool = target.state_id() == "block"
+	target.receive_hit(current_attack.damage, knockback, current_attack.stun, current_attack.block_damage, current_attack.blockstun, is_blocking)
 	hitbox.set_deferred("monitoring", false)
