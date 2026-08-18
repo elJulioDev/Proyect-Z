@@ -61,10 +61,12 @@ func _try_attack(pressed: String) -> bool:
 	var c := character
 	if _can_cancel_with(pressed):
 		var current_id := current_attack.id if current_attack != null else ""
-		var next_id := _get_combo_next(current_id)
-		if next_id == "":
-			return false
-		_do_attack(next_id)
+		if current_id != "" and _combo_chain.has(current_id) and _combo_chain.has(pressed):
+			var next_id := _get_combo_next(current_id)
+			if next_id != "":
+				_do_attack(next_id)
+				return true
+		_start_chain(pressed)
 		return true
 	if lockout_timer <= 0.0 and c.can_act():
 		_start_chain(pressed)

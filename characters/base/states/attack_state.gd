@@ -22,6 +22,7 @@ func enter(args: Dictionary = {}) -> void:
 	_total_duration = float(_data.startup_frames + _data.active_frames + _data.recovery_frames) / _fps
 	_phase = Phase.STARTUP
 	_phase_timer = float(_data.startup_frames) / _fps
+	character.velocity.x = 0.0
 	character.animator.play_anim(_data.anim)
 	character.combat.hitbox.monitoring = false
 	character.combat.is_attacking = false

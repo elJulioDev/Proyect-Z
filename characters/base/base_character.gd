@@ -31,6 +31,7 @@ var air_dashes_left := AIR_DASH_LIMIT
 var base_shadow_scale := Vector2(2.8, 1.5)
 var shadow_offset_y := 25.0
 var max_jump_height := 400.0
+var debug_mode := false
 
 
 func _ready() -> void:
@@ -50,8 +51,49 @@ func _ready() -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event is InputEventKey and event.pressed and event.keycode == KEY_R:
-		_reload_data()
+	if event is InputEventKey and event.pressed:
+		match event.keycode:
+			KEY_R:
+				_reload_data()
+			KEY_0:
+				debug_mode = false
+				animator.play_anim("idle")
+			KEY_1:
+				debug_mode = true
+				velocity = Vector2.ZERO
+				animator.play_anim("light_1")
+			KEY_2:
+				debug_mode = true
+				velocity = Vector2.ZERO
+				animator.play_anim("light_2")
+			KEY_3:
+				debug_mode = true
+				velocity = Vector2.ZERO
+				animator.play_anim("light_3")
+			KEY_4:
+				debug_mode = true
+				velocity = Vector2.ZERO
+				animator.play_anim("dragon_rush")
+			KEY_5:
+				debug_mode = true
+				velocity = Vector2.ZERO
+				animator.play_anim("dragon_rush_pos")
+			KEY_6:
+				debug_mode = true
+				velocity = Vector2.ZERO
+				animator.play_anim("dragon_rush_loop")
+			KEY_7:
+				debug_mode = true
+				velocity = Vector2.ZERO
+				animator.play_anim("heavy")
+			KEY_8:
+				debug_mode = true
+				velocity = Vector2.ZERO
+				animator.play_anim("medium")
+			KEY_9:
+				debug_mode = true
+				velocity = Vector2.ZERO
+				animator.play_anim("dragon_rush")
 
 
 func _reload_data() -> void:
@@ -70,8 +112,12 @@ func _reload_data() -> void:
 func _physics_process(delta: float) -> void:
 	if dash_cd > 0.0:
 		dash_cd -= delta
-	controller.tick()
-	state_machine.physics(delta)
+	if debug_mode:
+		if not animator.is_playing():
+			debug_mode = false
+	else:
+		controller.tick()
+		state_machine.physics(delta)
 	if not is_on_floor():
 		if state_id() == "rush":
 			pass
