@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 
 InputManager="*uid://d1jxw63ib7k1s"
 GameManager="*res://core/game_manager.gd"
+TransitionManager="*res://ui/transitions/transition_manager.tscn"
 
 [display]
 
