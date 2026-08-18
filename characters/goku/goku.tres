@@ -424,7 +424,7 @@ mechanics = {
 "special_3": {
 "id": "rush"
 },
-"special_4": {
+"charge_ki": {
 "id": "charge"
 }
 }

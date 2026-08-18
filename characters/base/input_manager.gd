@@ -16,11 +16,11 @@ const ACTION_LABELS := {
 	"block":        "Guardia",
 	"attack_punch": "Golpe (Combo)",
 	"attack_kick":  "Patada (Combo)",
-	"attack_ki":    "Ki",
+	"attack_ki":    "Disparo Ki",
+	"charge_ki":    "Cargar Ki",
 	"special_1":    "Mecánica Global 1",
 	"special_2":    "Mecánica Global 2",
 	"special_3":    "Dragon Rush",
-	"special_4":    "Cargar Ki",
 }
 
 # Teclas por defecto (backup para resetear)

@@ -3,6 +3,7 @@ extends Control
 # Rutas de audio
 const HOVER_SFX_PATH = "res://assets/audio/sfx/Cursor.wav"
 const CLICK_SFX_PATH = "res://assets/audio/sfx/Decide_2.wav"
+const CONTROLS_MENU_PATH = "res://ui/menus/settings_menu/controls_menu.tscn"
 
 var hover_player: AudioStreamPlayer
 var click_player: AudioStreamPlayer
@@ -33,14 +34,24 @@ func _connect_buttons():
 		if button is Button:
 			button.mouse_entered.connect(_on_button_hover)
 			button.pressed.connect(_on_button_pressed)
-			if button.name == "play":
-				button.pressed.connect(_on_play_pressed)
+		if button.name == "play":
+			button.pressed.connect(_on_play_pressed)
+		elif button.name == "settings":
+			button.pressed.connect(_on_settings_pressed)
+		elif button.name == "exit":
+			button.pressed.connect(_on_exit_pressed)
 
 
 func _on_play_pressed():
 	const GOKU := preload("res://characters/goku/goku.tscn")
 	const ARCHIPELAGO := preload("res://stages/Archipelago/archipelago.tscn")
 	GameManager.start_fight(ARCHIPELAGO, GOKU, GOKU)
+
+func _on_settings_pressed():
+	get_tree().change_scene_to_file(CONTROLS_MENU_PATH)
+
+func _on_exit_pressed():
+	get_tree().quit()
 
 func _on_button_hover():
 	var current_time = Time.get_ticks_msec()

@@ -16,8 +16,8 @@ var attack_ki_pressed: bool = false
 var special_1_pressed: bool = false
 var special_2_pressed: bool = false
 var special_3_pressed: bool = false
-var special_4_pressed: bool = false
 var charge_held: bool = false
+var charge_ki_pressed: bool = false
 var crouch_held: bool = false
 
 
@@ -44,8 +44,8 @@ class KeyboardController:
 		special_1_pressed = Input.is_action_just_pressed("special_1")
 		special_2_pressed = Input.is_action_just_pressed("special_2")
 		special_3_pressed = Input.is_action_just_pressed("special_3")
-		special_4_pressed = Input.is_action_just_pressed("special_4")
-		charge_held = Input.is_action_pressed("special_4")
+		charge_held = Input.is_action_pressed("charge_ki")
+		charge_ki_pressed = Input.is_action_just_pressed("charge_ki")
 		crouch_held = Input.is_action_pressed("move_down")
 		dash_pressed = _check_double_tap()
 
