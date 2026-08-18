@@ -2,6 +2,7 @@ class_name CombatSystem extends Node
 ## Combate data-driven con frame data, cancelaciones por peso y cadenas de combo.
 ## Startup → Active → Recovery. Cancelaciones: peso nuevo >= peso actual.
 ## Combos: al presionar el mismo botón durante cancel, avanza en la cadena.
+## Buffer: input durante startup se conserva y se dispara al abrir ventana de cancel.
 
 var character: BaseCharacter
 @onready var hitbox: Area2D = get_parent().get_node("Hitbox")
@@ -11,6 +12,10 @@ var current_attack: AttackData
 var lockout_timer := 0.0
 var _current_weight: int = -1
 var _combo_chain: Array = []
+var _buffered_id := ""
+var _buffer_timer := 0.0
+
+const INPUT_BUFFER := 0.12
 
 
 func _ready() -> void:
@@ -22,7 +27,14 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	if lockout_timer > 0.0:
 		lockout_timer -= delta
+	if _buffer_timer > 0.0:
+		_buffer_timer -= delta
+	elif _buffered_id != "":
+		_buffered_id = ""
 	_read_input()
+	if _buffered_id != "" and _try_attack(_buffered_id):
+		_buffered_id = ""
+		_buffer_timer = 0.0
 
 
 func _read_input() -> void:
@@ -37,23 +49,35 @@ func _read_input() -> void:
 		pressed = _pick("ki", "air_ki", airborne)
 	if pressed == "":
 		return
+	if _try_attack(pressed):
+		_buffered_id = ""
+		_buffer_timer = 0.0
+	else:
+		_buffered_id = pressed
+		_buffer_timer = INPUT_BUFFER
+
+
+func _try_attack(pressed: String) -> bool:
+	var c := character
 	if _can_cancel_with(pressed):
 		var current_id := current_attack.id if current_attack != null else ""
 		var next_id := _get_combo_next(current_id)
-		if next_id != "":
-			_do_attack(next_id)
-		else:
-			_combo_chain = _find_combo_chain(pressed)
-			if _combo_chain.size() > 0:
-				_do_attack(_combo_chain[0])
-			else:
-				_do_attack(pressed)
-	elif c.can_act():
-		_combo_chain = _find_combo_chain(pressed)
-		if _combo_chain.size() > 0:
-			_do_attack(_combo_chain[0])
-		else:
-			_do_attack(pressed)
+		if next_id == "":
+			return false
+		_do_attack(next_id)
+		return true
+	if lockout_timer <= 0.0 and c.can_act():
+		_start_chain(pressed)
+		return true
+	return false
+
+
+func _start_chain(pressed: String) -> void:
+	_combo_chain = _find_combo_chain(pressed)
+	if _combo_chain.size() > 0:
+		_do_attack(_combo_chain[0])
+	else:
+		_do_attack(pressed)
 
 
 func _can_cancel_with(new_attack_id: String) -> bool:

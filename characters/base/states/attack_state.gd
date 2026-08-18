@@ -59,7 +59,7 @@ func get_phase() -> Phase:
 
 
 func can_cancel() -> bool:
-	return _phase == Phase.ACTIVE or _phase == Phase.RECOVERY
+	return _phase == Phase.RECOVERY
 
 
 func exit() -> void:
