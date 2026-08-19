@@ -66,8 +66,19 @@ texture = ExtResource("1_sbxbw")
 expand_mode = 1
 stretch_mode = 6
 
-[node name="Logo" type="Sprite2D" parent="." unique_id=920322294]
-position = Vector2(579, 227)
+[node name="LogoContainer" type="VBoxContainer" parent="." unique_id=1759811735]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -190.0
+offset_top = 60.0
+offset_right = 190.0
+offset_bottom = 408.0
+grow_horizontal = 2
+
+[node name="Logo" type="Sprite2D" parent="LogoContainer" unique_id=1410535194]
+position = Vector2(190, 174)
 scale = Vector2(0.29115853, 0.29362726)
 texture = ExtResource("3_qxcnm")
 
@@ -158,5 +169,5 @@ grow_horizontal = 0
 grow_vertical = 0
 theme_override_fonts/font = ExtResource("4_gh16x")
 theme_override_font_sizes/font_size = 16
-text = "Version 0.0.1"
+text = "Version 0.0.0"
 label_settings = SubResource("LabelSettings_gh16x")

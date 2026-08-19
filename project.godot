@@ -11,9 +11,10 @@ config_version=5
 [application]
 
 config/name="UltimateWarriors2"
+config/version="1.0.0"
 run/main_scene="uid://f5dh3m0ifqjn"
 config/features=PackedStringArray("4.7", "GL Compatibility")
-config/icon="res://icon.svg"
+config/icon="uid://bcj1msh02ofco"
 
 [autoload]
 
@@ -23,6 +24,8 @@ TransitionManager="*res://ui/transitions/transition_manager.tscn"
 
 [display]
 
+window/size/viewport_width=1280
+window/size/viewport_height=720
 window/stretch/mode="canvas_items"
 
 [input]

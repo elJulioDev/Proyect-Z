@@ -1,6 +1,8 @@
 [gd_scene format=3 uid="uid://d0orsfnele3h"]
 
 [ext_resource type="Script" uid="uid://bq3c05jublnup" path="res://stages/base/base_stage.gd" id="1_ufi35"]
+[ext_resource type="PackedScene" uid="uid://cax3hud2va7m" path="res://ui/hud/hud.tscn" id="2_hud"]
+[ext_resource type="PackedScene" uid="uid://9puvlsc0lzx26" path="res://ui/debug_overlay/debug_overlay.tscn" id="3_debug"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lfwbe"]
 
@@ -42,3 +44,7 @@ position = Vector2(444, 380)
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=868683707]
 position_smoothing_enabled = true
+
+[node name="HUD" parent="." instance=ExtResource("2_hud")]
+
+[node name="DebugOverlay" parent="." instance=ExtResource("3_debug")]

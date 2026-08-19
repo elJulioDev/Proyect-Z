@@ -8,7 +8,7 @@ const CONTROLS_MENU_PATH = "res://ui/menus/settings_menu/controls_menu.tscn"
 var hover_player: AudioStreamPlayer
 var click_player: AudioStreamPlayer
 
-@onready var logo = $Logo
+@onready var logo = $LogoContainer/Logo
 @onready var buttons_container = $VBoxContainer
 
 var last_hover_time: int = 0
@@ -85,7 +85,7 @@ func _on_button_pressed():
 		last_click_time = current_time
 
 func _start_logo_animation():
-	# Toma la escala gigante (7.5) que le diste en el editor
+	# Escala base del logo (1.0 en el editor)
 	var base_scale = logo.scale 
 	var target_scale = base_scale * 1.04 # Crece un 4%
 	

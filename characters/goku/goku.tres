@@ -191,7 +191,7 @@ loop = false
 [sub_resource type="Resource" id="anim_light_1"]
 script = ExtResource("2_adata")
 frames = Array[Rect2]([Rect2(0, 368, 170, 92), Rect2(170, 368, 170, 92), Rect2(340, 368, 170, 92), Rect2(0, 368, 170, 92)])
-offsets = Array[Vector2]([Vector2(1, 0), Vector2(4, 1), Vector2(4, 1)])
+offsets = Array[Vector2]([Vector2(1, 0), Vector2(4, 1), Vector2(4, 1), Vector2(1, 0)])
 fps = 12.0
 loop = false
 
