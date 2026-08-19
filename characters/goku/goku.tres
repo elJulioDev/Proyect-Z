@@ -4,6 +4,7 @@
 [ext_resource type="Script" uid="uid://3txiyue5yqb4" path="res://core/anim_data.gd" id="2_adata"]
 [ext_resource type="Script" uid="uid://dho4t7hl5pwit" path="res://core/attack_data.gd" id="3_atkdata"]
 [ext_resource type="Texture2D" uid="uid://cegxpbm6fwa60" path="res://characters/goku/forms/spritesheet.png" id="4_sprite"]
+[ext_resource type="Texture2D" uid="uid://cpskulbkne3tk" path="res://characters/goku/icon.png" id="5_icon"]
 
 [sub_resource type="Resource" id="anim_aerial_hammer"]
 script = ExtResource("2_adata")
@@ -441,6 +442,7 @@ script = ExtResource("1_cdata")
 id = "goku"
 display_name = "Son Goku"
 sprite = ExtResource("4_sprite")
+icon = ExtResource("5_icon")
 stats = {
 "defense": 17.0,
 "life": 100.0,

@@ -12,11 +12,26 @@ class_name DiamondIcon
 	set(v):
 		fill_color = v
 		_sync_material()
+@export_range(0.0, 0.4) var fill_margin: float = 0.0:
+	set(v):
+		fill_margin = v
+		_sync_material()
 @export var border_color := Color.BLACK:
 	set(v):
 		border_color = v
 		_sync_material()
 @export var shadow_color := Color(0, 0, 0, 0.35)
+@export var flip_h: bool = false:
+	set(v):
+		flip_h = v
+		_sync_material()
+
+@export var portrait_texture: Texture2D:
+	set(v):
+		portrait_texture = v
+		_apply_texture()
+
+static var _blank_texture: ImageTexture
 
 @export_range(20.0, 500.0) var icon_width: float = 0.0:
 	set(v):
@@ -40,8 +55,12 @@ func _ready() -> void:
 		icon_width = size.x
 	if icon_height <= 0.0:
 		icon_height = size.y
+	var rect := get_node_or_null("Portrait") as TextureRect
+	if portrait_texture == null and rect and rect.texture:
+		portrait_texture = rect.texture
+	else:
+		_apply_texture()
 	_layout_portrait()
-	print("READY size:", size, " portrait:", get_node_or_null("Portrait").size if get_node_or_null("Portrait") else "null")
 
 func _process(_delta: float) -> void:
 	var rect := get_node_or_null("Portrait") as TextureRect
@@ -69,10 +88,26 @@ func _sync_material() -> void:
 	mat.set_shader_parameter("u_border_width", border_width / max(size.x, 1.0))
 	mat.set_shader_parameter("u_border_color", border_color)
 	mat.set_shader_parameter("u_fill_color", fill_color)
-	mat.set_shader_parameter("u_has_texture", rect.texture != null)
-	if rect.texture:
-		mat.set_shader_parameter("u_texture", rect.texture)
-		mat.set_shader_parameter("u_texture_size", rect.texture.get_size())
+	mat.set_shader_parameter("u_fill_margin", fill_margin)
+	mat.set_shader_parameter("u_flip_h", flip_h)
+	mat.set_shader_parameter("u_has_texture", portrait_texture != null)
+	if portrait_texture:
+		mat.set_shader_parameter("u_texture", portrait_texture)
+		mat.set_shader_parameter("u_texture_size", portrait_texture.get_size())
+
+func _apply_texture() -> void:
+	var rect := get_node_or_null("Portrait") as TextureRect
+	if not rect:
+		return
+	rect.texture = portrait_texture if portrait_texture else _get_blank_texture()
+	_sync_material()
+
+static func _get_blank_texture() -> ImageTexture:
+	if not _blank_texture:
+		var img := Image.create(1, 1, false, Image.FORMAT_RGBA8)
+		img.fill(Color(0, 0, 0, 0))
+		_blank_texture = ImageTexture.create_from_image(img)
+	return _blank_texture
 
 func _draw() -> void:
 	draw_colored_polygon(_diamond(size, shadow_offset), shadow_color)

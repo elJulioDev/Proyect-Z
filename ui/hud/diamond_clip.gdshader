@@ -7,6 +7,8 @@ uniform float u_border_width = 0.08;
 uniform vec4 u_border_color : source_color = vec4(0, 0, 0, 1);
 uniform vec4 u_fill_color : source_color = vec4(0.35, 0.2, 0.55, 1);
 uniform bool u_has_texture = false;
+uniform float u_fill_margin = 0.0;
+uniform bool u_flip_h = false;
 
 void fragment() {
 	vec2 p = UV - vec2(0.5);
@@ -24,7 +26,16 @@ void fragment() {
 		} else {
 			uv.y = (UV.y - 0.5) * (tex_ratio / rect_ratio) + 0.5;
 		}
-		col = texture(u_texture, uv);
+		vec2 centered = uv - vec2(0.5);
+		centered /= max(1.0 - u_fill_margin, 0.001);
+		uv = centered + vec2(0.5);
+		if (u_flip_h) {
+			uv.x = 1.0 - uv.x;
+		}
+		if (uv.x >= 0.0 && uv.x <= 1.0 && uv.y >= 0.0 && uv.y <= 1.0) {
+			vec4 tex_col = texture(u_texture, uv);
+			col = mix(u_fill_color, tex_col, tex_col.a);
+		}
 	}
 	if (d > 0.5 - u_border_width) {
 		col = u_border_color;

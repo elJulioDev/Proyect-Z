@@ -6,6 +6,7 @@ class_name CharacterData extends Resource
 @export var display_name: String = ""
 
 @export var sprite: Texture2D = null
+@export var icon: Texture2D = null
 
 ## Si se define, las animaciones se cargan desde carpetas
 ## (<sprite_dir>/<anim>/<anim>_000.png...); si no, se usan `sprite` + AnimData.frames.

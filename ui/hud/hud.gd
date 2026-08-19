@@ -9,6 +9,8 @@ extends CanvasLayer
 @onready var p2_name: Label = $Root/Margins/Viewport/Names/Content/P2Name
 @onready var p1_level: RichTextLabel = $Root/Margins/Viewport/Levels/Content/P1Level
 @onready var p2_level: RichTextLabel = $Root/Margins/Viewport/Levels/Content/P2Level
+@onready var p1_portrait: DiamondIcon = $Root/Margins/Viewport/Portraits/Content/P1Portrait
+@onready var p2_portrait: DiamondIcon = $Root/Margins/Viewport/Portraits/Content/P2Portrait
 
 
 func _ready() -> void:
@@ -18,14 +20,16 @@ func _ready() -> void:
 	await get_tree().process_frame
 	var stage := get_parent() as BaseStage
 	if stage and stage.player1:
-		_wire(stage.player1, p1_health, p1_name, p1_energy, p1_level, false)
+		_wire(stage.player1, p1_health, p1_name, p1_energy, p1_level, p1_portrait, false)
 	if stage and stage.player2:
-		_wire(stage.player2, p2_health, p2_name, p2_energy, p2_level, true)
+		_wire(stage.player2, p2_health, p2_name, p2_energy, p2_level, p2_portrait, true)
 
 
-func _wire(fighter: BaseCharacter, bar: SlantBar, name_label: Label, energy_bar: SlantBar, level_label: RichTextLabel, inverted: bool) -> void:
+func _wire(fighter: BaseCharacter, bar: SlantBar, name_label: Label, energy_bar: SlantBar, level_label: RichTextLabel, portrait: DiamondIcon, inverted: bool) -> void:
 	if fighter.data:
 		name_label.text = fighter.data.display_name
+		if fighter.data.icon:
+			portrait.portrait_texture = fighter.data.icon
 	energy_bar.value = fighter.energy.current_energy / fighter.energy.MAX_ENERGY
 	level_label.text = ("[font_size=35]%d[/font_size] lv." if inverted else "lv. [font_size=35]%d[/font_size]") % fighter.energy.level()
 	fighter.health.health_changed.connect(func(current: float, max_hp: float) -> void:
