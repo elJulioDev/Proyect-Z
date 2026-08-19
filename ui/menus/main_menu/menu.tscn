@@ -43,9 +43,6 @@ corner_radius_bottom_right = 15
 corner_radius_bottom_left = 15
 shadow_size = 5
 
-[sub_resource type="LabelSettings" id="LabelSettings_gh16x"]
-shadow_color = Color(0, 0, 0, 0.5647059)
-
 [node name="Menu" type="Control" unique_id=1519864855]
 layout_mode = 3
 anchors_preset = 15
@@ -91,7 +88,7 @@ anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
 offset_left = -124.875
-offset_top = -232.0
+offset_top = -271.0
 offset_right = 124.875
 grow_horizontal = 2
 grow_vertical = 0
@@ -110,6 +107,20 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_sbxbw")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_gh16x")
 theme_override_styles/hover = SubResource("StyleBoxFlat_yuan1")
 text = "Jugar"
+
+[node name="online" type="Button" parent="VBoxContainer" unique_id=1065556220]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 5
+theme_override_fonts/font = ExtResource("3_yuan1")
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_sbxbw")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_gh16x")
+theme_override_styles/hover = SubResource("StyleBoxFlat_yuan1")
+text = "Multijugador"
 
 [node name="credits" type="Button" parent="VBoxContainer" unique_id=644663086]
 layout_mode = 2
@@ -161,13 +172,15 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -124.0
-offset_top = -37.0
+offset_left = -169.0
+offset_top = -46.0
 offset_right = -22.0
 offset_bottom = -14.0
 grow_horizontal = 0
 grow_vertical = 0
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.6431373)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
 theme_override_fonts/font = ExtResource("4_gh16x")
-theme_override_font_sizes/font_size = 16
+theme_override_font_sizes/font_size = 20
 text = "Version 0.0.0"
-label_settings = SubResource("LabelSettings_gh16x")

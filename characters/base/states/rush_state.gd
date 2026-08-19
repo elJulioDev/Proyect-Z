@@ -4,7 +4,7 @@ class_name RushState extends BaseState
 
 const PREP_HEIGHT := 150.0
 const PREP_RISE_SPEED := 500.0
-const FLY_SPEED := 1000.0
+const FLY_SPEED := 1500.0
 
 var _phase := 0
 var _timer := 0.0
@@ -85,6 +85,9 @@ func _phase_start(delta: float) -> void:
 
 func _phase_fly(_delta: float) -> void:
 	var c := character
+	if c.controller and not c.controller.special_3_held:
+		_cancel_rush()
+		return
 	if c.controller and c.controller.opponent:
 		_target_pos = c.controller.opponent.global_position
 
@@ -121,6 +124,10 @@ func _do_hit() -> void:
 	if c.controller and c.controller.opponent:
 		var kb_dir := 1.0 if c.facing_right else -1.0
 		c.controller.opponent.receive_hit(12.0, Vector2(520.0 * kb_dir, -160.0), 0.25, 0.0, 0.0, false)
+
+
+func _cancel_rush() -> void:
+	_end_rush()
 
 
 func _end_rush() -> void:

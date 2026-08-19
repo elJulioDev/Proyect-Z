@@ -10,27 +10,33 @@ var click_player: AudioStreamPlayer
 
 var _listening := false
 var _listen_action := ""
-var _key_labels: Dictionary = {}   # action → Label de tecla
-var _row_buttons: Dictionary = {}  # action → Button de reasignar
-
-
-func _ready() -> void:
-	_setup_audio()
-	_build_ui()
+var _key_labels: Dictionary = {}
+var _row_buttons: Dictionary = {}
+var _kb_active := false
+var _btn_data: Dictionary = {}
+var _all_buttons: Array = []
+var _hovered_btn: Button = null
 
 
 func _input(event: InputEvent) -> void:
-	if not _listening:
-		return
-	if not (event is InputEventKey or event is InputEventJoypadButton or event is InputEventJoypadMotion):
-		return
-	if event is InputEventKey and not event.pressed:
-		return
-	if event is InputEventJoypadButton and not event.pressed:
-		return
-	if event is InputEventJoypadMotion and absf(event.axis_value) < 0.5:
-		return
-	if event is InputEventKey and event.keycode == KEY_ESCAPE:
+	if event is InputEventKey and event.pressed:
+		if _listening:
+			_handle_remap(event)
+			return
+		if _is_nav_key(event) and not _kb_active:
+			_activate_kb_mode()
+	elif event is InputEventMouseMotion:
+		if _kb_active:
+			_activate_mouse_mode()
+
+
+func _is_nav_key(event: InputEventKey) -> bool:
+	var kc := event.keycode if event.keycode else event.physical_keycode
+	return kc in [KEY_UP, KEY_DOWN, KEY_W, KEY_S]
+
+
+func _handle_remap(event: InputEventKey) -> void:
+	if event.keycode == KEY_ESCAPE:
 		_cancel_listen()
 		return
 	InputManager.remap_action(_listen_action, event)
@@ -40,10 +46,67 @@ func _input(event: InputEvent) -> void:
 	click_player.play()
 
 
+func _ready() -> void:
+	_setup_audio()
+	_build_ui()
+
+
+func _activate_kb_mode() -> void:
+	_kb_active = true
+	if _hovered_btn and is_instance_valid(_hovered_btn):
+		_hovered_btn.visible = false
+		_hovered_btn.visible = true
+	_grab_first_button()
+	get_viewport().set_input_as_handled()
+
+
+func _activate_mouse_mode() -> void:
+	_kb_active = false
+	get_viewport().gui_release_focus()
+	for btn in _all_buttons:
+		if btn.name in _btn_data:
+			btn.add_theme_stylebox_override("normal", _btn_data[btn.name].normal)
+			btn.add_theme_stylebox_override("hover", _btn_data[btn.name].hover)
+
+
+func _grab_first_button() -> void:
+	var vbox := get_node_or_null("PanelContainer/VBoxContainer")
+	if vbox == null:
+		return
+	for child in vbox.get_children():
+		if child is Button and child.visible:
+			child.grab_focus()
+			return
+
+
+func _on_focus_entered(button: Button) -> void:
+	if not _kb_active:
+		return
+	hover_player.play()
+	if button.name in _btn_data:
+		button.add_theme_stylebox_override("normal", _btn_data[button.name].kb_hover)
+
+
+func _on_focus_exited(button: Button) -> void:
+	if button.name in _btn_data:
+		button.add_theme_stylebox_override("normal", _btn_data[button.name].normal)
+
+
+func _on_mouse_entered(button: Button) -> void:
+	_hovered_btn = button
+	if _kb_active:
+		get_viewport().gui_release_focus()
+		return
+	hover_player.play()
+
+
+func _on_button_pressed() -> void:
+	click_player.play()
+
+
 # ─── Construcción ───────────────────────────────────────────────────────────
 
 func _build_ui() -> void:
-	# Fondo semi-transparente
 	var bg := ColorRect.new()
 	bg.color = Color(0, 0, 0, 0.85)
 	bg.set_anchors_preset(Control.PRESET_FULL_RECT)
@@ -51,7 +114,6 @@ func _build_ui() -> void:
 	add_child(bg)
 	move_child(bg, 0)
 
-	# Panel central
 	var panel := PanelContainer.new()
 	panel.custom_minimum_size = Vector2(520, 480)
 	panel.set_anchors_preset(Control.PRESET_CENTER)
@@ -78,7 +140,6 @@ func _build_ui() -> void:
 	vbox.add_theme_constant_override("separation", 6)
 	panel.add_child(vbox)
 
-	# Título
 	var title := Label.new()
 	title.text = "CONTROLES - JUGADOR 1"
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -90,7 +151,6 @@ func _build_ui() -> void:
 	sep.add_theme_constant_override("separation", 8)
 	vbox.add_child(sep)
 
-	# Scroll con filas
 	var scroll := ScrollContainer.new()
 	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	scroll.custom_minimum_size.y = 340
@@ -105,7 +165,6 @@ func _build_ui() -> void:
 		var row := _make_row(action)
 		rows.add_child(row)
 
-	# Prompt de escucha
 	var prompt := Label.new()
 	prompt.name = "PromptLabel"
 	prompt.text = "Presiona una tecla o botón..."
@@ -115,7 +174,6 @@ func _build_ui() -> void:
 	prompt.visible = false
 	vbox.add_child(prompt)
 
-	# Botones inferiores
 	var btn_row := HBoxContainer.new()
 	btn_row.alignment = BoxContainer.ALIGNMENT_CENTER
 	btn_row.add_theme_constant_override("separation", 16)
@@ -154,6 +212,7 @@ func _make_row(action: String) -> HBoxContainer:
 	btn.custom_minimum_size = Vector2(80, 0)
 	btn.add_theme_font_size_override("font_size", 13)
 	btn.pressed.connect(_on_remap_pressed.bind(action))
+	_setup_button_visual(btn)
 	row.add_child(btn)
 	_row_buttons[action] = btn
 
@@ -165,12 +224,28 @@ func _make_button(text: String) -> Button:
 	btn.text = text
 	btn.custom_minimum_size = Vector2(140, 36)
 	btn.add_theme_font_size_override("font_size", 16)
-	btn.mouse_entered.connect(_on_hover)
+	_setup_button_visual(btn)
 	return btn
 
 
-func _on_hover() -> void:
-	hover_player.play()
+func _setup_button_visual(button: Button) -> void:
+	var normal: StyleBox = button.get_theme_stylebox("normal").duplicate()
+	var hover: StyleBox = button.get_theme_stylebox("hover").duplicate()
+	if hover is StyleBoxFlat and normal is StyleBoxFlat:
+		hover.content_margin_top = normal.content_margin_top
+		hover.content_margin_bottom = normal.content_margin_bottom
+		hover.content_margin_left = normal.content_margin_left
+		hover.content_margin_right = normal.content_margin_right
+	button.add_theme_stylebox_override("hover", hover)
+	var focus := StyleBoxFlat.new()
+	focus.bg_color = Color.TRANSPARENT
+	button.add_theme_stylebox_override("focus", focus)
+	_btn_data[button.name] = {"normal": normal, "hover": hover, "kb_hover": hover}
+	_all_buttons.append(button)
+	button.focus_entered.connect(_on_focus_entered.bind(button))
+	button.focus_exited.connect(_on_focus_exited.bind(button))
+	button.mouse_entered.connect(_on_mouse_entered.bind(button))
+	button.pressed.connect(_on_button_pressed)
 
 
 func _update_key_label(action: String) -> void:
@@ -223,10 +298,12 @@ func _on_back() -> void:
 
 func _setup_audio() -> void:
 	hover_player = AudioStreamPlayer.new()
-	hover_player.stream = load(HOVER_SFX_PATH)
+	hover_player.stream = preload(HOVER_SFX_PATH)
+	hover_player.volume_db = -10
 	hover_player.max_polyphony = 4
 	add_child(hover_player)
 
 	click_player = AudioStreamPlayer.new()
-	click_player.stream = load(CLICK_SFX_PATH)
+	click_player.stream = preload(CLICK_SFX_PATH)
+	click_player.volume_db = -10
 	add_child(click_player)
