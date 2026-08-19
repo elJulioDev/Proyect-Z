@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://egky2rorer21" path="res://characters/base/combat_system.gd" id="4_combat"]
 [ext_resource type="Script" uid="uid://cjtrrslysdsjg" path="res://characters/base/health_system.gd" id="5_health"]
 [ext_resource type="Script" uid="uid://4ufb2bnmtdxf" path="res://core/mechanic_system.gd" id="6_mech"]
+[ext_resource type="Script" uid="uid://b54gkma52kym2" path="res://characters/base/energy_system.gd" id="23_energy"]
 [ext_resource type="Texture2D" uid="uid://cokslyrhc56k4" path="res://assets/vfx/shadow.png" id="7_shadow"]
 [ext_resource type="Script" uid="uid://byfw7va54andk" path="res://characters/base/states/locomotion_state.gd" id="8_st_loc"]
 [ext_resource type="Script" uid="uid://d0nh2wxhj2rcg" path="res://characters/base/states/jump_state.gd" id="9_st_jump"]
@@ -109,6 +110,9 @@ script = ExtResource("4_combat")
 
 [node name="HealthSystem" type="Node" parent="." unique_id=1849277534]
 script = ExtResource("5_health")
+
+[node name="EnergySystem" type="Node" parent="."]
+script = ExtResource("23_energy")
 
 [node name="MechanicSystem" type="Node" parent="." unique_id=922034658]
 script = ExtResource("6_mech")

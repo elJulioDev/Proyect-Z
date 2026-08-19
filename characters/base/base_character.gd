@@ -26,6 +26,7 @@ var air_dashes_left := AIR_DASH_LIMIT
 @onready var state_machine: StateMachine = $StateMachine
 @onready var combat: CombatSystem = $CombatSystem
 @onready var health: HealthSystem = $HealthSystem
+@onready var energy: EnergySystem = $EnergySystem
 @onready var mechanics: MechanicSystem = $MechanicSystem
 
 var base_shadow_scale := Vector2(2.8, 1.5)
@@ -46,6 +47,7 @@ func _ready() -> void:
 	if data:
 		animator.setup(data)
 		health.setup(data)
+		energy.setup(data)
 		mechanics.rebuild()
 		state_machine.change("locomotion")
 

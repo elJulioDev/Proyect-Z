@@ -1,6 +1,10 @@
 class_name ChargeState extends BaseState
 ## Carga de energía: secuencia de 4 fases.
 ## Prep → Aura start → Loop (mientras sostenga tecla) → End → salir.
+## La energía se acumula solo en la fase LOOP (a partir del 4º frame), nunca
+## al pulsar el botón.
+
+const CHARGE_RATE := 50.0
 
 enum Phase { PREP, START, LOOP, END, DONE }
 
@@ -14,7 +18,7 @@ func enter(_args: Dictionary = {}) -> void:
 	character.animator.play_anim("ki_charge_prep")
 
 
-func physics(_delta: float) -> void:
+func physics(delta: float) -> void:
 	match _phase:
 		Phase.PREP:
 			if not character.animator.is_playing():
@@ -26,7 +30,8 @@ func physics(_delta: float) -> void:
 				_phase = Phase.LOOP
 				character.animator.play_anim("ki_charge_loop")
 		Phase.LOOP:
-			if not character.controller.charge_held:
+			character.energy.charge(CHARGE_RATE * delta)
+			if not character.energy.can_charge() or not character.controller.charge_held:
 				_phase = Phase.END
 				character.animator.play_anim("ki_charge_end")
 		Phase.END:
