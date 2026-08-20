@@ -57,7 +57,8 @@ func _on_fight_pressed() -> void:
 		return
 	GameManager.pending_p1 = load(GameManager.ROSTER[p1_selection]["scene"])
 	GameManager.pending_p2 = load(GameManager.ROSTER[p2_selection]["scene"])
-	get_tree().change_scene_to_file(STAGE_SELECT_PATH)
+	TransitionManager.transition(0.5, 0.3, 0.5, func():
+		get_tree().change_scene_to_file(STAGE_SELECT_PATH))
 
 
 func _on_back_pressed() -> void:

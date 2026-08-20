@@ -1,14 +1,14 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://fa3qs5jl5e44"]
 
-[ext_resource type="Script" path="res://ui/menus/character_select/character_select.gd" id="1_script"]
-[ext_resource type="Texture2D" uid="uid://c4v0unakgbj51" path="res://ui/menus/main_menu/textures/main.png" id="2_bg"]
+[ext_resource type="Script" uid="uid://bjgrkhp1tsrni" path="res://ui/menus/character_select/character_select.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://b7vsxlqdf4pkl" path="res://ui/menus/selection/textures/selection.png" id="2_q443s"]
 [ext_resource type="FontFile" uid="uid://de8c3i7kbfoh4" path="res://assets/fonts/Aharoni Bold.ttf" id="3_font"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_normal"]
-content_margin_top = 6.0
-content_margin_bottom = 6.0
 content_margin_left = 10.0
+content_margin_top = 6.0
 content_margin_right = 10.0
+content_margin_bottom = 6.0
 bg_color = Color(0, 0, 0, 0.8235294)
 corner_radius_top_left = 15
 corner_radius_top_right = 15
@@ -30,7 +30,7 @@ corner_radius_bottom_right = 15
 corner_radius_bottom_left = 15
 shadow_size = 5
 
-[node name="CharacterSelect" type="Control"]
+[node name="CharacterSelect" type="Control" unique_id=685817028]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -39,33 +39,33 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_script")
 
-[node name="Background" type="TextureRect" parent="."]
+[node name="Background" type="TextureRect" parent="." unique_id=1261201825]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("2_bg")
+texture = ExtResource("2_q443s")
 expand_mode = 1
 stretch_mode = 6
 
-[node name="Title" type="Label" parent="."]
+[node name="Title" type="Label" parent="." unique_id=1782308220]
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
 offset_top = 30.0
 offset_bottom = 80.0
 grow_horizontal = 2
-theme_override_fonts/font = ExtResource("3_font")
-theme_override_font_sizes/font_size = 48
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 6
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 48
 text = "SELECCIÓN DE PERSONAJES"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Center" type="CenterContainer" parent="."]
+[node name="Center" type="CenterContainer" parent="." unique_id=746863091]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -75,49 +75,47 @@ offset_bottom = -90.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Players" type="HBoxContainer" parent="Center"]
+[node name="Players" type="HBoxContainer" parent="Center" unique_id=1876749593]
 layout_mode = 2
 theme_override_constants/separation = 80
 
-[node name="P1Panel" type="VBoxContainer" parent="Center/Players"]
+[node name="P1Panel" type="VBoxContainer" parent="Center/Players" unique_id=1260185293]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="P1Label" type="Label" parent="Center/Players/P1Panel"]
+[node name="P1Label" type="Label" parent="Center/Players/P1Panel" unique_id=240225578]
 layout_mode = 2
-theme_override_fonts/font = ExtResource("3_font")
-theme_override_font_sizes/font_size = 32
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 5
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 32
 text = "JUGADOR 1"
 horizontal_alignment = 1
 
-[node name="P1Grid" type="GridContainer" parent="Center/Players/P1Panel"]
+[node name="P1Grid" type="GridContainer" parent="Center/Players/P1Panel" unique_id=138554457]
 layout_mode = 2
-columns = 1
 theme_override_constants/h_separation = 10
 theme_override_constants/v_separation = 10
 
-[node name="P2Panel" type="VBoxContainer" parent="Center/Players"]
+[node name="P2Panel" type="VBoxContainer" parent="Center/Players" unique_id=413251816]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="P2Label" type="Label" parent="Center/Players/P2Panel"]
+[node name="P2Label" type="Label" parent="Center/Players/P2Panel" unique_id=494175048]
 layout_mode = 2
-theme_override_fonts/font = ExtResource("3_font")
-theme_override_font_sizes/font_size = 32
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 5
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 32
 text = "JUGADOR 2"
 horizontal_alignment = 1
 
-[node name="P2Grid" type="GridContainer" parent="Center/Players/P2Panel"]
+[node name="P2Grid" type="GridContainer" parent="Center/Players/P2Panel" unique_id=995939255]
 layout_mode = 2
-columns = 1
 theme_override_constants/h_separation = 10
 theme_override_constants/v_separation = 10
 
-[node name="BottomBar" type="HBoxContainer" parent="."]
+[node name="BottomBar" type="HBoxContainer" parent="." unique_id=1228623393]
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
@@ -132,22 +130,23 @@ grow_horizontal = 2
 grow_vertical = 0
 theme_override_constants/separation = 40
 
-[node name="BackButton" type="Button" parent="BottomBar"]
+[node name="BackButton" type="Button" parent="BottomBar" unique_id=625648716]
 custom_minimum_size = Vector2(180, 55)
 layout_mode = 2
 theme_override_fonts/font = ExtResource("3_font")
 theme_override_font_sizes/font_size = 24
 theme_override_styles/normal = SubResource("StyleBoxFlat_btn_normal")
-theme_override_styles/hover = SubResource("StyleBoxFlat_btn_hover")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_hover")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn_hover")
 text = "VOLVER"
 
-[node name="FightButton" type="Button" parent="BottomBar"]
+[node name="FightButton" type="Button" parent="BottomBar" unique_id=1103147364]
 custom_minimum_size = Vector2(180, 55)
 layout_mode = 2
 theme_override_fonts/font = ExtResource("3_font")
 theme_override_font_sizes/font_size = 24
 theme_override_styles/normal = SubResource("StyleBoxFlat_btn_normal")
-theme_override_styles/hover = SubResource("StyleBoxFlat_btn_hover")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_hover")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn_hover")
+disabled = true
 text = "COMBATIR"
