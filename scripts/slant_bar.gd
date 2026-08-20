@@ -9,6 +9,8 @@ class_name SlantBar
 @export var chip_color := Color(0.65, 0.85, 1.0, 0.7)
 @export var fill_base_color := Color(1.0, 0.5, 0.1)
 @export var fill_tip_color := Color(1.0, 0.5, 0.1)
+## Velocidad del flujo del degradado tipo barra de carga (0 = estático).
+@export_range(0.0, 10.0) var anim_speed: float = 1.5
 @export var border_color := Color.BLACK
 @export var shadow_offset := Vector2(3, 3)
 
@@ -46,6 +48,8 @@ func _process(delta: float) -> void:
 		_damage_timer -= delta
 		if _damage_timer <= 0.0:
 			_start_chip_animation()
+	if anim_speed > 0.0:
+		queue_redraw()
 
 func apply_damage(target_val: float) -> void:
 	value = target_val
@@ -63,6 +67,7 @@ func _ready() -> void:
 		bar_width = size.x
 	if bar_height <= 0.0:
 		bar_height = size.y
+	texture_repeat = CanvasItem.TEXTURE_REPEAT_ENABLED
 
 func _draw() -> void:
 	_poly(size.x, Color(0, 0, 0, 0.35), shadow_offset)
@@ -108,19 +113,25 @@ func _gradient_texture() -> GradientTexture2D:
 		_gradient_tex.gradient = Gradient.new()
 		_gradient_tex.fill_from = Vector2(0, 0)
 		_gradient_tex.fill_to = Vector2(1, 0)
-	_gradient_tex.gradient.set_color(0, fill_base_color)
-	_gradient_tex.gradient.set_color(1, fill_tip_color)
+	var g = _gradient_tex.gradient
+	g.offsets = PackedFloat32Array([0.0, 0.5, 1.0])
+	g.set_color(0, fill_base_color)
+	g.set_color(1, fill_tip_color)
+	g.set_color(2, fill_base_color)
 	return _gradient_tex
 
 func _draw_gradient_fill(points: PackedVector2Array) -> void:
 	if size.x <= 0.0:
 		return
+	# Sin fposmod por vértice: el wrap lo hace la GPU por fragmento,
+	# evita el seam que interpolaba mal dentro del quad/segmento.
+	var shift: float = fmod(float(Time.get_ticks_msec()) * 0.001 * anim_speed, 1.0)
+	if flip:
+		shift = -shift
 	var uvs := PackedVector2Array()
 	var colors := PackedColorArray()
 	for p in points:
-		var ux := p.x / size.x
-		if flip:
-			ux = 1.0 - ux
+		var ux: float = p.x / size.x + shift
 		uvs.append(Vector2(ux, 0.5))
 		colors.append(Color.WHITE)
 	draw_polygon(points, colors, uvs, _gradient_texture())
