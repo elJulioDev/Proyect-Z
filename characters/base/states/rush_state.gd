@@ -5,6 +5,7 @@ class_name RushState extends BaseState
 const PREP_HEIGHT := 150.0
 const PREP_RISE_SPEED := 500.0
 const FLY_SPEED := 1500.0
+const ENERGY_DRAIN := 20.0
 
 var _phase := 0
 var _timer := 0.0
@@ -83,9 +84,13 @@ func _phase_start(delta: float) -> void:
 		hb.monitoring = true
 
 
-func _phase_fly(_delta: float) -> void:
+func _phase_fly(delta: float) -> void:
 	var c := character
 	if c.controller and not c.controller.special_3_held:
+		_cancel_rush()
+		return
+	c.energy.spend(ENERGY_DRAIN * delta)
+	if c.energy.current_energy <= 0.0:
 		_cancel_rush()
 		return
 	if c.controller and c.controller.opponent:

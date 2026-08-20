@@ -30,6 +30,11 @@ func charge(amount: float) -> void:
 	energy_changed.emit(current_energy, MAX_ENERGY)
 
 
+func spend(amount: float) -> void:
+	current_energy = maxf(0.0, current_energy - amount)
+	energy_changed.emit(current_energy, MAX_ENERGY)
+
+
 func can_charge() -> bool:
 	return current_energy < MAX_ENERGY
 

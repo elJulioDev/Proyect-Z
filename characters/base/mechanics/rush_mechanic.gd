@@ -14,6 +14,8 @@ func _process(delta: float) -> void:
 func execute() -> bool:
 	if _cooldown > 0.0 or character.state_id() not in ["locomotion", "air"]:
 		return false
+	if character.energy.current_energy <= 0.0:
+		return false
 	_cooldown = COOLDOWN
 	character.force_state("rush")
 	return true
