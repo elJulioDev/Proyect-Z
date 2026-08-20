@@ -17,8 +17,7 @@ func physics(_delta: float) -> void:
 	if axis != 0.0:
 		c.state_machine.change("moving")
 		return
-	var speed := c.get_speed()
-	c.velocity.x = move_toward(c.velocity.x, 0.0, speed)
+	c.velocity.x = 0.0
 	c.animator.play_anim("idle")
 	if c.controller.block_held:
 		c.state_machine.change("block")

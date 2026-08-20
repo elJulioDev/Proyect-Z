@@ -112,11 +112,10 @@ func _do_fight() -> void:
 	# Announcer
 	var announcer: CanvasLayer = AnnouncerScene.instantiate()
 	stage.add_child(announcer)
-	announcer.show_text("ROUND 1")
-	await get_tree().create_timer(1.5).timeout
-	announcer.show_text("FIGHT!")
-	await get_tree().create_timer(0.8).timeout
-	announcer.label.modulate.a = 0.0
+	announcer.show_text("ROUND 1", 1.35, 0.3)
+	await get_tree().create_timer(1.8).timeout
+	announcer.show_text("FIGHT!", 0.6, 0.3)
+	await get_tree().create_timer(0.75).timeout
 	_fight_manager.start_round()
 
 

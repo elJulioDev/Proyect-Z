@@ -42,6 +42,7 @@ class_name SlantBar
 var _tween_chip: Tween = null
 var _damage_timer: float = 0.0
 var _pending_chip_target: float = 1.0
+var _redraw_accum := 0.0
 
 func _process(delta: float) -> void:
 	if _damage_timer > 0.0:
@@ -49,7 +50,12 @@ func _process(delta: float) -> void:
 		if _damage_timer <= 0.0:
 			_start_chip_animation()
 	if anim_speed > 0.0:
-		queue_redraw()
+		# El flujo usa tiempo de pared (Time.get_ticks_msec): redibujar a 60 Hz
+		# es indistinguible de 1000 Hz pero evita redraws desperdiciados.
+		_redraw_accum += delta
+		if _redraw_accum >= 1.0 / 60.0:
+			_redraw_accum = 0.0
+			queue_redraw()
 
 func apply_damage(target_val: float) -> void:
 	value = target_val
@@ -115,18 +121,27 @@ func _poly(w: float, col: Color, off: Vector2) -> void:
 	draw_colored_polygon(pts, col)
 
 var _gradient_tex: GradientTexture2D = null
+var _grad_base := Color.TRANSPARENT
+var _grad_tip := Color.TRANSPARENT
 
 func _gradient_texture() -> GradientTexture2D:
 	if _gradient_tex == null:
 		_gradient_tex = GradientTexture2D.new()
 		_gradient_tex.gradient = Gradient.new()
+		_gradient_tex.gradient.offsets = PackedFloat32Array([0.0, 0.5, 1.0])
 		_gradient_tex.fill_from = Vector2(0, 0)
 		_gradient_tex.fill_to = Vector2(1, 0)
-	var g = _gradient_tex.gradient
-	g.offsets = PackedFloat32Array([0.0, 0.5, 1.0])
-	g.set_color(0, fill_base_color)
-	g.set_color(1, fill_tip_color)
-	g.set_color(2, fill_base_color)
+		_grad_base = fill_base_color
+		_grad_tip = fill_tip_color
+		_gradient_tex.gradient.set_color(0, _grad_base)
+		_gradient_tex.gradient.set_color(1, _grad_tip)
+		_gradient_tex.gradient.set_color(2, _grad_base)
+	elif _grad_base != fill_base_color or _grad_tip != fill_tip_color:
+		_grad_base = fill_base_color
+		_grad_tip = fill_tip_color
+		_gradient_tex.gradient.set_color(0, _grad_base)
+		_gradient_tex.gradient.set_color(1, _grad_tip)
+		_gradient_tex.gradient.set_color(2, _grad_base)
 	return _gradient_tex
 
 func _draw_gradient_fill(points: PackedVector2Array) -> void:

@@ -50,41 +50,35 @@ static var _blank_texture: ImageTexture
 			offset_bottom = offset_top + icon_height
 		_layout_portrait()
 
+var _portrait: TextureRect = null
+
 func _ready() -> void:
+	_portrait = get_node_or_null("Portrait") as TextureRect
 	if icon_width <= 0.0:
 		icon_width = size.x
 	if icon_height <= 0.0:
 		icon_height = size.y
-	var rect := get_node_or_null("Portrait") as TextureRect
-	if portrait_texture == null and rect and rect.texture:
-		portrait_texture = rect.texture
+	if portrait_texture == null and _portrait and _portrait.texture:
+		portrait_texture = _portrait.texture
 	else:
 		_apply_texture()
 	_layout_portrait()
 
-func _process(_delta: float) -> void:
-	var rect := get_node_or_null("Portrait") as TextureRect
-	if rect:
-		rect.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	_sync_material()
-
 func _layout_portrait() -> void:
-	var rect := get_node_or_null("Portrait") as TextureRect
-	if rect:
-		rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
-		rect.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-		rect.offset_left = 0.0
-		rect.offset_top = 0.0
-		rect.offset_right = size.x
-		rect.offset_bottom = size.y
+	if _portrait:
+		_portrait.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+		_portrait.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		_portrait.offset_left = 0.0
+		_portrait.offset_top = 0.0
+		_portrait.offset_right = size.x
+		_portrait.offset_bottom = size.y
 		_sync_material()
 
 func _sync_material() -> void:
-	var rect := get_node_or_null("Portrait") as TextureRect
-	if not rect or not rect.material is ShaderMaterial:
+	if not _portrait or not _portrait.material is ShaderMaterial:
 		return
-	var mat := rect.material as ShaderMaterial
-	mat.set_shader_parameter("u_node_size", rect.size)
+	var mat := _portrait.material as ShaderMaterial
+	mat.set_shader_parameter("u_node_size", _portrait.size)
 	mat.set_shader_parameter("u_border_width", border_width / max(size.x, 1.0))
 	mat.set_shader_parameter("u_border_color", border_color)
 	mat.set_shader_parameter("u_fill_color", fill_color)
@@ -96,10 +90,9 @@ func _sync_material() -> void:
 		mat.set_shader_parameter("u_texture_size", portrait_texture.get_size())
 
 func _apply_texture() -> void:
-	var rect := get_node_or_null("Portrait") as TextureRect
-	if not rect:
+	if not _portrait:
 		return
-	rect.texture = portrait_texture if portrait_texture else _get_blank_texture()
+	_portrait.texture = portrait_texture if portrait_texture else _get_blank_texture()
 	_sync_material()
 
 static func _get_blank_texture() -> ImageTexture:

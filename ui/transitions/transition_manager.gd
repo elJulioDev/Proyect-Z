@@ -7,6 +7,8 @@ extends CanvasLayer
 
 @export var base_color := Color.BLACK
 
+var _tw: Tween = null
+
 
 func _ready() -> void:
 	layer = 100
@@ -23,11 +25,17 @@ func _set_factor(value: float) -> void:
 	var mat := color_rect.material as ShaderMaterial
 	mat.set_shader_parameter("animation_progress", value)
 
+func _new_tween() -> Tween:
+	if _tw and _tw.is_valid():
+		_tw.kill()
+	_tw = create_tween()
+	return _tw
+
 
 func fade_out(duration: float = 0.8, callback: Callable = Callable()) -> void:
 	color_rect.visible = true
 	_set_factor(0.0)
-	var tw := create_tween()
+	var tw := _new_tween()
 	tw.set_trans(Tween.TRANS_CUBIC)
 	tw.set_ease(Tween.EASE_IN)
 	tw.tween_method(_set_factor, 0.0, 1.0, duration)
@@ -39,7 +47,7 @@ func fade_out(duration: float = 0.8, callback: Callable = Callable()) -> void:
 func fade_in(duration: float = 0.8, callback: Callable = Callable()) -> void:
 	color_rect.visible = true
 	_set_factor(1.0)
-	var tw := create_tween()
+	var tw := _new_tween()
 	tw.set_trans(Tween.TRANS_CUBIC)
 	tw.set_ease(Tween.EASE_OUT)
 	tw.tween_method(_set_factor, 1.0, 0.0, duration)
