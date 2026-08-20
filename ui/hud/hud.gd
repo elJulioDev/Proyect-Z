@@ -33,11 +33,14 @@ func _wire(fighter: BaseCharacter, bar: SlantBar, name_label: Label, energy_bar:
 	energy_bar.value = fighter.energy.current_energy / fighter.energy.MAX_ENERGY
 	level_label.text = ("[font_size=35]%d[/font_size] lv." if inverted else "lv. [font_size=35]%d[/font_size]") % fighter.energy.level()
 	fighter.health.health_changed.connect(func(current: float, max_hp: float) -> void:
-		bar.chip = bar.value
-		bar.value = current / max_hp
+		bar.apply_damage(current / max_hp)
 	)
 	fighter.energy.energy_changed.connect(func(current: float, max_energy: float) -> void:
-		energy_bar.value = current / max_energy
+		var target := current / max_energy
+		if target < energy_bar.value:
+			energy_bar.apply_damage(target)
+		else:
+			energy_bar.value = target
 		var lvl := fighter.energy.level()
 		level_label.text = ("[font_size=35]%d[/font_size] lv." if inverted else "lv. [font_size=35]%d[/font_size]") % lvl
 	)
