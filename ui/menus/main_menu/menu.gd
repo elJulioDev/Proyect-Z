@@ -145,9 +145,7 @@ func _on_play_pressed():
 	if _busy:
 		return
 	_set_busy(true)
-	const GOKU := preload("res://characters/goku/goku.tscn")
-	const ARCHIPELAGO := preload("res://stages/Archipelago/archipelago.tscn")
-	GameManager.start_fight(ARCHIPELAGO, GOKU, GOKU)
+	get_tree().change_scene_to_file("res://ui/menus/character_select/character_select.tscn")
 
 func _on_settings_pressed():
 	if _busy:

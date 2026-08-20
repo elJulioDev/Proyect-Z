@@ -16,13 +16,13 @@ extends CanvasLayer
 func _ready() -> void:
 	if Engine.is_editor_hint():
 		return
-	# Los luchadores se spawnean en BaseStage._ready (después de este nodo).
-	await get_tree().process_frame
-	var stage := get_parent() as BaseStage
-	if stage and stage.player1:
-		_wire(stage.player1, p1_health, p1_name, p1_energy, p1_level, p1_portrait, false)
-	if stage and stage.player2:
-		_wire(stage.player2, p2_health, p2_name, p2_energy, p2_level, p2_portrait, true)
+
+
+func setup(p1: BaseCharacter, p2: BaseCharacter) -> void:
+	if p1:
+		_wire(p1, p1_health, p1_name, p1_energy, p1_level, p1_portrait, false)
+	if p2:
+		_wire(p2, p2_health, p2_name, p2_energy, p2_level, p2_portrait, true)
 
 
 func _wire(fighter: BaseCharacter, bar: SlantBar, name_label: Label, energy_bar: SegmentedBar, level_label: RichTextLabel, portrait: DiamondIcon, inverted: bool) -> void:

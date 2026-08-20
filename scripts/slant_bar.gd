@@ -109,7 +109,10 @@ func _points(w: float, off: Vector2) -> PackedVector2Array:
 	])
 
 func _poly(w: float, col: Color, off: Vector2) -> void:
-	draw_colored_polygon(_points(w, off), col)
+	var pts := _points(w, off)
+	if pts.size() < 3:
+		return
+	draw_colored_polygon(pts, col)
 
 var _gradient_tex: GradientTexture2D = null
 
@@ -127,7 +130,7 @@ func _gradient_texture() -> GradientTexture2D:
 	return _gradient_tex
 
 func _draw_gradient_fill(points: PackedVector2Array) -> void:
-	if size.x <= 0.0:
+	if points.size() < 3 or size.x <= 0.0:
 		return
 	# Sin fposmod por vértice: el wrap lo hace la GPU por fragmento,
 	# evita el seam que interpolaba mal dentro del quad/segmento.

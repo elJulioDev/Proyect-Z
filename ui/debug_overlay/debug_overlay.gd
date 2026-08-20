@@ -4,9 +4,17 @@ extends CanvasLayer
 @onready var panel: PanelContainer = $Panel
 @onready var label: Label = $Panel/Label
 
+var player1: BaseCharacter
+var player2: BaseCharacter
+
 
 func _ready() -> void:
 	panel.visible = false
+
+
+func setup(p1: BaseCharacter, p2: BaseCharacter) -> void:
+	player1 = p1
+	player2 = p2
 
 
 func _unhandled_key_input(event: InputEvent) -> void:
@@ -50,19 +58,16 @@ func _build_text() -> String:
 			vmem / (1024.0 * 1024.0),
 			int(Performance.get_monitor(Performance.RENDER_TEXTURE_MEM_USED)) / (1024.0 * 1024.0),
 		])
-	var stage := get_parent() as Node
-	var p1 := stage.get_node_or_null("BaseCharacter") as BaseCharacter if stage else null
-	var p2 := stage.get_node_or_null("Player2") as BaseCharacter if stage else null
 	lines.append("P1: %s | vida %.0f | pos %.0f,%.0f" % [
-		String(p1.state_id()) if p1 else "-",
-		p1.health.current_hp if p1 else -1.0,
-		p1.global_position.x if p1 else 0.0,
-		p1.global_position.y if p1 else 0.0,
+		String(player1.state_id()) if player1 else "-",
+		player1.health.current_hp if player1 else -1.0,
+		player1.global_position.x if player1 else 0.0,
+		player1.global_position.y if player1 else 0.0,
 	])
 	lines.append("P2: %s | vida %.0f | pos %.0f,%.0f" % [
-		String(p2.state_id()) if p2 else "-",
-		p2.health.current_hp if p2 else -1.0,
-		p2.global_position.x if p2 else 0.0,
-		p2.global_position.y if p2 else 0.0,
+		String(player2.state_id()) if player2 else "-",
+		player2.health.current_hp if player2 else -1.0,
+		player2.global_position.x if player2 else 0.0,
+		player2.global_position.y if player2 else 0.0,
 	])
 	return "\n".join(lines)

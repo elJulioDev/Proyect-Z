@@ -15,7 +15,7 @@ config/version="1.0.0"
 run/main_scene="uid://f5dh3m0ifqjn"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 boot_splash/show_image=false
-config/icon="uid://bcj1msh02ofco"
+config/icon="res://icon.svg"
 
 [autoload]
 
@@ -28,6 +28,10 @@ TransitionManager="*res://ui/transitions/transition_manager.tscn"
 window/size/viewport_width=1280
 window/size/viewport_height=720
 window/stretch/mode="canvas_items"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/copy_all_errors/plugin.cfg")
 
 [input]
 

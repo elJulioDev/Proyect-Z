@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="StageData" format=3 uid="uid://bso6c5ar8nnjx"]
+
+[ext_resource type="Texture2D" uid="uid://cirigoivb3x0t" path="res://stages/Destroyed Planet Namek/sprites/Stage.png" id="1_0u3wj"]
+[ext_resource type="Script" uid="uid://c7814rry63yk5" path="res://core/stage_data.gd" id="1_547mu"]
+
+[resource]
+script = ExtResource("1_547mu")
+id = "DestroyedPlanetNamek"
+display_name = "Destroyed Planet Namek"
+background = ExtResource("1_0u3wj")
+filter_color = Color(1, 0, 0, 0.2)
+metadata/_custom_type_script = "uid://c7814rry63yk5"
