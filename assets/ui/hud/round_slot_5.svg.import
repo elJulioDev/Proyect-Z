@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://qlclt5agyh20"
-path="res://.godot/imported/round_slot_7.svg-699ed7c8cdca12e900a2803fdfa5dace.ctex"
+uid="uid://c8xxnke2gcxme"
+path="res://.godot/imported/round_slot_5.svg-58cd703f9df613d65ea15368c02ab513.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/ui/round_slot_7.svg"
-dest_files=["res://.godot/imported/round_slot_7.svg-699ed7c8cdca12e900a2803fdfa5dace.ctex"]
+source_file="res://assets/ui/hud/round_slot_5.svg"
+dest_files=["res://.godot/imported/round_slot_5.svg-58cd703f9df613d65ea15368c02ab513.ctex"]
 
 [params]
 

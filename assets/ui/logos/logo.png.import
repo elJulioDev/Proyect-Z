@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://i42q31dtyrwr"
-path="res://.godot/imported/round_slot_2.svg-8831006e5c779d9d211ad810fd351d43.ctex"
+uid="uid://dxjlpaq750uun"
+path="res://.godot/imported/logo.png-bc5270bbfc7e18048b84a9c12fe3bb29.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/ui/round_slot_2.svg"
-dest_files=["res://.godot/imported/round_slot_2.svg-8831006e5c779d9d211ad810fd351d43.ctex"]
+source_file="res://assets/ui/logos/logo.png"
+dest_files=["res://.godot/imported/logo.png-bc5270bbfc7e18048b84a9c12fe3bb29.ctex"]
 
 [params]
 
@@ -38,6 +38,3 @@ process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
 detect_3d/compress_to=1
-svg/scale=1.0
-editor/scale_with_editor_scale=false
-editor/convert_colors_with_editor_theme=false

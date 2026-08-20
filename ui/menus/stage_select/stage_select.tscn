@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://bwbwa7s2bduu7"]
 
 [ext_resource type="Script" uid="uid://bc3s22o2c1geq" path="res://ui/menus/stage_select/stage_select.gd" id="1_script"]
-[ext_resource type="Texture2D" uid="uid://b7vsxlqdf4pkl" path="res://ui/menus/selection/textures/selection.png" id="2_f7rjo"]
+[ext_resource type="Texture2D" uid="uid://cg1dve1n4rfmd" path="res://assets/ui/menus/selection.png" id="2_f7rjo"]
 [ext_resource type="FontFile" uid="uid://de8c3i7kbfoh4" path="res://assets/fonts/Aharoni Bold.ttf" id="3_font"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_normal"]
