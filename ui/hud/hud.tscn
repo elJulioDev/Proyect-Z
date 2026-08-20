@@ -208,6 +208,7 @@ bg_color = Color(0.23137255, 0.23137255, 0.23137255, 0.85882354)
 chip_color = Color(0.6509804, 0, 0, 0.7019608)
 fill_base_color = Color(0.9803922, 0.1686275, 0.027451, 1)
 fill_tip_color = Color(0.9882353, 0.5372549, 0.027451, 1)
+shadow_offset = Vector2(3, 4)
 bar_width = 490.0
 bar_height = 30.0
 
@@ -228,6 +229,7 @@ bg_color = Color(0.23151812, 0.23151812, 0.23151812, 0.85882354)
 chip_color = Color(1, 0, 0, 0.7019608)
 fill_base_color = Color(0.9803922, 0.1686275, 0.027451, 1)
 fill_tip_color = Color(0.9882353, 0.5372549, 0.027451, 1)
+shadow_offset = Vector2(3, 4)
 bar_width = 490.0
 bar_height = 30.0
 
@@ -280,6 +282,7 @@ bg_color = Color(0.23137255, 0.23137255, 0.23137255, 0.85882354)
 chip_color = Color(0.6509804, 0, 0, 0.7019608)
 fill_base_color = Color(1, 1, 1, 1)
 fill_tip_color = Color(0, 0.7411765, 0.972549, 1)
+shadow_offset = Vector2(3, 4)
 segment_gap = 10.0
 bar_width = 390.0
 bar_height = 20.0

@@ -29,3 +29,4 @@ func physics(delta: float) -> void:
 		c.state_machine.change("locomotion" if c.is_on_floor() else "air")
 		return
 	c.velocity.x = DASH_SPEED * _dir
+	c.animator.play_anim("move_left" if (_dir < 0.0) == c.facing_right else "move_right")
