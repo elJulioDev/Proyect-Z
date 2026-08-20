@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="StageData" format=3 uid="uid://dkncl3ogddybc"]
+
+[ext_resource type="Texture2D" uid="uid://bkaqv63pug0ks" path="res://stages/TrainingRoom/Stage.png" id="1_0a420"]
+[ext_resource type="Script" uid="uid://c7814rry63yk5" path="res://core/stage_data.gd" id="2_abnor"]
+
+[resource]
+script = ExtResource("2_abnor")
+id = "TrainingRoom"
+display_name = "Training Room"
+background = ExtResource("1_0a420")
+metadata/_custom_type_script = "uid://c7814rry63yk5"

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://7cc8t2su2p82"
-path="res://.godot/imported/Stage.png-af0c7e4cef16556fcd4f37904801aac2.ctex"
+uid="uid://cirigoivb3x0t"
+path="res://.godot/imported/Stage.png-76b7bafe12e1d5f129a1034b04d232d9.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://stages/ToP/sprites/Stage.png"
-dest_files=["res://.godot/imported/Stage.png-af0c7e4cef16556fcd4f37904801aac2.ctex"]
+source_file="res://stages/Destroyed Planet Namek/Stage.png"
+dest_files=["res://.godot/imported/Stage.png-76b7bafe12e1d5f129a1034b04d232d9.ctex"]
 
 [params]
 

@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://160calcy7io3"
-path="res://.godot/imported/Stage.png-faa92c09ecad5fd9e4a203b8f761ed4d.ctex"
+path="res://.godot/imported/Stage.png-8613d2bc65d5cbf35cd861bd888edce1.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://stages/Archipelago/sprites/Stage.png"
-dest_files=["res://.godot/imported/Stage.png-faa92c09ecad5fd9e4a203b8f761ed4d.ctex"]
+source_file="res://stages/Archipelago/Stage.png"
+dest_files=["res://.godot/imported/Stage.png-8613d2bc65d5cbf35cd861bd888edce1.ctex"]
 
 [params]
 

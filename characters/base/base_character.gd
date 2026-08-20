@@ -38,8 +38,8 @@ var debug_mode := false
 func _ready() -> void:
 	data = character_data
 	shadow_sprite.top_level = true
-    
-    # Asegurar que la sombra se dibuja detrás de los personajes pero sobre el mapa
+	
+	# Asegurar que la sombra se dibuja detrás de los personajes pero sobre el mapa
 	shadow_sprite.z_index = -1 
 	
 	if controller == null:

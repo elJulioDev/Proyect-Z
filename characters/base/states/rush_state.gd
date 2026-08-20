@@ -75,6 +75,10 @@ func _phase_start(delta: float) -> void:
 		character.animator.play_anim("dragon_rush_pos")
 	var pos_anim: AnimData = character.data.animations.get("dragon_rush_pos")
 	if pos_anim and _timer >= pos_anim.frames.size() / pos_anim.fps:
+		# Solo entra al vuelo si la tecla sigue mantenida; si fue un tap, termina tras la preparación
+		if not (character.controller and character.controller.special_3_held):
+			_end_rush()
+			return
 		_phase = 2
 		_hit_landed = false
 		var c := character

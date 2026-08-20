@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="StageData" format=3 uid="uid://buaaw8nr17s0o"]
 
-[ext_resource type="Texture2D" uid="uid://7cc8t2su2p82" path="res://stages/ToP/sprites/Stage.png" id="1_ddjf3"]
+[ext_resource type="Texture2D" uid="uid://7cc8t2su2p82" path="res://stages/ToP/Stage.png" id="1_ddjf3"]
 [ext_resource type="Script" uid="uid://c7814rry63yk5" path="res://core/stage_data.gd" id="2_gqhyw"]
 
 [resource]
