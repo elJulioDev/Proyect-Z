@@ -8,6 +8,8 @@ class_name RoundDots
 @export var spacing: float = 6.0
 @export var filled_color := Color(0.08, 0.08, 0.08)
 @export var empty_color := Color(0.4, 0.4, 0.4, 0.6)
+@export var border_color := Color.BLACK
+@export var border_width: float = 0.0
 @export var flip: bool = false
 @export var slot_textures: Array[Texture2D] = []
 
@@ -19,6 +21,8 @@ func _draw() -> void:
 			x = size.x - x
 		var pos = Vector2(x, radius)
 		draw_circle(pos + Vector2(2, 2), radius, Color(0, 0, 0, 0.5))
+		if border_width > 0.0:
+			draw_arc(pos, radius, 0, TAU, 48, border_color, border_width, true)
 		draw_circle(pos, radius, filled_color if i < rounds_won else empty_color)
 		if i < slot_textures.size() and slot_textures[i]:
 			var tex: Texture2D = slot_textures[i]

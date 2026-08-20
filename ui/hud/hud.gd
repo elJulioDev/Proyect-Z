@@ -30,6 +30,7 @@ func _wire(fighter: BaseCharacter, bar: SlantBar, name_label: Label, energy_bar:
 		name_label.text = fighter.data.display_name
 		if fighter.data.icon:
 			portrait.portrait_texture = fighter.data.icon
+	fighter.energy.bars = energy_bar.segments
 	energy_bar.value = fighter.energy.current_energy / fighter.energy.MAX_ENERGY
 	level_label.text = ("[font_size=35]%d[/font_size] lv." if inverted else "lv. [font_size=35]%d[/font_size]") % fighter.energy.level()
 	fighter.health.health_changed.connect(func(current: float, max_hp: float) -> void:

@@ -7,7 +7,8 @@ class_name SegmentedBar
 @export var invert_slant := false
 @export var bg_color := Color(0.05, 0.2, 0.22)
 @export var chip_color := Color(0.65, 0.85, 1.0, 0.7)
-@export var fill_color := Color(1.0, 0.5, 0.1)
+@export var fill_base_color := Color(1.0, 0.5, 0.1)
+@export var fill_tip_color := Color(1.0, 0.5, 0.1)
 @export var border_color := Color.BLACK
 @export var shadow_offset := Vector2(3, 3)
 
@@ -101,13 +102,38 @@ func _draw_segment(x0: float, right: float, sw: float, seg_value: float, seg_chi
 	if seg_chip > 0.0:
 		_seg_poly(x0, right, sw * seg_chip, chip_color, Vector2.ZERO)
 	if seg_value > 0.0:
-		_seg_poly(x0, right, sw * seg_value, fill_color, Vector2.ZERO)
+		_draw_gradient_fill(_seg_points(x0, right, sw * seg_value, Vector2.ZERO))
 	var border = _seg_points(x0, right, sw, Vector2.ZERO)
 	border.append(border[0])
 	draw_polyline(border, border_color, 3.0, true)
 
 func _seg_poly(x0: float, right: float, w: float, col: Color, off: Vector2) -> void:
 	draw_colored_polygon(_seg_points(x0, right, w, off), col)
+
+var _gradient_tex: GradientTexture2D = null
+
+func _gradient_texture() -> GradientTexture2D:
+	if _gradient_tex == null:
+		_gradient_tex = GradientTexture2D.new()
+		_gradient_tex.gradient = Gradient.new()
+		_gradient_tex.fill_from = Vector2(0, 0)
+		_gradient_tex.fill_to = Vector2(1, 0)
+	_gradient_tex.gradient.set_color(0, fill_base_color)
+	_gradient_tex.gradient.set_color(1, fill_tip_color)
+	return _gradient_tex
+
+func _draw_gradient_fill(points: PackedVector2Array) -> void:
+	if size.x <= 0.0:
+		return
+	var uvs := PackedVector2Array()
+	var colors := PackedColorArray()
+	for p in points:
+		var ux := p.x / size.x
+		if flip:
+			ux = 1.0 - ux
+		uvs.append(Vector2(ux, 0.5))
+		colors.append(Color.WHITE)
+	draw_polygon(points, colors, uvs, _gradient_texture())
 
 func _seg_points(x0: float, right: float, w: float, off: Vector2) -> PackedVector2Array:
 	var h = size.y
