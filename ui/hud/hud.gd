@@ -41,7 +41,7 @@ func _wire(fighter: BaseCharacter, bar: SlantBar, name_label: Label, energy_bar:
 		if target < energy_bar.value:
 			energy_bar.apply_damage(target)
 		else:
-			energy_bar.value = target
+			energy_bar.fill(target)
 		var lvl := fighter.energy.level()
 		level_label.text = ("[font_size=35]%d[/font_size] lv." if inverted else "lv. [font_size=35]%d[/font_size]") % lvl
 	)

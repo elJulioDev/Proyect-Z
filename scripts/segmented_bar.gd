@@ -67,6 +67,16 @@ func apply_damage(target_val: float) -> void:
 	_pending_chip_target = target_val
 	_damage_timer = 0.5
 
+## Carga de energía: relleno instantáneo con el chip pegado a la barra,
+## para que la animación de pérdida siempre baje desde el valor cargado
+## y no suba desde un chip rezagado.
+func fill(target_val: float) -> void:
+	if _tween_chip and _tween_chip.is_valid():
+		_tween_chip.kill()
+	_damage_timer = 0.0
+	value = target_val
+	chip = target_val
+
 func _start_chip_animation() -> void:
 	if _tween_chip and _tween_chip.is_valid():
 		_tween_chip.kill()
@@ -148,23 +158,29 @@ func _draw_gradient_fill(points: PackedVector2Array) -> void:
 
 func _seg_points(x0: float, right: float, w: float, off: Vector2) -> PackedVector2Array:
 	var h = size.y
-	var s = minf(slant, w)
+	var sw = right - x0
+	if sw <= 0.0 or w <= 0.0:
+		return PackedVector2Array()
+	# Igual que SlantBar: el borde móvil avanza a lo largo de la anchura
+	# inclinada del segmento para que el relleno colapse a cero sin triángulo fantasma.
+	var usable = maxf(sw - slant, 0.0)
+	var fw = usable * (w / sw)
 	if flip:
 		if invert_slant:
 			return PackedVector2Array([
-				Vector2(right, 0) + off, Vector2(right - w + s, 0) + off,
-				Vector2(right - w, h) + off, Vector2(right - s, h) + off
+				Vector2(right - fw, 0) + off, Vector2(right, 0) + off,
+				Vector2(right - slant, h) + off, Vector2(right - slant - fw, h) + off
 			])
 		return PackedVector2Array([
-			Vector2(right - w, 0) + off, Vector2(right - s, 0) + off,
-			Vector2(right, h) + off, Vector2(right - w + s, h) + off
+			Vector2(right - slant - fw, 0) + off, Vector2(right - slant, 0) + off,
+			Vector2(right, h) + off, Vector2(right - fw, h) + off
 		])
 	if invert_slant:
 		return PackedVector2Array([
-			Vector2(x0, 0) + off, Vector2(x0 + w - s, 0) + off,
-			Vector2(x0 + w, h) + off, Vector2(x0 + s, h) + off
+			Vector2(x0, 0) + off, Vector2(x0 + fw, 0) + off,
+			Vector2(x0 + slant + fw, h) + off, Vector2(x0 + slant, h) + off
 		])
 	return PackedVector2Array([
-		Vector2(x0 + s, 0) + off, Vector2(x0 + w, 0) + off,
-		Vector2(x0 + w - s, h) + off, Vector2(x0, h) + off
+		Vector2(x0 + slant, 0) + off, Vector2(x0 + slant + fw, 0) + off,
+		Vector2(x0 + fw, h) + off, Vector2(x0, h) + off
 	])

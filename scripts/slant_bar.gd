@@ -80,26 +80,32 @@ func _draw() -> void:
 
 func _points(w: float, off: Vector2) -> PackedVector2Array:
 	var h = size.y
-	var s = min(slant, w)
 	var right = size.x
+	if size.x <= 0.0 or w <= 0.0:
+		return PackedVector2Array()
+	# El borde móvil avanza a lo largo de la anchura inclinada (size.x - slant);
+	# así el relleno colapsa a cero en el borde de la barra cuando value -> 0
+	# en vez de degenerar en un triángulo fantasma que simula energía extra.
+	var usable = maxf(size.x - slant, 0.0)
+	var fw = usable * (w / size.x)
 	if flip:
 		if invert_slant:
 			return PackedVector2Array([
-				Vector2(right, 0) + off, Vector2(right - w + s, 0) + off,
-				Vector2(right - w, h) + off, Vector2(right - s, h) + off
+				Vector2(right - fw, 0) + off, Vector2(right, 0) + off,
+				Vector2(right - slant, h) + off, Vector2(right - slant - fw, h) + off
 			])
 		return PackedVector2Array([
-			Vector2(right - w, 0) + off, Vector2(right - s, 0) + off,
-			Vector2(right, h) + off, Vector2(right - w + s, h) + off
+			Vector2(right - slant - fw, 0) + off, Vector2(right - slant, 0) + off,
+			Vector2(right, h) + off, Vector2(right - fw, h) + off
 		])
 	if invert_slant:
 		return PackedVector2Array([
-			Vector2(0, 0) + off, Vector2(w - s, 0) + off,
-			Vector2(w, h) + off, Vector2(s, h) + off
+			Vector2(0, 0) + off, Vector2(fw, 0) + off,
+			Vector2(slant + fw, h) + off, Vector2(slant, h) + off
 		])
 	return PackedVector2Array([
-		Vector2(s, 0) + off, Vector2(w, 0) + off,
-		Vector2(w - s, h) + off, Vector2(0, h) + off
+		Vector2(slant, 0) + off, Vector2(slant + fw, 0) + off,
+		Vector2(fw, h) + off, Vector2(0, h) + off
 	])
 
 func _poly(w: float, col: Color, off: Vector2) -> void:
