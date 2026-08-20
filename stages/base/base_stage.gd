@@ -21,8 +21,6 @@ var player2: BaseCharacter
 
 ## Margen horizontal alrededor de los fighters que debe caber en pantalla.
 const ZOOM_PADDING := 240.0
-## Ancho de mundo visible en el zoom mínimo (lejos). Independiente de la resolución del fondo.
-const MIN_ZOOM_WORLD_WIDTH := 1600.0
 ## Ancho de mundo visible en el zoom máximo (cerca).
 const MAX_ZOOM_WORLD_WIDTH := 850.0
 
@@ -64,10 +62,12 @@ func apply_config() -> void:
 		stage_camera.limit_right = int(bg_size.x / 2.0)
 		stage_camera.limit_top = int(-bg_size.y / 2.0)
 		stage_camera.limit_bottom = int(bg_size.y / 2.0)
-	# Zoom fijo por ancho de mundo de referencia: igual en cualquier resolución de fondo
-	_min_zoom = VIEWPORT_SIZE.x / MIN_ZOOM_WORLD_WIDTH
+		# _min_zoom: no más pequeño que el que muestra todo el fondo
+		var zoom_x := VIEWPORT_SIZE.x / bg_size.x
+		var zoom_y := VIEWPORT_SIZE.y / bg_size.y
+		_min_zoom = maxf(zoom_x, zoom_y)
+		stage_camera.zoom = Vector2(_min_zoom, _min_zoom)
 	_max_zoom = VIEWPORT_SIZE.x / MAX_ZOOM_WORLD_WIDTH
-	stage_camera.zoom = Vector2(_min_zoom, _min_zoom)
 
 	# La cámara mira un poco arriba del suelo
 	_cam_look_y = stage_data.floor_y - 80.0
