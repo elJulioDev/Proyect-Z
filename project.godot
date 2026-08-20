@@ -14,6 +14,7 @@ config/name="UltimateWarriors2"
 config/version="1.0.0"
 run/main_scene="uid://f5dh3m0ifqjn"
 config/features=PackedStringArray("4.7", "GL Compatibility")
+boot_splash/show_image=false
 config/icon="uid://bcj1msh02ofco"
 
 [autoload]

@@ -3,8 +3,8 @@ extends CanvasLayer
 
 @onready var p1_health: SlantBar = $Root/Margins/Viewport/Health/Content/P1Health
 @onready var p2_health: SlantBar = $Root/Margins/Viewport/Health/Content/P2Health
-@onready var p1_energy: SlantBar = $Root/Margins/Viewport/Energy/Content/P1Energy
-@onready var p2_energy: SlantBar = $Root/Margins/Viewport/Energy/Content/P2Energy
+@onready var p1_energy: SegmentedBar = $Root/Margins/Viewport/Energy/Content/P1Energy
+@onready var p2_energy: SegmentedBar = $Root/Margins/Viewport/Energy/Content/P2Energy
 @onready var p1_name: Label = $Root/Margins/Viewport/Names/Content/P1Name
 @onready var p2_name: Label = $Root/Margins/Viewport/Names/Content/P2Name
 @onready var p1_level: RichTextLabel = $Root/Margins/Viewport/Levels/Content/P1Level
@@ -25,7 +25,7 @@ func _ready() -> void:
 		_wire(stage.player2, p2_health, p2_name, p2_energy, p2_level, p2_portrait, true)
 
 
-func _wire(fighter: BaseCharacter, bar: SlantBar, name_label: Label, energy_bar: SlantBar, level_label: RichTextLabel, portrait: DiamondIcon, inverted: bool) -> void:
+func _wire(fighter: BaseCharacter, bar: SlantBar, name_label: Label, energy_bar: SegmentedBar, level_label: RichTextLabel, portrait: DiamondIcon, inverted: bool) -> void:
 	if fighter.data:
 		name_label.text = fighter.data.display_name
 		if fighter.data.icon:
