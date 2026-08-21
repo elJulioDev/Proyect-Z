@@ -7,7 +7,6 @@ class_name StageData extends Resource
 @export var display_name: String = ""
 
 @export var background: Texture2D = null
-@export var music: AudioStream = null
 
 ## Altura del suelo (pixeles).
 @export var floor_y: float = 200.0
@@ -19,4 +18,5 @@ class_name StageData extends Resource
 @export var spawn_distance: float = 380.0
 
 ## Filtro de atmósfera: ColorRect que cubre todo el escenario por encima de los fighters.
-@export var filter_color: Color = Color(0, 0, 0, 0)  ## rgba, alpha controla la transparencia
+@export var filter_enabled: bool = false
+@export var filter_color: Color = Color(0, 0, 0, 0.15)  ## rgba, alpha controla la intensidad

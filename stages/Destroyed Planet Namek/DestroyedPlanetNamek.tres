@@ -8,5 +8,6 @@ script = ExtResource("1_547mu")
 id = "DestroyedPlanetNamek"
 display_name = "Destroyed Planet Namek"
 background = ExtResource("1_0u3wj")
+filter_enabled = true
 filter_color = Color(1, 0, 0, 0.2)
 metadata/_custom_type_script = "uid://c7814rry63yk5"
