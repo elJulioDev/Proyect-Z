@@ -7,6 +7,7 @@ const HUDScene := preload("res://ui/hud/hud.tscn")
 const DebugScene := preload("res://ui/debug_overlay/debug_overlay.tscn")
 const FightManagerScene := preload("res://core/game/fight_manager.gd")
 const AnnouncerScene := preload("res://ui/fight_announcer/fight_announcer.tscn")
+const BGM_DIR := "res://assets/audio/bgm"
 
 ## Roster de personajes disponibles. Agregar un personaje nuevo = agregar una entrada.
 const ROSTER := {
@@ -30,6 +31,7 @@ var current_stage_path: String = ""
 var _fight_manager: Node
 var pending_p1: PackedScene
 var pending_p2: PackedScene
+var _bgm_player: AudioStreamPlayer
 
 
 func _ready() -> void:
@@ -79,6 +81,8 @@ func _do_fight() -> void:
 	get_tree().current_scene = stage
 	if old_scene:
 		old_scene.queue_free()
+	# BGM aleatorio
+	_play_random_bgm()
 	# Fighters
 	var p1: BaseCharacter = p1_scene.instantiate()
 	var p2: BaseCharacter = p2_scene.instantiate()
@@ -131,9 +135,40 @@ func _on_fight_ended(_final_winner: int) -> void:
 
 
 func return_to_menu() -> void:
+	_stop_bgm()
 	if _fight_manager:
 		_fight_manager.queue_free()
 		_fight_manager = null
 	TransitionManager.transition(0.8, 0.5, 0.8, func():
 		get_tree().change_scene_to_file("res://ui/menus/main_menu/menu.tscn")
 	)
+
+
+func _play_random_bgm() -> void:
+	_stop_bgm()
+	var dir := DirAccess.open(BGM_DIR)
+	if dir == null:
+		return
+	dir.list_dir_begin()
+	var tracks: PackedStringArray = []
+	var f := dir.get_next()
+	while f != "":
+		if not dir.current_is_dir() and f.ends_with(".mp3"):
+			tracks.append(f)
+		f = dir.get_next()
+	dir.list_dir_end()
+	if tracks.is_empty():
+		return
+	var idx := randi() % tracks.size()
+	_bgm_player = AudioStreamPlayer.new()
+	_bgm_player.stream = load(BGM_DIR + "/" + tracks[idx])
+	add_child(_bgm_player)
+	_bgm_player.finished.connect(_play_random_bgm)
+	_bgm_player.play()
+
+
+func _stop_bgm() -> void:
+	if _bgm_player:
+		_bgm_player.stop()
+		_bgm_player.queue_free()
+		_bgm_player = null
