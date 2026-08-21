@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://bf2s1qtplympn"
+path="res://.godot/imported/World Tournament Arena Stage.mp3-3cbb5d7d4f057cb1f8711918193c2010.mp3str"
+
+[deps]
+
+source_file="res://assets/audio/bgm/World Tournament Arena Stage.mp3"
+dest_files=["res://.godot/imported/World Tournament Arena Stage.mp3-3cbb5d7d4f057cb1f8711918193c2010.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

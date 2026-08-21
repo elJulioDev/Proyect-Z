@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://dio5pird0nf8v"
+path="res://.godot/imported/Planet Namek Stage.mp3-6c10a56ff24848224e2bfebf5b14da5a.mp3str"
+
+[deps]
+
+source_file="res://assets/audio/bgm/Planet Namek Stage.mp3"
+dest_files=["res://.godot/imported/Planet Namek Stage.mp3-6c10a56ff24848224e2bfebf5b14da5a.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

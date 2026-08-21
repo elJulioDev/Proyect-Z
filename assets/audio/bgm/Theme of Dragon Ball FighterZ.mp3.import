@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://codpjk88uo741"
+path="res://.godot/imported/Theme of Dragon Ball FighterZ.mp3-5e21eb2557e35dccd75df09f5423e308.mp3str"
+
+[deps]
+
+source_file="res://assets/audio/bgm/Theme of Dragon Ball FighterZ.mp3"
+dest_files=["res://.godot/imported/Theme of Dragon Ball FighterZ.mp3-5e21eb2557e35dccd75df09f5423e308.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

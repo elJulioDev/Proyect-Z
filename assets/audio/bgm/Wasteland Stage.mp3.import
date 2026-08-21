@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://n5pd3j4s6o7"
+path="res://.godot/imported/Wasteland Stage.mp3-4691061e8c574a5181694aecbfb56945.mp3str"
+
+[deps]
+
+source_file="res://assets/audio/bgm/Wasteland Stage.mp3"
+dest_files=["res://.godot/imported/Wasteland Stage.mp3-4691061e8c574a5181694aecbfb56945.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4
