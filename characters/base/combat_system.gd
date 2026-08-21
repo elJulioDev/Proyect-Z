@@ -1,8 +1,9 @@
 class_name CombatSystem extends Node
 ## Combate data-driven con frame data, cancelaciones por peso y cadenas de combo.
 ## Startup → Active → Recovery. Cancelaciones: peso nuevo >= peso actual.
-## Combos: al presionar el mismo botón durante cancel, avanza en la cadena.
+## Combos: al presionar el mismo boton durante cancel, avanza en la cadena.
 ## Buffer: input durante startup se conserva y se dispara al abrir ventana de cancel.
+## Combinaciones: ventana corta para detectar J+K, J+P, etc.
 
 var character: BaseCharacter
 @onready var hitbox: Area2D = get_parent().get_node("Hitbox")
@@ -16,6 +17,10 @@ var _buffered_id := ""
 var _buffer_timer := 0.0
 
 const INPUT_BUFFER := 0.12
+const COMBO_WINDOW := 0.05
+
+var _pending_button := ""
+var _pending_timer := 0.0
 
 
 func _ready() -> void:
@@ -39,21 +44,103 @@ func _physics_process(delta: float) -> void:
 
 func _read_input() -> void:
 	var c := character
-	var airborne := c.is_airborne()
-	var pressed := ""
-	if c.controller.attack_punch_pressed:
-		pressed = _pick("punch", "air_punch", airborne)
-	elif c.controller.attack_kick_pressed:
-		pressed = _pick("kick", "air_kick", airborne)
-	elif c.controller.attack_ki_pressed:
-		pressed = _pick("ki", "air_ki", airborne)
-	if pressed == "":
-		return
-	if _try_attack(pressed):
+	var context := _get_context()
+	var data := c.data
+	var map: Dictionary = data.attack_map
+
+	# Recopilar botones pulsados este frame
+	var just_pressed: Array = []
+	if c.controller.light_pressed and map.has("light"):
+		just_pressed.append("light")
+	if c.controller.medium_pressed and map.has("medium"):
+		just_pressed.append("medium")
+	if c.controller.heavy_pressed and map.has("heavy"):
+		just_pressed.append("heavy")
+	if c.controller.ki_pressed and map.has("ki"):
+		just_pressed.append("ki")
+
+	# Si hay 2+ botones este frame, buscar combinacion directamente
+	if just_pressed.size() >= 2:
+		var combo_id := _find_combination(just_pressed)
+		if combo_id != "":
+			_try_or_buffer(combo_id)
+			_pending_button = ""
+			_pending_timer = 0.0
+			return
+
+	# Si hay 1 boton y hay pending de otro, buscar combinacion
+	if just_pressed.size() == 1:
+		var btn: String = just_pressed[0]
+		if _pending_button != "" and _pending_button != btn:
+			var combo_id := _find_combination([_pending_button, btn])
+			if combo_id != "":
+				_try_or_buffer(combo_id)
+				_pending_button = ""
+				_pending_timer = 0.0
+				return
+		# Guardar como pending para esperar segundo boton
+		_pending_button = btn
+		_pending_timer = COMBO_WINDOW
+
+	# Tick del pending timer
+	if _pending_timer > 0.0:
+		_pending_timer -= c.get_physics_process_delta_time()
+		if _pending_timer <= 0.0:
+			# Ventana expirada, ejecutar boton pendiente
+			var btn := _pending_button
+			_pending_button = ""
+			_pending_timer = 0.0
+			if btn != "":
+				var atk_id := _resolve_attack(btn, context)
+				if atk_id != "":
+					_try_or_buffer(atk_id)
+
+
+func _get_context() -> String:
+	if character.is_airborne():
+		return "air"
+	if character.state_id() == "crouch":
+		return "crouch"
+	return "ground"
+
+
+func _resolve_attack(button: String, context: String) -> String:
+	var map: Dictionary = character.data.attack_map
+	if not map.has(button):
+		return ""
+	var ctx_map: Dictionary = map[button]
+	if ctx_map.has(context):
+		var atk_id: String = ctx_map[context]
+		if atk_id in character.data.attacks:
+			return atk_id
+	# Fallback: intentar ground, luego air
+	if ctx_map.has("ground") and ctx_map["ground"] in character.data.attacks:
+		return ctx_map["ground"]
+	if ctx_map.has("air") and ctx_map["air"] in character.data.attacks:
+		return ctx_map["air"]
+	return ""
+
+
+func _find_combination(buttons: Array) -> String:
+	var sorted_btns := buttons.duplicate()
+	sorted_btns.sort()
+	for combo in character.data.combinations:
+		var combo_buttons: Array = combo.get("buttons", [])
+		var sorted_combo: Array = combo_buttons.duplicate()
+		sorted_combo.sort()
+		if sorted_btns == sorted_combo:
+			var atk_id: String = combo.get("attack_id", "")
+			if atk_id in character.data.attacks:
+				return atk_id
+	return ""
+
+
+func _try_or_buffer(atk_id: String) -> void:
+	if _try_attack(atk_id):
 		_buffered_id = ""
 		_buffer_timer = 0.0
 	else:
-		_buffered_id = pressed
+		_buffered_id = atk_id
 		_buffer_timer = INPUT_BUFFER
 
 
@@ -95,13 +182,6 @@ func _can_cancel_with(new_attack_id: String) -> bool:
 	if new_data == null:
 		return false
 	return new_data.weight >= _current_weight
-
-
-func _pick(ground_id: String, air_id: String, airborne: bool) -> String:
-	var data := character.data
-	if airborne and air_id in data.attacks:
-		return air_id
-	return ground_id if ground_id in data.attacks else air_id
 
 
 func _find_combo_chain(attack_id: String) -> Array:

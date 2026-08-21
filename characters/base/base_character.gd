@@ -33,6 +33,9 @@ var base_shadow_scale := Vector2(2.8, 1.5)
 var shadow_offset_y := 25.0
 var max_jump_height := 400.0
 var debug_mode := false
+var debug_boxes := false
+var _f1_held := false
+var _debug_node: Node2D
 
 
 func _ready() -> void:
@@ -51,51 +54,73 @@ func _ready() -> void:
 		mechanics.rebuild()
 		state_machine.change("locomotion")
 
+	_debug_node = Node2D.new()
+	_debug_node.z_index = 100
+	_debug_node.visible = false
+	add_child(_debug_node)
+	_debug_node.set_script(preload("res://characters/base/debug_draw.gd"))
+
+
+func _process(_delta: float) -> void:
+	if debug_boxes:
+		_debug_node.queue_redraw()
+
+
+func _input(event: InputEvent) -> void:
+	if event is InputEventKey:
+		if event.keycode == KEY_F1:
+			_f1_held = event.pressed
+		elif event.pressed and _f1_held and event.keycode == KEY_H:
+			debug_boxes = not debug_boxes
+			_debug_node.visible = debug_boxes
+
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed:
-		match event.keycode:
-			KEY_R:
-				_reload_data()
-			KEY_0:
-				debug_mode = false
-				animator.play_anim("idle")
-			KEY_1:
-				debug_mode = true
-				velocity = Vector2.ZERO
-				animator.play_anim("light_1")
-			KEY_2:
-				debug_mode = true
-				velocity = Vector2.ZERO
-				animator.play_anim("light_2")
-			KEY_3:
-				debug_mode = true
-				velocity = Vector2.ZERO
-				animator.play_anim("light_3")
-			KEY_4:
-				debug_mode = true
-				velocity = Vector2.ZERO
-				animator.play_anim("dragon_rush")
-			KEY_5:
-				debug_mode = true
-				velocity = Vector2.ZERO
-				animator.play_anim("dragon_rush_pos")
-			KEY_6:
-				debug_mode = true
-				velocity = Vector2.ZERO
-				animator.play_anim("dragon_rush_loop")
-			KEY_7:
-				debug_mode = true
-				velocity = Vector2.ZERO
-				animator.play_anim("heavy")
-			KEY_8:
-				debug_mode = true
-				velocity = Vector2.ZERO
-				animator.play_anim("medium")
-			KEY_9:
-				debug_mode = true
-				velocity = Vector2.ZERO
-				animator.play_anim("dragon_rush")
+			match event.keycode:
+				KEY_R:
+					_reload_data()
+				KEY_X:
+					energy.spend(energy.current_energy)
+				KEY_0:
+					debug_mode = false
+					animator.play_anim("idle")
+				KEY_1:
+					debug_mode = true
+					velocity = Vector2.ZERO
+					animator.play_anim("light_1")
+				KEY_2:
+					debug_mode = true
+					velocity = Vector2.ZERO
+					animator.play_anim("light_2")
+				KEY_3:
+					debug_mode = true
+					velocity = Vector2.ZERO
+					animator.play_anim("light_3")
+				KEY_4:
+					debug_mode = true
+					velocity = Vector2.ZERO
+					animator.play_anim("dragon_rush")
+				KEY_5:
+					debug_mode = true
+					velocity = Vector2.ZERO
+					animator.play_anim("dragon_rush_pos")
+				KEY_6:
+					debug_mode = true
+					velocity = Vector2.ZERO
+					animator.play_anim("dragon_rush_loop")
+				KEY_7:
+					debug_mode = true
+					velocity = Vector2.ZERO
+					animator.play_anim("heavy")
+				KEY_8:
+					debug_mode = true
+					velocity = Vector2.ZERO
+					animator.play_anim("medium")
+				KEY_9:
+					debug_mode = true
+					velocity = Vector2.ZERO
+					animator.play_anim("dragon_rush")
 
 
 func _reload_data() -> void:
@@ -147,7 +172,7 @@ func force_state(state: String, args: Dictionary = {}) -> void:
 
 
 func can_act() -> bool:
-	return state_id() in ["locomotion", "air"]
+	return state_id() in ["locomotion", "air", "crouch"]
 
 
 func is_airborne() -> bool:
@@ -215,4 +240,4 @@ func update_shadow() -> void:
 	var distance := absf(global_position.y - floor_pos.y)
 	var ratio := clampf(distance / max_jump_height, 0.0, 1.0)
 	shadow_sprite.scale = base_shadow_scale * Vector2(lerpf(1.0, 1.3, ratio), lerpf(1.0, 0.8, ratio))
-	shadow_sprite.modulate.a = lerpf(0.6, 0.15, ratio)
+	shadow_sprite.modulate.a = lerpf(0.6, 0.15, distance / max_jump_height)

@@ -71,23 +71,27 @@ func _process(delta: float) -> void:
 func apply_damage(target_val: float) -> void:
 	value = target_val
 	_pending_chip_target = target_val
-	_damage_timer = 0.5
+	if _tween_chip and _tween_chip.is_valid():
+		_tween_chip.kill()
+	_tween_chip = create_tween()
+	_tween_chip.tween_property(self, "chip", _pending_chip_target, 1.4).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 
 ## Carga de energía: relleno instantáneo con el chip pegado a la barra,
 ## para que la animación de pérdida siempre baje desde el valor cargado
 ## y no suba desde un chip rezagado.
 func fill(target_val: float) -> void:
-	if _tween_chip and _tween_chip.is_valid():
-		_tween_chip.kill()
 	_damage_timer = 0.0
 	value = target_val
-	chip = target_val
+	if target_val >= chip:
+		if _tween_chip and _tween_chip.is_valid():
+			_tween_chip.kill()
+		chip = target_val
 
 func _start_chip_animation() -> void:
 	if _tween_chip and _tween_chip.is_valid():
 		_tween_chip.kill()
 	_tween_chip = create_tween()
-	_tween_chip.tween_property(self, "chip", _pending_chip_target, 0.4).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	_tween_chip.tween_property(self, "chip", _pending_chip_target, 1.4).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 
 func _ready() -> void:
 	if bar_width <= 0.0:

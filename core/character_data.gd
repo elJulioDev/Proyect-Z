@@ -25,7 +25,14 @@ class_name CharacterData extends Resource
 ## attack_id -> AttackData (moveset del personaje).
 @export var attacks: Dictionary = {}
 
-## Cadenas de combo: [{"sequence": ["light", "light", "mid"], "finisher": "combo_lll"}]
+## Mapa de botones a attack_ids por contexto.
+## Estructura: {"light": {"ground": "punch", "air": "air_punch", "crouch": "crouch_light"}, ...}
+@export var attack_map: Dictionary = {}
+
+## Combinaciones simultaneas: [{buttons: ["light","medium"], attack_id: "combo_lm"}]
+@export var combinations: Array = []
+
+## Cadenas de combo: [{"sequence": ["punch", "punch_2", "punch_3"], "finisher": ""}]
 @export var combos: Array = []
 
 ## slot (special_1..4) -> {"id": mechanic_id, "args": {...}}

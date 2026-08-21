@@ -16,3 +16,5 @@ class_name AttackData extends Resource
 @export var recovery_frames: int = 0
 @export var block_damage: float = 0.0
 @export var blockstun: float = 0.0
+@export var hitbox_keyframes: Array[HitboxKeyframe] = []
+@export var hurtbox_keyframes: Array[HurtboxKeyframe] = []

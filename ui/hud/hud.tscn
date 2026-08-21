@@ -251,6 +251,7 @@ theme_override_constants/margin_bottom = 0
 layout_mode = 2
 
 [node name="P1Energy" type="Control" parent="Root/Margins/Viewport/Energy/Content" unique_id=1464388723]
+texture_repeat = 2
 layout_mode = 1
 anchors_preset = 0
 offset_left = 120.0
@@ -270,6 +271,7 @@ value = 0.0
 chip = 0.0
 
 [node name="P2Energy" type="Control" parent="Root/Margins/Viewport/Energy/Content" unique_id=1864839156]
+texture_repeat = 2
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0

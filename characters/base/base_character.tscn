@@ -6,7 +6,6 @@
 [ext_resource type="Script" uid="uid://egky2rorer21" path="res://characters/base/combat_system.gd" id="4_combat"]
 [ext_resource type="Script" uid="uid://cjtrrslysdsjg" path="res://characters/base/health_system.gd" id="5_health"]
 [ext_resource type="Script" uid="uid://4ufb2bnmtdxf" path="res://core/mechanic_system.gd" id="6_mech"]
-[ext_resource type="Script" uid="uid://b54gkma52kym2" path="res://characters/base/energy_system.gd" id="23_energy"]
 [ext_resource type="Texture2D" uid="uid://cokslyrhc56k4" path="res://assets/vfx/shadow.png" id="7_shadow"]
 [ext_resource type="Script" uid="uid://byfw7va54andk" path="res://characters/base/states/locomotion_state.gd" id="8_st_loc"]
 [ext_resource type="Script" uid="uid://d0nh2wxhj2rcg" path="res://characters/base/states/jump_state.gd" id="9_st_jump"]
@@ -21,7 +20,8 @@
 [ext_resource type="Script" uid="uid://ccyythl7g1rq2" path="res://characters/base/states/moving_state.gd" id="19_st_mvg"]
 [ext_resource type="Script" uid="uid://c608ylgheski4" path="res://characters/base/states/charge_state.gd" id="20_st_chg"]
 [ext_resource type="Script" uid="uid://b4v7ag8gycifr" path="res://characters/base/states/rush_state.gd" id="21_st_rush"]
-[ext_resource type="Script" path="res://characters/base/states/crouch_state.gd" id="22_st_crouch"]
+[ext_resource type="Script" uid="uid://bablvm4bjgf7c" path="res://characters/base/states/crouch_state.gd" id="22_st_crouch"]
+[ext_resource type="Script" uid="uid://b54gkma52kym2" path="res://characters/base/energy_system.gd" id="23_energy"]
 
 [sub_resource type="RectangleShape2D" id="shape_body"]
 
@@ -51,11 +51,13 @@ shape = SubResource("shape_body")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox" unique_id=1427200969]
 shape = SubResource("shape_hurtbox")
+debug_color = Color(0.16257921, 0.6326189, 0.36341304, 0.41960785)
 
 [node name="Hitbox" type="Area2D" parent="." unique_id=58032541]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox" unique_id=154712135]
 shape = SubResource("shape_hitbox")
+debug_color = Color(0.7, 0, 0.011666489, 0.41960785)
 
 [node name="FloorRay" type="RayCast2D" parent="." unique_id=1238651012]
 target_position = Vector2(0, 1000)
@@ -102,7 +104,7 @@ script = ExtResource("20_st_chg")
 [node name="rush" type="Node" parent="StateMachine" unique_id=2083430453]
 script = ExtResource("21_st_rush")
 
-[node name="crouch" type="Node" parent="StateMachine"]
+[node name="crouch" type="Node" parent="StateMachine" unique_id=1429974109]
 script = ExtResource("22_st_crouch")
 
 [node name="CombatSystem" type="Node" parent="." unique_id=897951449]
@@ -111,7 +113,7 @@ script = ExtResource("4_combat")
 [node name="HealthSystem" type="Node" parent="." unique_id=1849277534]
 script = ExtResource("5_health")
 
-[node name="EnergySystem" type="Node" parent="."]
+[node name="EnergySystem" type="Node" parent="." unique_id=1293422405]
 script = ExtResource("23_energy")
 
 [node name="MechanicSystem" type="Node" parent="." unique_id=922034658]

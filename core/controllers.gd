@@ -10,9 +10,10 @@ var jump_pressed: bool = false
 var dash_pressed: bool = false
 var block_pressed: bool = false
 var block_held: bool = false
-var attack_punch_pressed: bool = false
-var attack_kick_pressed: bool = false
-var attack_ki_pressed: bool = false
+var light_pressed: bool = false
+var medium_pressed: bool = false
+var heavy_pressed: bool = false
+var ki_pressed: bool = false
 var special_1_pressed: bool = false
 var special_2_pressed: bool = false
 var special_3_pressed: bool = false
@@ -39,9 +40,10 @@ class KeyboardController:
 		jump_pressed = Input.is_action_just_pressed("jump")
 		block_pressed = Input.is_action_just_pressed("block")
 		block_held = Input.is_action_pressed("block")
-		attack_punch_pressed = Input.is_action_just_pressed("attack_punch")
-		attack_kick_pressed = Input.is_action_just_pressed("attack_kick")
-		attack_ki_pressed = Input.is_action_just_pressed("attack_ki")
+		light_pressed = Input.is_action_just_pressed("attack_light")
+		medium_pressed = Input.is_action_just_pressed("attack_medium")
+		heavy_pressed = Input.is_action_just_pressed("attack_heavy")
+		ki_pressed = Input.is_action_just_pressed("attack_ki")
 		special_1_pressed = Input.is_action_just_pressed("special_1")
 		special_2_pressed = Input.is_action_just_pressed("special_2")
 		special_3_pressed = Input.is_action_just_pressed("special_3")
@@ -101,6 +103,6 @@ class AIController:
 		if randf() < 0.004:
 			jump_pressed = true
 		if dist < 150.0 and randf() < 0.05:
-			attack_punch_pressed = true
+			light_pressed = true
 		elif dist < 240.0 and randf() < 0.012:
-			attack_kick_pressed = true
+			medium_pressed = true
