@@ -2,10 +2,10 @@ extends Node
 ## Flujo de partida: guarda qué personajes pelean y en qué escenario,
 ## orquesta la pelea: instancia stage, fighters, HUD y debug.
 
-const Controllers := preload("res://core/controllers.gd")
+const Controllers := preload("res://core/character/controllers.gd")
 const HUDScene := preload("res://ui/hud/hud.tscn")
 const DebugScene := preload("res://ui/debug_overlay/debug_overlay.tscn")
-const FightManagerScene := preload("res://core/fight_manager.gd")
+const FightManagerScene := preload("res://core/game/fight_manager.gd")
 const AnnouncerScene := preload("res://ui/fight_announcer/fight_announcer.tscn")
 
 ## Roster de personajes disponibles. Agregar un personaje nuevo = agregar una entrada.

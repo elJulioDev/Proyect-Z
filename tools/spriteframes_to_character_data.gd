@@ -56,8 +56,8 @@ func _initialize() -> void:
 		return
 	f.store_string('''[gd_resource type="Resource" script_class="CharacterData" load_steps=3 format=3]
 
-[ext_resource type="Script" path="res://core/character_data.gd" id="1"]
-[ext_resource type="Script" path="res://core/anim_data.gd" id="2"]
+[ext_resource type="Script" path="res://core/resources/character_data.gd" id="1"]
+[ext_resource type="Script" path="res://core/resources/anim_data.gd" id="2"]
 
 [sub_resource type="Resource" script_class="AnimData" id="AnimData_1"]
 script = ExtResource("2")

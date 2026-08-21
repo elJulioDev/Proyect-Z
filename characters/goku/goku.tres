@@ -1,10 +1,10 @@
 [gd_resource type="Resource" script_class="CharacterData" format=3 uid="uid://derv6nxteoxo7"]
 
-[ext_resource type="Script" uid="uid://dbjvh4twsl1fo" path="res://core/character_data.gd" id="1_cdata"]
-[ext_resource type="Script" uid="uid://bpy31x5ooe18r" path="res://core/hitbox_keyframe.gd" id="2_6xbsd"]
-[ext_resource type="Script" uid="uid://3txiyue5yqb4" path="res://core/anim_data.gd" id="2_adata"]
-[ext_resource type="Script" uid="uid://dho4t7hl5pwit" path="res://core/attack_data.gd" id="3_atkdata"]
-[ext_resource type="Script" uid="uid://ccd5x01b4os3g" path="res://core/hurtbox_keyframe.gd" id="3_nl1d4"]
+[ext_resource type="Script" uid="uid://dbjvh4twsl1fo" path="res://core/resources/character_data.gd" id="1_cdata"]
+[ext_resource type="Script" uid="uid://bpy31x5ooe18r" path="res://core/resources/hitbox_keyframe.gd" id="2_6xbsd"]
+[ext_resource type="Script" uid="uid://3txiyue5yqb4" path="res://core/resources/anim_data.gd" id="2_adata"]
+[ext_resource type="Script" uid="uid://dho4t7hl5pwit" path="res://core/resources/attack_data.gd" id="3_atkdata"]
+[ext_resource type="Script" uid="uid://ccd5x01b4os3g" path="res://core/resources/hurtbox_keyframe.gd" id="3_nl1d4"]
 [ext_resource type="Texture2D" uid="uid://cegxpbm6fwa60" path="res://characters/goku/forms/spritesheet.png" id="4_sprite"]
 [ext_resource type="Texture2D" uid="uid://cpskulbkne3tk" path="res://characters/goku/icon.png" id="5_icon"]
 

@@ -9,7 +9,7 @@ const FLOAT_FALL_SPEED := 100.0
 const jump_velocity := -620.0
 const AIR_DASH_LIMIT := 1
 
-const Controllers := preload("res://core/controllers.gd")
+const Controllers := preload("res://core/character/controllers.gd")
 
 @export var character_data: CharacterData
 @export var controller: FighterController

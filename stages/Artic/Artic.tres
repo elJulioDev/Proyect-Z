@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="StageData" format=3 uid="uid://bske5qvrg4xpx"]
 
 [ext_resource type="Texture2D" uid="uid://bo4jndtdio02s" path="res://stages/Artic/Stage.png" id="1_kq17y"]
-[ext_resource type="Script" uid="uid://c7814rry63yk5" path="res://core/stage_data.gd" id="1_p4gqs"]
+[ext_resource type="Script" uid="uid://c7814rry63yk5" path="res://core/resources/stage_data.gd" id="1_p4gqs"]
 
 [resource]
 script = ExtResource("1_p4gqs")

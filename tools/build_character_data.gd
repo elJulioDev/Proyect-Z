@@ -16,7 +16,7 @@ func _initialize() -> void:
 	var out := args[1]
 	var fps := float(args[2]) if args.size() > 2 else 8.0
 
-	var data: CharacterData = load("res://core/character_data.gd").new()
+	var data: CharacterData = load("res://core/resources/character_data.gd").new()
 	data.id = sprite_dir.get_file()
 	data.display_name = sprite_dir.get_file()
 	data.sprite_dir = sprite_dir
@@ -29,7 +29,7 @@ func _initialize() -> void:
 	var anims: Array = d.get_directories()
 	anims.sort()
 	for anim_id in anims:
-		var ad: AnimData = load("res://core/anim_data.gd").new()
+		var ad: AnimData = load("res://core/resources/anim_data.gd").new()
 		ad.fps = fps
 		ad.loop = true
 		data.animations[anim_id] = ad
