@@ -1,11 +1,15 @@
 extends Control
 ## Herramienta visual: instancia BaseCharacter real para renderizar
-## exactamente como en gameplay. Ajusta hitbox/hurtbox/dust y guarda al .tres.
+## exactamente como en gameplay. Ajusta hitbox/hurtbox/dust y guarda al .tres
+## (y los offsets del dust al .gd correspondiente).
 
 const CharacterScene := preload("res://characters/base/base_character.tscn")
 
 const BASE_HITBOX_SIZE := Vector2(50, 40)
 const BASE_HURTBOX_SIZE := Vector2(30, 45)
+const MIN_BOX_SIZE := 4.0
+const HANDLE_MARGIN := 8.0
+const DUST_SCRIPT_PATH := "res://characters/base/dust_vfx.gd"
 
 
 var character_data: CharacterData
@@ -17,9 +21,6 @@ var _attacks: Array = []
 var _current_attack: AttackData = null
 var _hk_by_frame: Dictionary = {}
 var _hbk_by_frame: Dictionary = {}
-var _dragging := false
-var _drag_type := ""
-var _drag_offset := Vector2.ZERO
 var _show_hitbox := true
 var _show_hurtbox := true
 var _show_dust := true
@@ -28,10 +29,24 @@ var _current_dust := "dust1"
 var _playing := false
 var _floor_y := 45.0
 
-var _preview: SubViewport
-var _camera: Camera2D
+# --- Arrastre / redimensionado (hitbox, hurtbox y dust) ---
+var _dragging := false
+var _drag_kind: String = ""       # "hitbox" | "hurtbox" | "dust"
+var _drag_handle: String = ""     # "move","n","s","e","w","ne","nw","se","sw"
+var _drag_start_offset: Vector2 = Vector2.ZERO
+var _drag_start_size: Vector2 = Vector2.ZERO
+var _drag_start_mouse_world: Vector2 = Vector2.ZERO
+
+# --- Dust: reproducción y edición de frame ---
+var _dust_playing := false
+var _dust_play_accum := 0.0
+var _dust_frame_index := 0
+
 var _panning := false
 var _pan_start := Vector2.ZERO
+
+var _preview: SubViewport
+var _camera: Camera2D
 var _draw_node: Node2D
 var _floor_body: StaticBody2D
 var _frame_label: Label
@@ -39,9 +54,6 @@ var _anim_option: OptionButton
 var _attack_option: OptionButton
 var _info_label: Label
 var _hb_detail_label: Label
-var _dust_offset_x: SpinBox
-var _dust_offset_y: SpinBox
-var _dust_frame_offsets: TextEdit
 var _data_path_label: Label
 var _hb_size_x: SpinBox
 var _hb_size_y: SpinBox
@@ -56,6 +68,16 @@ var _hr_offset_y: SpinBox
 var _frame_offset_x: SpinBox
 var _frame_offset_y: SpinBox
 var _frame_offset_label: Label
+var _create_mode_option: OptionButton
+
+var _dust_offset_x: SpinBox
+var _dust_offset_y: SpinBox
+var _dust_frame_off_x: SpinBox
+var _dust_frame_off_y: SpinBox
+var _dust_frame_spin: SpinBox
+var _dust_play_btn: Button
+var _dust_edit_frame_toggle: CheckBox
+var _dust_info_label: Label
 
 
 func _ready() -> void:
@@ -163,7 +185,7 @@ func _build_ui() -> void:
 	_camera.make_current()
 
 	var right := VBoxContainer.new()
-	right.custom_minimum_size.x = 280
+	right.custom_minimum_size.x = 300
 	right.size_flags_horizontal = SIZE_EXPAND_FILL
 	split.add_child(right)
 	var scroll := ScrollContainer.new()
@@ -230,6 +252,18 @@ func _build_ui() -> void:
 	hrs.add_child(_lbl("X:")); hrs.add_child(_hr_size_x)
 	hrs.add_child(_lbl("Y:")); hrs.add_child(_hr_size_y)
 
+	inner.add_child(_lbl("Crear keyframe con Shift+Click como:"))
+	_create_mode_option = OptionButton.new()
+	_create_mode_option.add_item("Hitbox")
+	_create_mode_option.add_item("Hurtbox")
+	inner.add_child(_create_mode_option)
+
+	var drag_hint := Label.new()
+	drag_hint.text = "Arrastra el CENTRO de la caja para moverla. Arrastra un BORDE o ESQUINA para redimensionarla."
+	drag_hint.autowrap_mode = TextServer.AUTOWRAP_WORD
+	drag_hint.add_theme_font_size_override("font_size", 10)
+	inner.add_child(drag_hint)
+
 	var del := Button.new()
 	del.text = "Eliminar keyframe"
 	del.pressed.connect(_on_delete)
@@ -259,33 +293,70 @@ func _build_ui() -> void:
 	var ch3 := CheckBox.new()
 	ch3.text = "Visible"
 	ch3.button_pressed = true
-	ch3.toggled.connect(func(v): _show_dust = v; _draw_node.queue_redraw())
+	ch3.toggled.connect(func(v): _show_dust = v; _update_dust_preview(); _draw_node.queue_redraw())
 	dv.add_child(ch3)
 	var ds := HBoxContainer.new()
 	inner.add_child(ds)
+	ds.add_child(_lbl("Tipo:"))
 	_dust_option = OptionButton.new()
 	for dk in _dust_keys:
 		_dust_option.add_item(dk)
-	_dust_option.item_selected.connect(func(i): _current_dust = _dust_keys[i])
+	_dust_option.item_selected.connect(_on_dust_selected)
 	ds.add_child(_dust_option)
+	_dust_play_btn = Button.new()
+	_dust_play_btn.text = "Play"
+	_dust_play_btn.toggle_mode = true
+	_dust_play_btn.pressed.connect(_toggle_dust_play)
+	ds.add_child(_dust_play_btn)
+
+	var dfr := HBoxContainer.new()
+	inner.add_child(dfr)
+	dfr.add_child(_lbl("Frame dust:"))
+	_dust_frame_spin = _sb(0, 30, 0)
+	_dust_frame_spin.value_changed.connect(_on_dust_frame_changed)
+	dfr.add_child(_dust_frame_spin)
+
+	_dust_info_label = Label.new()
+	_dust_info_label.add_theme_font_size_override("font_size", 11)
+	inner.add_child(_dust_info_label)
+
+	inner.add_child(_lbl("Offset base:"))
 	var d_off := HBoxContainer.new()
 	inner.add_child(d_off)
-	d_off.add_child(_lbl("Offset:"))
-	_dust_offset_x = _sb(-500, 500, 0); _dust_offset_x.value_changed.connect(func(_v): _draw_node.queue_redraw())
-	_dust_offset_y = _sb(-500, 500, 0); _dust_offset_y.value_changed.connect(func(_v): _draw_node.queue_redraw())
-	d_off.add_child(_dust_offset_x); d_off.add_child(_dust_offset_y)
-	_dust_frame_offsets = TextEdit.new()
-	_dust_frame_offsets.custom_minimum_size.y = 60
-	_dust_frame_offsets.placeholder_text = "[Vector2(0,0), ...]"
-	inner.add_child(_lbl("Offsets por frame:"))
-	inner.add_child(_dust_frame_offsets)
+	_dust_offset_x = _sb(-500, 500, 0); _dust_offset_x.value_changed.connect(_on_dust_base_changed)
+	_dust_offset_y = _sb(-500, 500, 0); _dust_offset_y.value_changed.connect(_on_dust_base_changed)
+	d_off.add_child(_lbl("X:")); d_off.add_child(_dust_offset_x)
+	d_off.add_child(_lbl("Y:")); d_off.add_child(_dust_offset_y)
+
+	inner.add_child(_lbl("Offset extra del frame actual:"))
+	var d_foff := HBoxContainer.new()
+	inner.add_child(d_foff)
+	_dust_frame_off_x = _sb(-500, 500, 0); _dust_frame_off_x.value_changed.connect(_on_dust_frame_offset_changed)
+	_dust_frame_off_y = _sb(-500, 500, 0); _dust_frame_off_y.value_changed.connect(_on_dust_frame_offset_changed)
+	d_foff.add_child(_lbl("X:")); d_foff.add_child(_dust_frame_off_x)
+	d_foff.add_child(_lbl("Y:")); d_foff.add_child(_dust_frame_off_y)
+
+	_dust_edit_frame_toggle = CheckBox.new()
+	_dust_edit_frame_toggle.text = "Arrastrar ajusta el offset del FRAME (no el base)"
+	inner.add_child(_dust_edit_frame_toggle)
+
+	var dust_hint := Label.new()
+	dust_hint.text = "Arrastra el marcador amarillo en la vista para mover el offset."
+	dust_hint.autowrap_mode = TextServer.AUTOWRAP_WORD
+	dust_hint.add_theme_font_size_override("font_size", 10)
+	inner.add_child(dust_hint)
+
+	var save_dust_btn := Button.new()
+	save_dust_btn.text = "Guardar Dust en dust_vfx.gd"
+	save_dust_btn.pressed.connect(_on_save_dust)
+	inner.add_child(save_dust_btn)
 	inner.add_child(HSeparator.new())
 
 	var fb := HBoxContainer.new()
 	inner.add_child(fb)
 	fb.add_child(_lbl("Floor Y: "))
 	_floor_spin = _sb(0, 400, 45)
-	_floor_spin.value_changed.connect(func(v): _floor_y = v; _draw_node.queue_redraw())
+	_floor_spin.value_changed.connect(func(v): _floor_y = v; _update_dust_preview(); _draw_node.queue_redraw())
 	fb.add_child(_floor_spin)
 	inner.add_child(HSeparator.new())
 
@@ -370,7 +441,7 @@ func _spawn_character() -> void:
 	if not (_character is BaseCharacter):
 		push_error("La escena instanciada no es BaseCharacter — revisa que base_character.gd compile sin errores")
 		return
-	# DESPUÉS de add_child: _ready() ya corrió (animator.setup, state_machine)
+	# DESPUÉS de add_child: _ready() ya corrió (animator.setup, state_machine, dust_vfx)
 	# Congelar física y estado
 	_character.set_physics_process(false)
 	_character.velocity = Vector2.ZERO
@@ -386,6 +457,10 @@ func _spawn_character() -> void:
 	# Posicionar sombra directamente (FloorRay puede no colisionar en SubViewport)
 	_update_shadow_tool()
 	_current_frame = 0
+	_dust_frame_index = 0
+	if _character.dust_vfx:
+		_character.dust_vfx.preview_hide()
+	_sync_dust_ui()
 	_update_frame_label()
 	_draw_node.queue_redraw()
 
@@ -461,13 +536,39 @@ func _toggle_play() -> void:
 		_draw_node.queue_redraw()
 
 
-func _process(_delta: float) -> void:
+func _toggle_dust_play() -> void:
+	_dust_playing = not _dust_playing
+	_dust_play_accum = 0.0
+
+
+func _process(delta: float) -> void:
 	if _playing and _character and _character.animator:
 		if _character.animator.is_playing():
 			_current_frame = _character.animator.frame
 			_update_shadow_tool()
 			_update_frame_label()
 			_update_frame_info()
+			_draw_node.queue_redraw()
+
+	if _dust_playing and _character and _character.dust_vfx:
+		var dvfx := _character.dust_vfx
+		var fps := dvfx.get_dust_fps(_current_dust)
+		var count := dvfx.get_dust_frame_count(_current_dust)
+		if count > 0 and fps > 0.0:
+			_dust_play_accum += delta
+			var frame_time := 1.0 / fps
+			var loop := dvfx.get_dust_loop(_current_dust)
+			while _dust_play_accum >= frame_time:
+				_dust_play_accum -= frame_time
+				_dust_frame_index += 1
+				if _dust_frame_index >= count:
+					if loop:
+						_dust_frame_index = 0
+					else:
+						_dust_frame_index = count - 1
+						_dust_playing = false
+			_dust_frame_spin.set_value_no_signal(_dust_frame_index)
+			_update_dust_preview()
 			_draw_node.queue_redraw()
 
 
@@ -482,12 +583,9 @@ func _update_shadow_tool() -> void:
 		return
 	var sc: Vector2 = _character.scale
 	var tex_h: float = tex.get_size().y
-	# Pies del sprite: Animator en (0, -22.5) local, sprite centered
-	# pies_y = character.y + (animator_local_y * sc.y) + (tex_h * sc.y / 2)
 	var feet_y: float = _character.global_position.y + (-22.5 * sc.y) + (tex_h * sc.y / 2.0)
 	_character.shadow_sprite.visible = true
 	_character.shadow_sprite.global_position = Vector2(_character.global_position.x, feet_y)
-	# Escala y alpha según distancia al suelo
 	var floor_y: float = _character.global_position.y + _floor_y
 	var distance := absf(_character.global_position.y - floor_y)
 	var ratio := clampf(distance / _character.max_jump_height, 0.0, 1.0)
@@ -537,21 +635,22 @@ func _update_frame_info() -> void:
 		d += "\nHR: sin keyframe"
 	_hb_detail_label.text = d
 
+	# IMPORTANTE: set_value_no_signal, no ".value =" — de lo contrario cada
+	# navegación de frame disparaba _sync_hb/_sync_hr y creaba keyframes solos.
 	if hk:
-		_hb_offset_x.value = hk.offset.x; _hb_offset_y.value = hk.offset.y
-		_hb_size_x.value = hk.size.x; _hb_size_y.value = hk.size.y
+		_hb_offset_x.set_value_no_signal(hk.offset.x); _hb_offset_y.set_value_no_signal(hk.offset.y)
+		_hb_size_x.set_value_no_signal(hk.size.x); _hb_size_y.set_value_no_signal(hk.size.y)
 	else:
-		_hb_offset_x.value = _current_attack.hitbox_offset.x if _current_attack else 0.0
-		_hb_offset_y.value = _current_attack.hitbox_offset.y if _current_attack else 0.0
-		_hb_size_x.value = BASE_HITBOX_SIZE.x; _hb_size_y.value = BASE_HITBOX_SIZE.y
+		_hb_offset_x.set_value_no_signal(_current_attack.hitbox_offset.x if _current_attack else 0.0)
+		_hb_offset_y.set_value_no_signal(_current_attack.hitbox_offset.y if _current_attack else 0.0)
+		_hb_size_x.set_value_no_signal(BASE_HITBOX_SIZE.x); _hb_size_y.set_value_no_signal(BASE_HITBOX_SIZE.y)
 	if hbk:
-		_hr_offset_x.value = hbk.offset.x; _hr_offset_y.value = hbk.offset.y
-		_hr_size_x.value = hbk.size.x; _hr_size_y.value = hbk.size.y
+		_hr_offset_x.set_value_no_signal(hbk.offset.x); _hr_offset_y.set_value_no_signal(hbk.offset.y)
+		_hr_size_x.set_value_no_signal(hbk.size.x); _hr_size_y.set_value_no_signal(hbk.size.y)
 	else:
-		_hr_offset_x.value = 0.0; _hr_offset_y.value = 0.0
-		_hr_size_x.value = BASE_HURTBOX_SIZE.x; _hr_size_y.value = BASE_HURTBOX_SIZE.y
+		_hr_offset_x.set_value_no_signal(0.0); _hr_offset_y.set_value_no_signal(0.0)
+		_hr_size_x.set_value_no_signal(BASE_HURTBOX_SIZE.x); _hr_size_y.set_value_no_signal(BASE_HURTBOX_SIZE.y)
 
-	# Offset del sprite (AnimData.offsets)
 	if character_data and character_data.animations.has(_current_anim):
 		var anim: AnimData = character_data.animations[_current_anim]
 		_frame_offset_label.text = "Frame %d / %d (de %d)" % [_current_frame, anim.offsets.size(), anim.frames.size()]
@@ -571,11 +670,191 @@ func _sync_frame_offset(_v: float) -> void:
 	if character_data == null or not character_data.animations.has(_current_anim):
 		return
 	var anim: AnimData = character_data.animations[_current_anim]
-	# Asegurar que el array offsets cubra este frame
 	while anim.offsets.size() <= _current_frame:
 		anim.offsets.append(Vector2.ZERO)
 	anim.offsets[_current_frame] = Vector2(_frame_offset_x.value, _frame_offset_y.value)
 	_draw_node.queue_redraw()
+
+
+# ─── Dust: sincronización y preview ─────────────────────────────────────────
+
+func _get_dust_world_pos() -> Vector2:
+	if _character == null or _character.dust_vfx == null:
+		return Vector2.ZERO
+	var cp := _character.global_position
+	var anchor := Vector2(cp.x, cp.y + _floor_y)
+	return anchor + _character.dust_vfx.get_preview_offset(_current_dust, _dust_frame_index)
+
+
+func _update_dust_preview() -> void:
+	if _character == null or _character.dust_vfx == null:
+		return
+	if not _show_dust:
+		_character.dust_vfx.preview_hide()
+		return
+	var cp := _character.global_position
+	var anchor := Vector2(cp.x, cp.y + _floor_y)
+	_character.dust_vfx.preview_show(_current_dust, _dust_frame_index, anchor)
+
+
+func _sync_dust_ui() -> void:
+	if _character == null or _character.dust_vfx == null:
+		return
+	var dvfx := _character.dust_vfx
+	dvfx.ensure_frame_offsets(_current_dust)
+	var base: Vector2 = dvfx.base_offsets.get(_current_dust, Vector2.ZERO)
+	_dust_offset_x.set_value_no_signal(base.x)
+	_dust_offset_y.set_value_no_signal(base.y)
+	var count := dvfx.get_dust_frame_count(_current_dust)
+	_dust_frame_spin.max_value = maxf(0, count - 1)
+	_dust_frame_index = clampi(_dust_frame_index, 0, maxi(count - 1, 0))
+	_dust_frame_spin.set_value_no_signal(_dust_frame_index)
+	var arr: Array = dvfx.frame_offsets.get(_current_dust, [])
+	var extra: Vector2 = arr[_dust_frame_index] if _dust_frame_index < arr.size() else Vector2.ZERO
+	_dust_frame_off_x.set_value_no_signal(extra.x)
+	_dust_frame_off_y.set_value_no_signal(extra.y)
+	_dust_info_label.text = "%s | frame %d/%d | fps=%.0f | loop=%s" % [
+		_current_dust, _dust_frame_index, maxi(count - 1, 0), dvfx.get_dust_fps(_current_dust), dvfx.get_dust_loop(_current_dust)]
+	_update_dust_preview()
+
+
+func _on_dust_selected(i: int) -> void:
+	_current_dust = _dust_keys[i]
+	_dust_frame_index = 0
+	_sync_dust_ui()
+	_draw_node.queue_redraw()
+
+
+func _on_dust_frame_changed(v: float) -> void:
+	_dust_frame_index = int(v)
+	_sync_dust_ui()
+	_draw_node.queue_redraw()
+
+
+func _on_dust_base_changed(_v: float) -> void:
+	if _character == null or _character.dust_vfx == null:
+		return
+	_character.dust_vfx.base_offsets[_current_dust] = Vector2(_dust_offset_x.value, _dust_offset_y.value)
+	_update_dust_preview()
+	_draw_node.queue_redraw()
+
+
+func _on_dust_frame_offset_changed(_v: float) -> void:
+	if _character == null or _character.dust_vfx == null:
+		return
+	var dvfx := _character.dust_vfx
+	dvfx.ensure_frame_offsets(_current_dust)
+	dvfx.frame_offsets[_current_dust][_dust_frame_index] = Vector2(_dust_frame_off_x.value, _dust_frame_off_y.value)
+	_update_dust_preview()
+	_draw_node.queue_redraw()
+
+
+func _on_save_dust() -> void:
+	if _character == null or _character.dust_vfx == null:
+		_info_label.text = "No hay personaje cargado"
+		return
+	var dvfx := _character.dust_vfx
+	var f := FileAccess.open(DUST_SCRIPT_PATH, FileAccess.READ)
+	if f == null:
+		_info_label.text = "No se pudo leer dust_vfx.gd"
+		return
+	var text := f.get_as_text()
+	f = null
+	text = _replace_gd_dict_block(text, "base_offsets", _format_vec2_dict(dvfx.base_offsets))
+	text = _replace_gd_dict_block(text, "frame_offsets", _format_vec2_array_dict(dvfx.frame_offsets))
+	var out := FileAccess.open(DUST_SCRIPT_PATH, FileAccess.WRITE)
+	if out == null:
+		_info_label.text = "No se pudo escribir dust_vfx.gd"
+		return
+	out.store_string(text)
+	out = null
+	_info_label.text = "Dust guardado en dust_vfx.gd (reinicia el juego para verlo en runtime)"
+
+
+func _fmt_num(n: float) -> String:
+	if is_equal_approx(n, roundf(n)):
+		return str(int(roundf(n)))
+	return str(n)
+
+
+func _format_vec2_dict(d: Dictionary) -> String:
+	var keys := d.keys()
+	keys.sort()
+	var lines: PackedStringArray = []
+	for k in keys:
+		var v: Vector2 = d[k]
+		lines.append('\t"%s": Vector2(%s, %s),' % [k, _fmt_num(v.x), _fmt_num(v.y)])
+	return "\n".join(lines)
+
+
+func _format_vec2_array_dict(d: Dictionary) -> String:
+	var keys := d.keys()
+	keys.sort()
+	var lines: PackedStringArray = []
+	for k in keys:
+		var arr: Array = d[k]
+		var items: PackedStringArray = []
+		for v in arr:
+			items.append("Vector2(%s, %s)" % [_fmt_num(v.x), _fmt_num(v.y)])
+		lines.append('\t"%s": [%s],' % [k, ", ".join(items)])
+	return "\n".join(lines)
+
+
+## Reemplaza el contenido de "var <var_name> := { ... }" en un script .gd,
+## respetando llaves anidadas (busca la llave de cierre balanceada).
+func _replace_gd_dict_block(text: String, var_name: String, new_inner: String) -> String:
+	var marker := "var %s" % var_name
+	var start := text.find(marker)
+	if start == -1:
+		return text
+	var brace_start := text.find("{", start)
+	if brace_start == -1:
+		return text
+	var depth := 0
+	var i := brace_start
+	var brace_end := -1
+	while i < text.length():
+		var c := text[i]
+		if c == "{":
+			depth += 1
+		elif c == "}":
+			depth -= 1
+			if depth == 0:
+				brace_end = i
+				break
+		i += 1
+	if brace_end == -1:
+		return text
+	var before := text.substr(0, brace_start + 1)
+	var after := text.substr(brace_end)
+	var body := ("\n" + new_inner + "\n") if new_inner.strip_edges() != "" else ""
+	return before + body + after
+
+
+# ─── Render overlay (hitbox / hurtbox / dust) ───────────────────────────────
+
+func _get_hb_rect_world(cp: Vector2, sc: Vector2, facing: float) -> Rect2:
+	var hk: HitboxKeyframe = _hk_by_frame.get(_current_frame, null)
+	var off := Vector2.ZERO
+	var sz := BASE_HITBOX_SIZE
+	if hk:
+		off = hk.offset; sz = hk.size
+	elif _current_attack:
+		off = _current_attack.hitbox_offset; sz = BASE_HITBOX_SIZE * _current_attack.hitbox_scale
+	var center := cp + Vector2(off.x * facing, off.y) * sc
+	var size := sz * sc
+	return Rect2(center - size * 0.5, size)
+
+
+func _get_hr_rect_world(cp: Vector2, sc: Vector2, facing: float) -> Rect2:
+	var hbk: HurtboxKeyframe = _hbk_by_frame.get(_current_frame, null)
+	var off := Vector2.ZERO
+	var sz := BASE_HURTBOX_SIZE
+	if hbk:
+		off = hbk.offset; sz = hbk.size
+	var center := cp + Vector2(off.x * facing, off.y) * sc
+	var size := sz * sc
+	return Rect2(center - size * 0.5, size)
 
 
 func _render_overlay(d: Node2D) -> void:
@@ -587,45 +866,43 @@ func _render_overlay(d: Node2D) -> void:
 
 	d.draw_line(Vector2(0, cp.y + _floor_y), Vector2(640, cp.y + _floor_y), Color(1, 1, 1, 0.15), 1.0)
 
-	var hk: HitboxKeyframe = _hk_by_frame.get(_current_frame, null)
-	var hbk: HurtboxKeyframe = _hbk_by_frame.get(_current_frame, null)
+	if _show_hitbox:
+		var hb_rect := _get_hb_rect_world(cp, sc, facing)
+		var hk: HitboxKeyframe = _hk_by_frame.get(_current_frame, null)
+		var active := hk.active if hk else true
+		if active:
+			d.draw_rect(hb_rect, Color(1, 0, 0, 0.45), true)
+			d.draw_rect(hb_rect, Color(1, 0.3, 0.3, 0.9), false, 1.5)
+			_draw_handles(d, hb_rect, Color(1, 0.6, 0.6))
 
-	var hb_off := Vector2.ZERO; var hb_sz := BASE_HITBOX_SIZE; var hb_active := true
-	if hk:
-		hb_off = hk.offset; hb_sz = hk.size; hb_active = hk.active
-	elif _current_attack:
-		hb_off = _current_attack.hitbox_offset; hb_sz = BASE_HITBOX_SIZE * _current_attack.hitbox_scale
-
-	var hr_off := Vector2.ZERO; var hr_sz := BASE_HURTBOX_SIZE
-	if hbk:
-		hr_off = hbk.offset; hr_sz = hbk.size
-
-	# Replicar exactamente attack_state: position = offset * facing, luego escala del CharacterBody2D
-	var hb_pos := cp + Vector2(hb_off.x * facing, hb_off.y) * sc
-	var hb_size := hb_sz * sc
-	if _show_hitbox and hb_active:
-		var r := Rect2(hb_pos - hb_size * 0.5, hb_size)
-		d.draw_rect(r, Color(1, 0, 0, 0.45), true)
-		d.draw_rect(r, Color(1, 0.3, 0.3, 0.9), false, 1.5)
-
-	var hr_pos := cp + Vector2(hr_off.x * facing, hr_off.y) * sc
-	var hr_size := hr_sz * sc
 	if _show_hurtbox:
-		var r := Rect2(hr_pos - hr_size * 0.5, hr_size)
-		d.draw_rect(r, Color(0.2, 0.8, 0.2, 0.3), true)
-		d.draw_rect(r, Color(0.3, 1, 0.3, 0.8), false, 1.5)
+		var hr_rect := _get_hr_rect_world(cp, sc, facing)
+		d.draw_rect(hr_rect, Color(0.2, 0.8, 0.2, 0.3), true)
+		d.draw_rect(hr_rect, Color(0.3, 1, 0.3, 0.8), false, 1.5)
+		_draw_handles(d, hr_rect, Color(0.6, 1, 0.6))
 
-	if _show_dust:
-		var feet := Vector2(cp.x, cp.y + _floor_y)
-		var off := Vector2(_dust_offset_x.value, _dust_offset_y.value)
-		var pos := feet + off
-		d.draw_line(pos - Vector2(8, 0), pos + Vector2(8, 0), Color.YELLOW, 1.5)
-		d.draw_line(pos - Vector2(0, 8), pos + Vector2(0, 8), Color.YELLOW, 1.5)
-		d.draw_string(ThemeDB.fallback_font, pos + Vector2(10, -5), _current_dust, HORIZONTAL_ALIGNMENT_LEFT, -1, 10, Color.YELLOW)
+	if _show_dust and _character.dust_vfx:
+		var dust_pos := _get_dust_world_pos()
+		d.draw_line(dust_pos - Vector2(8, 0), dust_pos + Vector2(8, 0), Color.YELLOW, 1.5)
+		d.draw_line(dust_pos - Vector2(0, 8), dust_pos + Vector2(0, 8), Color.YELLOW, 1.5)
+		d.draw_string(ThemeDB.fallback_font, dust_pos + Vector2(10, -5), _current_dust, HORIZONTAL_ALIGNMENT_LEFT, -1, 10, Color.YELLOW)
 
+
+func _draw_handles(d: Node2D, rect: Rect2, color: Color) -> void:
+	var s := 5.0
+	var pts := [
+		rect.position,
+		Vector2(rect.position.x + rect.size.x, rect.position.y),
+		Vector2(rect.position.x, rect.position.y + rect.size.y),
+		rect.position + rect.size,
+	]
+	for p in pts:
+		d.draw_rect(Rect2(p - Vector2(s, s) * 0.5, Vector2(s, s)), color, true)
+
+
+# ─── Input del viewport: pan/zoom + drag/resize de hitbox/hurtbox/dust ──────
 
 func _on_viewport_input(event: InputEvent) -> void:
-	# Zoom con rueda del mouse
 	if event is InputEventMouseButton:
 		var mb: InputEventMouseButton = event
 		if mb.button_index == MOUSE_BUTTON_WHEEL_UP:
@@ -636,7 +913,6 @@ func _on_viewport_input(event: InputEvent) -> void:
 			_camera.zoom /= 1.1
 			_camera.zoom = _camera.zoom.clamp(Vector2(0.1, 0.1), Vector2(10, 10))
 			return
-		# Pan con botón medio
 		elif mb.button_index == MOUSE_BUTTON_MIDDLE:
 			if mb.pressed:
 				_panning = true
@@ -644,14 +920,12 @@ func _on_viewport_input(event: InputEvent) -> void:
 			else:
 				_panning = false
 			return
-	# Pan con movimiento + botón medio
 	if event is InputEventMouseMotion and _panning:
 		var mm: InputEventMouseMotion = event
 		var delta: Vector2 = (_pan_start - mm.position) / _camera.zoom
 		_camera.position += delta
 		_pan_start = mm.position
 		return
-	# Hitbox/hurtbox drag con botón izquierdo
 	if event is InputEventMouseButton:
 		var mb: InputEventMouseButton = event
 		var world := _screen_to_world(mb.position)
@@ -663,6 +937,8 @@ func _on_viewport_input(event: InputEvent) -> void:
 				_try_drag(world, cp)
 		elif not mb.pressed and mb.button_index == MOUSE_BUTTON_LEFT:
 			_dragging = false
+			_drag_kind = ""
+			_drag_handle = ""
 	elif event is InputEventMouseMotion and _dragging:
 		_do_drag(_screen_to_world(event.position))
 
@@ -677,18 +953,25 @@ func _create_kf(local: Vector2, cp: Vector2) -> void:
 	if _current_attack == null:
 		return
 	var sc := _character.scale if _character else Vector2.ONE
-	var facing := 1.0 if _character and _character.facing_right else 1.0
 	var off := (local - cp) / sc
-	off = Vector2(off.x / facing, off.y)
-	if not _hk_by_frame.has(_current_frame):
+	off = Vector2(roundf(off.x), roundf(off.y))
+	var mode := _create_mode_option.selected if _create_mode_option else 0
+	if mode == 0:
+		if _hk_by_frame.has(_current_frame):
+			return
 		var hk := HitboxKeyframe.new()
-		hk.frame = _current_frame; hk.offset = off
-		hk.size = Vector2(_hb_size_x.value, _hb_size_y.value); hk.active = true
+		hk.frame = _current_frame
+		hk.offset = off
+		hk.size = Vector2(_hb_size_x.value, _hb_size_y.value)
+		hk.active = true
 		_current_attack.hitbox_keyframes.append(hk)
 		_hk_by_frame[_current_frame] = hk
-	elif not _hbk_by_frame.has(_current_frame):
+	else:
+		if _hbk_by_frame.has(_current_frame):
+			return
 		var hbk := HurtboxKeyframe.new()
-		hbk.frame = _current_frame; hbk.offset = off
+		hbk.frame = _current_frame
+		hbk.offset = off
 		hbk.size = Vector2(_hr_size_x.value, _hr_size_y.value)
 		_current_attack.hurtbox_keyframes.append(hbk)
 		_hbk_by_frame[_current_frame] = hbk
@@ -696,44 +979,152 @@ func _create_kf(local: Vector2, cp: Vector2) -> void:
 	_draw_node.queue_redraw()
 
 
+func _handle_at_rect(local: Vector2, rect: Rect2) -> String:
+	var margin: float = HANDLE_MARGIN / _camera.zoom.x
+	var l := rect.position.x
+	var r := rect.position.x + rect.size.x
+	var t := rect.position.y
+	var b := rect.position.y + rect.size.y
+	var near_l := absf(local.x - l) <= margin
+	var near_r := absf(local.x - r) <= margin
+	var near_t := absf(local.y - t) <= margin
+	var near_b := absf(local.y - b) <= margin
+	var within_x := local.x >= l - margin and local.x <= r + margin
+	var within_y := local.y >= t - margin and local.y <= b + margin
+	if not (within_x and within_y):
+		return ""
+	if near_l and near_t: return "nw"
+	if near_r and near_t: return "ne"
+	if near_l and near_b: return "sw"
+	if near_r and near_b: return "se"
+	if near_l: return "w"
+	if near_r: return "e"
+	if near_t: return "n"
+	if near_b: return "s"
+	if rect.has_point(local): return "move"
+	return ""
+
+
+func _start_drag(kind: String, handle: String, offset: Vector2, size: Vector2, mouse_world: Vector2) -> void:
+	_dragging = true
+	_drag_kind = kind
+	_drag_handle = handle
+	_drag_start_offset = offset
+	_drag_start_size = size
+	_drag_start_mouse_world = mouse_world
+
+
 func _try_drag(local: Vector2, cp: Vector2) -> void:
-	var sc := _character.scale if _character else Vector2.ONE
-	var facing := 1.0 if _character and _character.facing_right else 1.0
+	if _character == null:
+		return
+	var sc := _character.scale
+	var facing := 1.0 if _character.facing_right else -1.0
+
 	if _show_hurtbox and _hbk_by_frame.has(_current_frame):
-		var hbk: HurtboxKeyframe = _hbk_by_frame[_current_frame]
-		var center := cp + Vector2(hbk.offset.x * facing, hbk.offset.y) * sc
-		var sz := hbk.size * sc
-		var r := Rect2(center - sz * 0.5, sz)
-		if r.has_point(local):
-			_dragging = true; _drag_type = "hurtbox"
-			_drag_offset = local - center
+		var hr_rect := _get_hr_rect_world(cp, sc, facing)
+		var handle := _handle_at_rect(local, hr_rect)
+		if handle != "":
+			var hbk = _hbk_by_frame[_current_frame]
+			_start_drag("hurtbox", handle, hbk.offset, hbk.size, local)
 			return
+
 	if _show_hitbox and _hk_by_frame.has(_current_frame):
-		var hk: HitboxKeyframe = _hk_by_frame[_current_frame]
-		var center := cp + Vector2(hk.offset.x * facing, hk.offset.y) * sc
-		var sz := hk.size * sc
-		var r := Rect2(center - sz * 0.5, sz)
-		if r.has_point(local):
-			_dragging = true; _drag_type = "hitbox"
-			_drag_offset = local - center
+		var hb_rect := _get_hb_rect_world(cp, sc, facing)
+		var handle := _handle_at_rect(local, hb_rect)
+		if handle != "":
+			var hk = _hk_by_frame[_current_frame]
+			_start_drag("hitbox", handle, hk.offset, hk.size, local)
+			return
+
+	if _show_dust and _character.dust_vfx:
+		var dust_pos := _get_dust_world_pos()
+		var margin: float = 12.0 / _camera.zoom.x
+		if local.distance_to(dust_pos) <= margin:
+			var dvfx := _character.dust_vfx
+			dvfx.ensure_frame_offsets(_current_dust)
+			var base: Vector2 = dvfx.base_offsets.get(_current_dust, Vector2.ZERO)
+			var arr: Array = dvfx.frame_offsets.get(_current_dust, [])
+			var extra: Vector2 = arr[_dust_frame_index] if _dust_frame_index < arr.size() else Vector2.ZERO
+			_start_drag("dust", "move", base, extra, local)
 			return
 
 
 func _do_drag(local: Vector2) -> void:
 	if _character == null:
 		return
-	var cp := _character.global_position
+	if _drag_kind == "hitbox" or _drag_kind == "hurtbox":
+		_do_drag_box(local)
+	elif _drag_kind == "dust":
+		_do_drag_dust(local)
+
+
+func _do_drag_box(local: Vector2) -> void:
+	var kf = _hk_by_frame.get(_current_frame, null) if _drag_kind == "hitbox" else _hbk_by_frame.get(_current_frame, null)
+	if kf == null:
+		return
 	var sc := _character.scale
-	var facing := 1.0 if _character.facing_right else -1.0
-	var center := local - _drag_offset
-	var no := (center - cp) / sc
-	no = Vector2(no.x / facing, no.y)
-	no = Vector2(roundi(no.x), roundi(no.y))
-	if _drag_type == "hitbox" and _hk_by_frame.has(_current_frame):
-		_hk_by_frame[_current_frame].offset = no
-	elif _drag_type == "hurtbox" and _hbk_by_frame.has(_current_frame):
-		_hbk_by_frame[_current_frame].offset = no
+	var world_delta := local - _drag_start_mouse_world
+	var dd := Vector2(world_delta.x / sc.x, world_delta.y / sc.y)
+	var new_offset := _drag_start_offset
+	var new_size := _drag_start_size
+	match _drag_handle:
+		"move":
+			new_offset = _drag_start_offset + dd
+		"e":
+			new_size.x = maxf(_drag_start_size.x + dd.x, MIN_BOX_SIZE)
+			new_offset.x = _drag_start_offset.x + dd.x * 0.5
+		"w":
+			new_size.x = maxf(_drag_start_size.x - dd.x, MIN_BOX_SIZE)
+			new_offset.x = _drag_start_offset.x + dd.x * 0.5
+		"s":
+			new_size.y = maxf(_drag_start_size.y + dd.y, MIN_BOX_SIZE)
+			new_offset.y = _drag_start_offset.y + dd.y * 0.5
+		"n":
+			new_size.y = maxf(_drag_start_size.y - dd.y, MIN_BOX_SIZE)
+			new_offset.y = _drag_start_offset.y + dd.y * 0.5
+		"se":
+			new_size.x = maxf(_drag_start_size.x + dd.x, MIN_BOX_SIZE)
+			new_size.y = maxf(_drag_start_size.y + dd.y, MIN_BOX_SIZE)
+			new_offset = _drag_start_offset + dd * 0.5
+		"sw":
+			new_size.x = maxf(_drag_start_size.x - dd.x, MIN_BOX_SIZE)
+			new_size.y = maxf(_drag_start_size.y + dd.y, MIN_BOX_SIZE)
+			new_offset.x = _drag_start_offset.x + dd.x * 0.5
+			new_offset.y = _drag_start_offset.y + dd.y * 0.5
+		"ne":
+			new_size.x = maxf(_drag_start_size.x + dd.x, MIN_BOX_SIZE)
+			new_size.y = maxf(_drag_start_size.y - dd.y, MIN_BOX_SIZE)
+			new_offset.x = _drag_start_offset.x + dd.x * 0.5
+			new_offset.y = _drag_start_offset.y + dd.y * 0.5
+		"nw":
+			new_size.x = maxf(_drag_start_size.x - dd.x, MIN_BOX_SIZE)
+			new_size.y = maxf(_drag_start_size.y - dd.y, MIN_BOX_SIZE)
+			new_offset = _drag_start_offset + dd * 0.5
+	new_offset = Vector2(roundf(new_offset.x), roundf(new_offset.y))
+	new_size = Vector2(roundf(new_size.x), roundf(new_size.y))
+	kf.offset = new_offset
+	kf.size = new_size
 	_update_frame_info()
+	_draw_node.queue_redraw()
+
+
+func _do_drag_dust(local: Vector2) -> void:
+	var dvfx := _character.dust_vfx
+	var world_delta := local - _drag_start_mouse_world
+	if _dust_edit_frame_toggle.button_pressed:
+		dvfx.ensure_frame_offsets(_current_dust)
+		var new_extra: Vector2 = _drag_start_size + world_delta
+		new_extra = Vector2(roundf(new_extra.x), roundf(new_extra.y))
+		dvfx.frame_offsets[_current_dust][_dust_frame_index] = new_extra
+		_dust_frame_off_x.set_value_no_signal(new_extra.x)
+		_dust_frame_off_y.set_value_no_signal(new_extra.y)
+	else:
+		var new_base: Vector2 = _drag_start_offset + world_delta
+		new_base = Vector2(roundf(new_base.x), roundf(new_base.y))
+		dvfx.base_offsets[_current_dust] = new_base
+		_dust_offset_x.set_value_no_signal(new_base.x)
+		_dust_offset_y.set_value_no_signal(new_base.y)
+	_update_dust_preview()
 	_draw_node.queue_redraw()
 
 

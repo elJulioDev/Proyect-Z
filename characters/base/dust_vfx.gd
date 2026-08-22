@@ -95,6 +95,69 @@ func trigger_charge(character: BaseCharacter) -> void:
 	_check_floor_proximity()
 
 
+## ─── Soporte para tools/character_tool ─────────────────────────────────────
+## Muestra un frame concreto de un dust sin animar, para edición visual.
+## No usa la lógica de proximidad al suelo: la posición la controla el tool.
+func preview_show(key: String, frame_idx: int, anchor_global_pos: Vector2) -> void:
+	if key not in _sprites:
+		return
+	for k in _sprites:
+		_sprites[k].visible = (k == key)
+	var sprite: AnimatedSprite2D = _sprites[key]
+	var cfg: Dictionary = DUST_CONFIG[key]
+	sprite.stop()
+	sprite.animation = "charge_dust"
+	sprite.frame = clampi(frame_idx, 0, cfg["num_sprites"] - 1)
+	var base_off: Vector2 = base_offsets.get(key, Vector2.ZERO)
+	var extra_off := Vector2.ZERO
+	var arr: Array = frame_offsets.get(key, [])
+	if frame_idx >= 0 and frame_idx < arr.size():
+		extra_off = arr[frame_idx]
+	sprite.position = base_off + extra_off + Vector2(0, cfg["frame_h"] * 0.5)
+	global_position = anchor_global_pos
+
+
+func preview_hide() -> void:
+	for k in _sprites:
+		_sprites[k].visible = false
+
+
+func get_dust_frame_count(key: String) -> int:
+	return DUST_CONFIG[key]["num_sprites"] if key in DUST_CONFIG else 0
+
+
+func get_dust_fps(key: String) -> float:
+	return DUST_CONFIG[key]["fps"] if key in DUST_CONFIG else 12.0
+
+
+func get_dust_loop(key: String) -> bool:
+	return DUST_CONFIG[key].get("loop", false) if key in DUST_CONFIG else false
+
+
+## Offset "editable" (base + extra de frame), sin el corrimiento interno de
+## medio-alto que se aplica solo al sprite visual. Es lo que muestra el tool.
+func get_preview_offset(key: String, frame_idx: int) -> Vector2:
+	var base_off: Vector2 = base_offsets.get(key, Vector2.ZERO)
+	var extra_off := Vector2.ZERO
+	var arr: Array = frame_offsets.get(key, [])
+	if frame_idx >= 0 and frame_idx < arr.size():
+		extra_off = arr[frame_idx]
+	return base_off + extra_off
+
+
+## Asegura que frame_offsets[key] tenga tamaño suficiente para escribir en él.
+func ensure_frame_offsets(key: String) -> void:
+	var count := get_dust_frame_count(key)
+	if key not in frame_offsets:
+		var arr: Array[Vector2] = []
+		arr.resize(count)
+		arr.fill(Vector2.ZERO)
+		frame_offsets[key] = arr
+	else:
+		while frame_offsets[key].size() < count:
+			frame_offsets[key].append(Vector2.ZERO)
+
+
 func stop_all() -> void:
 	_active = false
 	_pending = false
