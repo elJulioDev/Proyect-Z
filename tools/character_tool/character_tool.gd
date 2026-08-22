@@ -1,4 +1,3 @@
-@tool
 extends Control
 ## Herramienta visual: instancia BaseCharacter real para renderizar
 ## exactamente como en gameplay. Ajusta hitbox/hurtbox/dust y guarda al .tres.
@@ -30,6 +29,9 @@ var _playing := false
 var _floor_y := 45.0
 
 var _preview: SubViewport
+var _camera: Camera2D
+var _panning := false
+var _pan_start := Vector2.ZERO
 var _draw_node: Node2D
 var _floor_body: StaticBody2D
 var _frame_label: Label
@@ -51,6 +53,9 @@ var _hb_offset_x: SpinBox
 var _hb_offset_y: SpinBox
 var _hr_offset_x: SpinBox
 var _hr_offset_y: SpinBox
+var _frame_offset_x: SpinBox
+var _frame_offset_y: SpinBox
+var _frame_offset_label: Label
 
 
 func _ready() -> void:
@@ -131,18 +136,31 @@ func _build_ui() -> void:
 	bp.toggle_mode = true
 	bp.pressed.connect(_toggle_play)
 	tb3.add_child(bp)
+	var cam_reset := Button.new()
+	cam_reset.text = "Reset Cam"
+	cam_reset.pressed.connect(func(): _camera.position = Vector2(320, 240); _camera.zoom = Vector2(2, 2))
+	tb3.add_child(cam_reset)
 
 	var vc := SubViewportContainer.new()
 	vc.size_flags_horizontal = SIZE_EXPAND_FILL
 	vc.size_flags_vertical = SIZE_EXPAND_FILL
 	vc.stretch = true
+	vc.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	left.add_child(vc)
 
 	_preview = SubViewport.new()
 	_preview.size = Vector2i(640, 480)
 	_preview.render_target_update_mode = SubViewport.UPDATE_ALWAYS
 	vc.add_child(_preview)
+	RenderingServer.viewport_set_default_canvas_item_texture_filter(
+		_preview.get_viewport_rid(), RenderingServer.CANVAS_ITEM_TEXTURE_FILTER_NEAREST)
 	vc.gui_input.connect(_on_viewport_input)
+
+	_camera = Camera2D.new()
+	_camera.position = Vector2(320, 240)
+	_camera.zoom = Vector2(2, 2)
+	_preview.add_child(_camera)
+	_camera.make_current()
 
 	var right := VBoxContainer.new()
 	right.custom_minimum_size.x = 280
@@ -218,6 +236,23 @@ func _build_ui() -> void:
 	inner.add_child(del)
 	inner.add_child(HSeparator.new())
 
+	inner.add_child(_sec("-- Sprite Offset (AnimData) --"))
+	_frame_offset_label = Label.new()
+	_frame_offset_label.text = "Frame 0 / sin anim"
+	_frame_offset_label.add_theme_font_size_override("font_size", 11)
+	inner.add_child(_frame_offset_label)
+	var so := HBoxContainer.new()
+	inner.add_child(so)
+	so.add_child(_lbl("X:"))
+	_frame_offset_x = _sb(-500, 500, 0)
+	_frame_offset_x.value_changed.connect(_sync_frame_offset)
+	so.add_child(_frame_offset_x)
+	so.add_child(_lbl("Y:"))
+	_frame_offset_y = _sb(-500, 500, 0)
+	_frame_offset_y.value_changed.connect(_sync_frame_offset)
+	so.add_child(_frame_offset_y)
+	inner.add_child(HSeparator.new())
+
 	inner.add_child(_sec("-- Dust VFX --"))
 	var dv := HBoxContainer.new()
 	inner.add_child(dv)
@@ -273,16 +308,13 @@ func _nav(p: HBoxContainer, t: String, cb: Callable) -> void:
 	var b := Button.new(); b.text = t; b.custom_minimum_size.x = 36; b.pressed.connect(cb); p.add_child(b)
 
 func _on_load_pressed() -> void:
-	if Engine.is_editor_hint():
-		var d := FileDialog.new()
-		d.file_mode = FileDialog.FILE_MODE_OPEN_FILE
-		d.access = FileDialog.ACCESS_RESOURCES
-		d.filters = PackedStringArray(["*.tres ; Character Data"])
-		d.file_selected.connect(_load_data)
-		add_child(d)
-		d.popup_centered(Vector2i(800, 500))
-	else:
-		_load_data("res://characters/goku/goku.tres")
+	var d := FileDialog.new()
+	d.file_mode = FileDialog.FILE_MODE_OPEN_FILE
+	d.access = FileDialog.ACCESS_RESOURCES
+	d.filters = PackedStringArray(["*.tres ; Character Data"])
+	d.file_selected.connect(_load_data)
+	add_child(d)
+	d.popup_centered(Vector2i(800, 500))
 
 
 func _load_data(path: String) -> void:
@@ -335,8 +367,11 @@ func _spawn_character() -> void:
 	_character.position = Vector2(320, 285)
 	_character.facing_right = true
 	_preview.add_child(_character)
+	if not (_character is BaseCharacter):
+		push_error("La escena instanciada no es BaseCharacter — revisa que base_character.gd compile sin errores")
+		return
 	# DESPUÉS de add_child: _ready() ya corrió (animator.setup, state_machine)
-	# Ahora sí desactivar física — sin await, en el mismo frame
+	# Congelar física y estado
 	_character.set_physics_process(false)
 	_character.velocity = Vector2.ZERO
 	if _character.state_machine:
@@ -348,11 +383,11 @@ func _spawn_character() -> void:
 		_character.animator.play_anim("idle")
 		_character.animator.stop()
 		_character.animator.frame = 0
-	_character.update_shadow()
+	# Posicionar sombra directamente (FloorRay puede no colisionar en SubViewport)
+	_update_shadow_tool()
 	_current_frame = 0
 	_update_frame_label()
 	_draw_node.queue_redraw()
-	push_warning("Tool: spawned pos=%s sf=%s anim=%s" % [_character.position, _character.animator.sprite_frames != null, _character.animator.animation])
 
 
 func _on_anim_selected(idx: int) -> void:
@@ -364,7 +399,7 @@ func _on_anim_selected(idx: int) -> void:
 		_character.animator.play_anim(_current_anim)
 		_character.animator.stop()
 		_character.animator.frame = 0
-		_character.update_shadow()
+		_update_shadow_tool()
 	_load_attack_keyframes()
 	_update_frame_label()
 	_update_frame_info()
@@ -405,7 +440,7 @@ func _goto_frame(f: int) -> void:
 	_current_frame = clampi(f, 0, max_f)
 	_character.animator.stop()
 	_character.animator.frame = _current_frame
-	_character.update_shadow()
+	_update_shadow_tool()
 	_update_frame_label()
 	_update_frame_info()
 	_draw_node.queue_redraw()
@@ -420,7 +455,7 @@ func _toggle_play() -> void:
 	else:
 		_character.animator.stop()
 		_current_frame = _character.animator.frame
-		_character.update_shadow()
+		_update_shadow_tool()
 		_update_frame_label()
 		_update_frame_info()
 		_draw_node.queue_redraw()
@@ -430,10 +465,35 @@ func _process(_delta: float) -> void:
 	if _playing and _character and _character.animator:
 		if _character.animator.is_playing():
 			_current_frame = _character.animator.frame
-			_character.update_shadow()
+			_update_shadow_tool()
 			_update_frame_label()
 			_update_frame_info()
 			_draw_node.queue_redraw()
+
+
+func _update_shadow_tool() -> void:
+	if _character == null or _character.shadow_sprite == null:
+		return
+	if _character.animator == null or _character.animator.sprite_frames == null:
+		return
+	var tex: Texture2D = _character.animator.sprite_frames.get_frame_texture(
+		_character.animator.animation, _character.animator.frame)
+	if tex == null:
+		return
+	var sc: Vector2 = _character.scale
+	var tex_h: float = tex.get_size().y
+	# Pies del sprite: Animator en (0, -22.5) local, sprite centered
+	# pies_y = character.y + (animator_local_y * sc.y) + (tex_h * sc.y / 2)
+	var feet_y: float = _character.global_position.y + (-22.5 * sc.y) + (tex_h * sc.y / 2.0)
+	_character.shadow_sprite.visible = true
+	_character.shadow_sprite.global_position = Vector2(_character.global_position.x, feet_y)
+	# Escala y alpha según distancia al suelo
+	var floor_y: float = _character.global_position.y + _floor_y
+	var distance := absf(_character.global_position.y - floor_y)
+	var ratio := clampf(distance / _character.max_jump_height, 0.0, 1.0)
+	_character.shadow_sprite.scale = _character.base_shadow_scale * Vector2(
+		lerpf(1.0, 1.3, ratio), lerpf(1.0, 0.8, ratio))
+	_character.shadow_sprite.modulate.a = lerpf(0.6, 0.15, distance / _character.max_jump_height)
 
 
 func _update_frame_label() -> void:
@@ -491,13 +551,41 @@ func _update_frame_info() -> void:
 		_hr_offset_x.value = 0.0; _hr_offset_y.value = 0.0
 		_hr_size_x.value = BASE_HURTBOX_SIZE.x; _hr_size_y.value = BASE_HURTBOX_SIZE.y
 
+	# Offset del sprite (AnimData.offsets)
+	if character_data and character_data.animations.has(_current_anim):
+		var anim: AnimData = character_data.animations[_current_anim]
+		_frame_offset_label.text = "Frame %d / %d (de %d)" % [_current_frame, anim.offsets.size(), anim.frames.size()]
+		if _current_frame < anim.offsets.size():
+			_frame_offset_x.set_value_no_signal(anim.offsets[_current_frame].x)
+			_frame_offset_y.set_value_no_signal(anim.offsets[_current_frame].y)
+		else:
+			_frame_offset_x.set_value_no_signal(0.0)
+			_frame_offset_y.set_value_no_signal(0.0)
+	else:
+		_frame_offset_label.text = "Sin anim seleccionada"
+		_frame_offset_x.set_value_no_signal(0.0)
+		_frame_offset_y.set_value_no_signal(0.0)
+
+
+func _sync_frame_offset(_v: float) -> void:
+	if character_data == null or not character_data.animations.has(_current_anim):
+		return
+	var anim: AnimData = character_data.animations[_current_anim]
+	# Asegurar que el array offsets cubra este frame
+	while anim.offsets.size() <= _current_frame:
+		anim.offsets.append(Vector2.ZERO)
+	anim.offsets[_current_frame] = Vector2(_frame_offset_x.value, _frame_offset_y.value)
+	_draw_node.queue_redraw()
+
+
 func _render_overlay(d: Node2D) -> void:
 	if _character == null:
 		return
 	var cp := _character.global_position
+	var sc := _character.scale
+	var facing := 1.0 if _character.facing_right else -1.0
 
 	d.draw_line(Vector2(0, cp.y + _floor_y), Vector2(640, cp.y + _floor_y), Color(1, 1, 1, 0.15), 1.0)
-	d.draw_circle(Vector2(cp.x, cp.y + _floor_y), 25.0, Color(0, 0, 0, 0.25))
 
 	var hk: HitboxKeyframe = _hk_by_frame.get(_current_frame, null)
 	var hbk: HurtboxKeyframe = _hbk_by_frame.get(_current_frame, null)
@@ -512,13 +600,18 @@ func _render_overlay(d: Node2D) -> void:
 	if hbk:
 		hr_off = hbk.offset; hr_sz = hbk.size
 
+	# Replicar exactamente attack_state: position = offset * facing, luego escala del CharacterBody2D
+	var hb_pos := cp + Vector2(hb_off.x * facing, hb_off.y) * sc
+	var hb_size := hb_sz * sc
 	if _show_hitbox and hb_active:
-		var r := Rect2(cp + hb_off - hb_sz * 0.5, hb_sz)
+		var r := Rect2(hb_pos - hb_size * 0.5, hb_size)
 		d.draw_rect(r, Color(1, 0, 0, 0.45), true)
 		d.draw_rect(r, Color(1, 0.3, 0.3, 0.9), false, 1.5)
 
+	var hr_pos := cp + Vector2(hr_off.x * facing, hr_off.y) * sc
+	var hr_size := hr_sz * sc
 	if _show_hurtbox:
-		var r := Rect2(cp + hr_off - hr_sz * 0.5, hr_sz)
+		var r := Rect2(hr_pos - hr_size * 0.5, hr_size)
 		d.draw_rect(r, Color(0.2, 0.8, 0.2, 0.3), true)
 		d.draw_rect(r, Color(0.3, 1, 0.3, 0.8), false, 1.5)
 
@@ -532,25 +625,61 @@ func _render_overlay(d: Node2D) -> void:
 
 
 func _on_viewport_input(event: InputEvent) -> void:
+	# Zoom con rueda del mouse
 	if event is InputEventMouseButton:
 		var mb: InputEventMouseButton = event
-		var local := mb.position
+		if mb.button_index == MOUSE_BUTTON_WHEEL_UP:
+			_camera.zoom *= 1.1
+			_camera.zoom = _camera.zoom.clamp(Vector2(0.1, 0.1), Vector2(10, 10))
+			return
+		elif mb.button_index == MOUSE_BUTTON_WHEEL_DOWN:
+			_camera.zoom /= 1.1
+			_camera.zoom = _camera.zoom.clamp(Vector2(0.1, 0.1), Vector2(10, 10))
+			return
+		# Pan con botón medio
+		elif mb.button_index == MOUSE_BUTTON_MIDDLE:
+			if mb.pressed:
+				_panning = true
+				_pan_start = mb.position
+			else:
+				_panning = false
+			return
+	# Pan con movimiento + botón medio
+	if event is InputEventMouseMotion and _panning:
+		var mm: InputEventMouseMotion = event
+		var delta: Vector2 = (_pan_start - mm.position) / _camera.zoom
+		_camera.position += delta
+		_pan_start = mm.position
+		return
+	# Hitbox/hurtbox drag con botón izquierdo
+	if event is InputEventMouseButton:
+		var mb: InputEventMouseButton = event
+		var world := _screen_to_world(mb.position)
 		var cp := _character.global_position if _character else Vector2(320, 300)
 		if mb.pressed and mb.button_index == MOUSE_BUTTON_LEFT:
 			if mb.shift_pressed:
-				_create_kf(local, cp)
+				_create_kf(world, cp)
 			else:
-				_try_drag(local, cp)
+				_try_drag(world, cp)
 		elif not mb.pressed and mb.button_index == MOUSE_BUTTON_LEFT:
 			_dragging = false
 	elif event is InputEventMouseMotion and _dragging:
-		_do_drag(event.position)
+		_do_drag(_screen_to_world(event.position))
+
+
+func _screen_to_world(screen_pos: Vector2) -> Vector2:
+	var vp_size := Vector2(_preview.size)
+	var cam_center := vp_size / 2.0
+	return (screen_pos - cam_center) / _camera.zoom + _camera.position
 
 
 func _create_kf(local: Vector2, cp: Vector2) -> void:
 	if _current_attack == null:
 		return
-	var off := local - cp
+	var sc := _character.scale if _character else Vector2.ONE
+	var facing := 1.0 if _character and _character.facing_right else 1.0
+	var off := (local - cp) / sc
+	off = Vector2(off.x / facing, off.y)
 	if not _hk_by_frame.has(_current_frame):
 		var hk := HitboxKeyframe.new()
 		hk.frame = _current_frame; hk.offset = off
@@ -568,19 +697,25 @@ func _create_kf(local: Vector2, cp: Vector2) -> void:
 
 
 func _try_drag(local: Vector2, cp: Vector2) -> void:
+	var sc := _character.scale if _character else Vector2.ONE
+	var facing := 1.0 if _character and _character.facing_right else 1.0
 	if _show_hurtbox and _hbk_by_frame.has(_current_frame):
 		var hbk: HurtboxKeyframe = _hbk_by_frame[_current_frame]
-		var r := Rect2(cp + hbk.offset - hbk.size * 0.5, hbk.size)
+		var center := cp + Vector2(hbk.offset.x * facing, hbk.offset.y) * sc
+		var sz := hbk.size * sc
+		var r := Rect2(center - sz * 0.5, sz)
 		if r.has_point(local):
 			_dragging = true; _drag_type = "hurtbox"
-			_drag_offset = local - (cp + hbk.offset)
+			_drag_offset = local - center
 			return
 	if _show_hitbox and _hk_by_frame.has(_current_frame):
 		var hk: HitboxKeyframe = _hk_by_frame[_current_frame]
-		var r := Rect2(cp + hk.offset - hk.size * 0.5, hk.size)
+		var center := cp + Vector2(hk.offset.x * facing, hk.offset.y) * sc
+		var sz := hk.size * sc
+		var r := Rect2(center - sz * 0.5, sz)
 		if r.has_point(local):
 			_dragging = true; _drag_type = "hitbox"
-			_drag_offset = local - (cp + hk.offset)
+			_drag_offset = local - center
 			return
 
 
@@ -588,7 +723,11 @@ func _do_drag(local: Vector2) -> void:
 	if _character == null:
 		return
 	var cp := _character.global_position
-	var no := local - _drag_offset - cp
+	var sc := _character.scale
+	var facing := 1.0 if _character.facing_right else -1.0
+	var center := local - _drag_offset
+	var no := (center - cp) / sc
+	no = Vector2(no.x / facing, no.y)
 	no = Vector2(roundi(no.x), roundi(no.y))
 	if _drag_type == "hitbox" and _hk_by_frame.has(_current_frame):
 		_hk_by_frame[_current_frame].offset = no

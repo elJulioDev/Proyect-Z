@@ -1,4 +1,3 @@
-@tool
 extends Node2D
 ## Overlay de dibujo para la herramienta de personajes.
 ## Dibuja hitbox, hurtbox, floor, dust y crosshair.
