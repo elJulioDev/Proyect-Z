@@ -16,6 +16,7 @@ func enter(_args: Dictionary = {}) -> void:
 	_phase = Phase.PREP
 	character.animator.visible = true
 	character.animator.play_anim("ki_charge_prep")
+	character.charge_dust_vfx()
 
 
 func physics(delta: float) -> void:
@@ -34,6 +35,7 @@ func physics(delta: float) -> void:
 			if not character.energy.can_charge() or not character.controller.charge_held:
 				_phase = Phase.END
 				character.animator.play_anim("ki_charge_end")
+				character.stop_dust_vfx()
 		Phase.END:
 			if not character.animator.is_playing():
 				_phase = Phase.DONE

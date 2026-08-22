@@ -36,6 +36,7 @@ var debug_mode := false
 var debug_boxes := false
 var _f1_held := false
 var _debug_node: Node2D
+var dust_vfx: DustVFX
 
 
 func _ready() -> void:
@@ -59,6 +60,8 @@ func _ready() -> void:
 	_debug_node.visible = false
 	add_child(_debug_node)
 	_debug_node.set_script(preload("res://characters/base/debug_draw.gd"))
+	dust_vfx = DustVFX.new()
+	add_child(dust_vfx)
 
 
 func _process(_delta: float) -> void:
@@ -217,6 +220,20 @@ func double_jump_vfx() -> void:
 	tw.tween_property(animator, "scale", Vector2(1.3, 0.7), 0.06)
 	tw.tween_property(animator, "scale", Vector2(0.85, 1.2), 0.08)
 	tw.tween_property(animator, "scale", Vector2.ONE, 0.10)
+
+
+func charge_dust_vfx() -> void:
+	dust_vfx.trigger_charge(self)
+
+
+func stop_dust_vfx() -> void:
+	dust_vfx.stop_all()
+
+
+func _get_feet_global() -> Vector2:
+	if floor_ray.is_colliding():
+		return Vector2(global_position.x, floor_ray.get_collision_point().y)
+	return global_position
 
 
 # ── Auxiliares ──────────────────────────────────────────────────────────────
