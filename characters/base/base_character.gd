@@ -38,6 +38,7 @@ var debug_mode := false
 var debug_boxes := false
 var _f1_held := false
 var _debug_node: Node2D
+var _sfx_loop_tween: Tween
 var dust_vfx: DustVFX
 var shadows_enabled := true
 var effects_enabled := true
@@ -231,12 +232,21 @@ func play_sfx(key: String) -> void:
 
 func play_sfx_loop(key: String) -> void:
 	if data and data.sfx.has(key):
+		if _sfx_loop_tween:
+			_sfx_loop_tween.kill()
+		sfx_loop_player.volume_db = 0.0
 		sfx_loop_player.stream = data.sfx[key]
 		sfx_loop_player.play()
 
 
 func stop_sfx() -> void:
-	sfx_loop_player.stop()
+	if not sfx_loop_player.playing:
+		return
+	if _sfx_loop_tween:
+		_sfx_loop_tween.kill()
+	_sfx_loop_tween = sfx_loop_player.create_tween()
+	_sfx_loop_tween.tween_property(sfx_loop_player, "volume_db", -80.0, 0.60)
+	_sfx_loop_tween.tween_callback(sfx_loop_player.stop)
 
 
 # ── VFX ─────────────────────────────────────────────────────────────────────
