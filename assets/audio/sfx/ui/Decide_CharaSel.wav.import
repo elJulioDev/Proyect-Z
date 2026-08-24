@@ -3,12 +3,12 @@
 importer="wav"
 type="AudioStreamWAV"
 uid="uid://dfv167eof1e3s"
-path="res://.godot/imported/Decide_CharaSel.wav-f342fe6b97e865e2d304c255cdaee9b1.sample"
+path="res://.godot/imported/Decide_CharaSel.wav-6d7f427193db779293c21d624a79809f.sample"
 
 [deps]
 
-source_file="res://assets/audio/sfx/Decide_CharaSel.wav"
-dest_files=["res://.godot/imported/Decide_CharaSel.wav-f342fe6b97e865e2d304c255cdaee9b1.sample"]
+source_file="res://assets/audio/sfx/ui/Decide_CharaSel.wav"
+dest_files=["res://.godot/imported/Decide_CharaSel.wav-6d7f427193db779293c21d624a79809f.sample"]
 
 [params]
 

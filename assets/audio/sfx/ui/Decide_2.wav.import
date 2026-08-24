@@ -2,13 +2,13 @@
 
 importer="wav"
 type="AudioStreamWAV"
-uid="uid://b5jxufk7tpqr8"
-path="res://.godot/imported/Cursor.wav-2e794f2cf9d4824117195d548e85df75.sample"
+uid="uid://dv34v80pjptst"
+path="res://.godot/imported/Decide_2.wav-88a1cbe5b27610b37383636ec17c73dd.sample"
 
 [deps]
 
-source_file="res://assets/audio/sfx/Cursor.wav"
-dest_files=["res://.godot/imported/Cursor.wav-2e794f2cf9d4824117195d548e85df75.sample"]
+source_file="res://assets/audio/sfx/ui/Decide_2.wav"
+dest_files=["res://.godot/imported/Decide_2.wav-88a1cbe5b27610b37383636ec17c73dd.sample"]
 
 [params]
 
