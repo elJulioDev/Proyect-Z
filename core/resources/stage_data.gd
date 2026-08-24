@@ -20,3 +20,9 @@ class_name StageData extends Resource
 ## Filtro de atmósfera: ColorRect que cubre todo el escenario por encima de los fighters.
 @export var filter_enabled: bool = false
 @export var filter_color: Color = Color(0, 0, 0, 0.15)  ## rgba, alpha controla la intensidad
+
+## Mostrar sombras de los fighters.
+@export var shadows_enabled: bool = true
+
+## Mostrar efectos de dust/VFX de los fighters.
+@export var effects_enabled: bool = true

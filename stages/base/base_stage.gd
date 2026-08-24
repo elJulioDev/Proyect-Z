@@ -16,8 +16,18 @@ const VIEWPORT_SIZE := Vector2(1280, 720)
 @onready var stage_camera: Camera2D = $Camera2D
 @onready var filter: ColorRect = $FilterLayer/Filter
 
-var player1: BaseCharacter
-var player2: BaseCharacter
+var player1: BaseCharacter:
+	set(v):
+		player1 = v
+		if player1:
+			player1.shadows_enabled = stage_data.shadows_enabled if stage_data else true
+			player1.effects_enabled = stage_data.effects_enabled if stage_data else true
+var player2: BaseCharacter:
+	set(v):
+		player2 = v
+		if player2:
+			player2.shadows_enabled = stage_data.shadows_enabled if stage_data else true
+			player2.effects_enabled = stage_data.effects_enabled if stage_data else true
 
 ## Margen horizontal alrededor de los fighters que debe caber en pantalla.
 const ZOOM_PADDING := 240.0

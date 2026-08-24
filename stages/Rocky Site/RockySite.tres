@@ -8,3 +8,5 @@ script = ExtResource("1_script")
 id = "RockySite"
 display_name = "Sitio Rocoso"
 background = ExtResource("1_bg")
+shadows_enabled = true
+effects_enabled = true

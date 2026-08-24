@@ -39,6 +39,8 @@ var debug_boxes := false
 var _f1_held := false
 var _debug_node: Node2D
 var dust_vfx: DustVFX
+var shadows_enabled := true
+var effects_enabled := true
 
 
 func _ready() -> void:
@@ -246,6 +248,8 @@ func double_jump_vfx() -> void:
 
 
 func charge_dust_vfx() -> void:
+	if not effects_enabled:
+		return
 	dust_vfx.trigger_charge(self)
 
 
@@ -274,7 +278,7 @@ func update_shadow() -> void:
 	if not floor_ray.is_colliding():
 		shadow_sprite.visible = false
 		return
-	shadow_sprite.visible = true
+	shadow_sprite.visible = shadows_enabled
 	var floor_pos := floor_ray.get_collision_point()
 	shadow_sprite.global_position = Vector2(global_position.x, floor_pos.y + shadow_offset_y)
 	var distance := absf(global_position.y - floor_pos.y)

@@ -10,3 +10,5 @@ display_name = "Arbol de Poder"
 background = ExtResource("1_bg")
 filter_enabled = true
 filter_color = Color(0.0000, 0.3137, 0.6980, 1.0)
+shadows_enabled = true
+effects_enabled = true

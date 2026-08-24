@@ -1,6 +1,6 @@
-[gd_resource type="Resource" script_class="StageData" format=3]
+[gd_resource type="Resource" script_class="StageData" format=3 uid="uid://c4u7xqjkwh63w"]
 
-[ext_resource type="Texture2D" path="res://stages/Future in Ruins/Stage.png" id="1_bg"]
+[ext_resource type="Texture2D" uid="uid://cfjy1ipg4hduo" path="res://stages/Future in Ruins/Stage.png" id="1_bg"]
 [ext_resource type="Script" uid="uid://c7814rry63yk5" path="res://core/resources/stage_data.gd" id="1_script"]
 
 [resource]

@@ -8,3 +8,5 @@ script = ExtResource("1_script")
 id = "PlanetNamek"
 display_name = "Planeta Namek"
 background = ExtResource("1_bg")
+shadows_enabled = true
+effects_enabled = true

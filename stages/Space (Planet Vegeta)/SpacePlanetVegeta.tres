@@ -1,6 +1,6 @@
-[gd_resource type="Resource" script_class="StageData" format=3]
+[gd_resource type="Resource" script_class="StageData" format=3 uid="uid://bbkaswl78irc4"]
 
-[ext_resource type="Texture2D" path="res://stages/Space (Planet Vegeta)/Stage.png" id="1_bg"]
+[ext_resource type="Texture2D" uid="uid://ltvlsxfog1ea" path="res://stages/Space (Planet Vegeta)/Stage.png" id="1_bg"]
 [ext_resource type="Script" uid="uid://c7814rry63yk5" path="res://core/resources/stage_data.gd" id="1_script"]
 
 [resource]
@@ -8,3 +8,5 @@ script = ExtResource("1_script")
 id = "SpacePlanetVegeta"
 display_name = "Espacio (Planeta Vegeta)"
 background = ExtResource("1_bg")
+shadows_enabled = false
+effects_enabled = false

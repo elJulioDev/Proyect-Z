@@ -8,3 +8,5 @@ script = ExtResource("1_script")
 id = "OpenField"
 display_name = "Campo Abierto"
 background = ExtResource("1_bg")
+shadows_enabled = true
+effects_enabled = true

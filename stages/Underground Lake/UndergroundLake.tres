@@ -1,6 +1,6 @@
-[gd_resource type="Resource" script_class="StageData" format=3]
+[gd_resource type="Resource" script_class="StageData" format=3 uid="uid://bdgcdcq4jvhyv"]
 
-[ext_resource type="Texture2D" path="res://stages/Underground Lake/Stage.png" id="1_bg"]
+[ext_resource type="Texture2D" uid="uid://fovuuoxe7c6i" path="res://stages/Underground Lake/Stage.png" id="1_bg"]
 [ext_resource type="Script" uid="uid://c7814rry63yk5" path="res://core/resources/stage_data.gd" id="1_script"]
 
 [resource]
@@ -8,3 +8,4 @@ script = ExtResource("1_script")
 id = "UndergroundLake"
 display_name = "Lago subterraneo"
 background = ExtResource("1_bg")
+effects_enabled = false
