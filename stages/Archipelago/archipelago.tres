@@ -6,5 +6,5 @@
 [resource]
 script = ExtResource("1_sdata")
 id = "archipelago"
-display_name = "Archipelago"
+display_name = "Archipielago"
 background = ExtResource("2_bg")

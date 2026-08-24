@@ -65,7 +65,7 @@ text = "SELECCIÓN DE ESCENARIO"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Center" type="CenterContainer" parent="." unique_id=1354479279]
+[node name="Center" type="ScrollContainer" parent="." unique_id=1354479279]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -74,12 +74,14 @@ offset_top = 90.0
 offset_bottom = -90.0
 grow_horizontal = 2
 grow_vertical = 2
+horizontal_scroll_mode = 0
 
 [node name="Grid" type="GridContainer" parent="Center" unique_id=469649774]
 layout_mode = 2
-theme_override_constants/h_separation = 20
-theme_override_constants/v_separation = 20
-columns = 3
+size_flags_horizontal = 3
+theme_override_constants/h_separation = 16
+theme_override_constants/v_separation = 16
+columns = 5
 
 [node name="BottomBar" type="HBoxContainer" parent="." unique_id=168149809]
 layout_mode = 1

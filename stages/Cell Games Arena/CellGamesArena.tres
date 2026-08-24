@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="StageData" format=3 uid="uid://bngd6ful1pca1"]
+
+[ext_resource type="Texture2D" uid="uid://blfgao3qydnid" path="res://stages/Cell Games Arena/Stage.png" id="1_rox6f"]
+[ext_resource type="Script" uid="uid://c7814rry63yk5" path="res://core/resources/stage_data.gd" id="2_sbcpr"]
+
+[resource]
+script = ExtResource("2_sbcpr")
+id = "CellGamesArena"
+display_name = "Pista juegos de cell"
+background = ExtResource("1_rox6f")
+metadata/_custom_type_script = "uid://c7814rry63yk5"

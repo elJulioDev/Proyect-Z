@@ -1,4 +1,3 @@
-@tool
 extends Control
 ## Selección de escenario antes de la pelea.
 
@@ -24,7 +23,8 @@ func _build_grid() -> void:
 		var b := Button.new()
 		b.toggle_mode = true
 		b.text = data.display_name if data else id
-		b.custom_minimum_size = Vector2(160, 110)
+		b.custom_minimum_size = Vector2(150, 50)
+		b.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		b.toggled.connect(_on_pick.bind(id))
 		b.set_meta("stage_id", id)
 		grid.add_child(b)

@@ -6,6 +6,6 @@
 [resource]
 script = ExtResource("2_gqhyw")
 id = "ToP"
-display_name = "Tournament of Power Arena"
+display_name = "Torneo del poder Arena"
 background = ExtResource("1_ddjf3")
 metadata/_custom_type_script = "uid://c7814rry63yk5"

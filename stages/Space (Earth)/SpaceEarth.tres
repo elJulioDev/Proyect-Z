@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="StageData" format=3]
+
+[ext_resource type="Texture2D" path="res://stages/Space (Earth)/Stage.png" id="1_bg"]
+[ext_resource type="Script" uid="uid://c7814rry63yk5" path="res://core/resources/stage_data.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "SpaceEarth"
+display_name = "Espacio (Tierra)"
+background = ExtResource("1_bg")

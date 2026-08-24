@@ -6,6 +6,6 @@
 [resource]
 script = ExtResource("1_p4gqs")
 id = "Artic"
-display_name = "Artic"
+display_name = "Artico"
 background = ExtResource("1_kq17y")
 metadata/_custom_type_script = "uid://c7814rry63yk5"

@@ -6,6 +6,6 @@
 [resource]
 script = ExtResource("2_abnor")
 id = "TrainingRoom"
-display_name = "Training Room"
+display_name = "Sala de entrenamiento"
 background = ExtResource("1_0a420")
 metadata/_custom_type_script = "uid://c7814rry63yk5"
