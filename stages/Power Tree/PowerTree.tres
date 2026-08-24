@@ -1,6 +1,6 @@
-[gd_resource type="Resource" script_class="StageData" format=3]
+[gd_resource type="Resource" script_class="StageData" format=3 uid="uid://d3eudq86ndikw"]
 
-[ext_resource type="Texture2D" path="res://stages/Power Tree/Stage.png" id="1_bg"]
+[ext_resource type="Texture2D" uid="uid://kdvl0ybqm2c7" path="res://stages/Power Tree/Stage.png" id="1_bg"]
 [ext_resource type="Script" uid="uid://c7814rry63yk5" path="res://core/resources/stage_data.gd" id="1_script"]
 
 [resource]
@@ -9,6 +9,6 @@ id = "PowerTree"
 display_name = "Arbol de Poder"
 background = ExtResource("1_bg")
 filter_enabled = true
-filter_color = Color(0.0000, 0.3137, 0.6980, 1.0)
-shadows_enabled = true
-effects_enabled = true
+filter_color = Color(0, 0.3133042, 0.69789743, 0.2)
+shadows_enabled = false
+effects_enabled = false
