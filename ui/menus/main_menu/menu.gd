@@ -1,7 +1,7 @@
 extends Control
 
-const HOVER_SFX_PATH = "res://assets/audio/sfx/Cursor.wav"
-const CLICK_SFX_PATH = "res://assets/audio/sfx/Decide_2.wav"
+const HOVER_SFX_PATH = "res://assets/audio/sfx/ui/Cursor.wav"
+const CLICK_SFX_PATH = "res://assets/audio/sfx/ui/Decide_2.wav"
 const CONTROLS_MENU_PATH = "res://ui/menus/settings_menu/controls_menu.tscn"
 
 var hover_player: AudioStreamPlayer

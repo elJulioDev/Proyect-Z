@@ -42,6 +42,7 @@ class_name CharacterData extends Resource
 @export var forms: Dictionary = {}
 
 ## evento -> AudioStream (sfx por personaje).
+## Keys de carga: "charge_prep", "charge_start", "charge_loop".
 @export var sfx: Dictionary = {}
 
 ## dust_key -> Vector2 (offsets de polvo por personaje,相对于 pies).

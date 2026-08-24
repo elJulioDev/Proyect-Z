@@ -118,3 +118,7 @@ script = ExtResource("23_energy")
 
 [node name="MechanicSystem" type="Node" parent="." unique_id=922034658]
 script = ExtResource("6_mech")
+
+[node name="SFXPlayer" type="AudioStreamPlayer" parent="."]
+
+[node name="SFXLoopPlayer" type="AudioStreamPlayer" parent="."]

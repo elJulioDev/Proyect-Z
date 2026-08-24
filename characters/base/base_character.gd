@@ -28,6 +28,8 @@ var air_dashes_left := AIR_DASH_LIMIT
 @onready var health: HealthSystem = $HealthSystem
 @onready var energy: EnergySystem = $EnergySystem
 @onready var mechanics: MechanicSystem = $MechanicSystem
+@onready var sfx_player: AudioStreamPlayer = $SFXPlayer
+@onready var sfx_loop_player: AudioStreamPlayer = $SFXLoopPlayer
 
 var base_shadow_scale := Vector2(2.8, 1.5)
 var shadow_offset_y := 25.0
@@ -216,6 +218,23 @@ func transform_to(form_id: String) -> void:
 ## Llamado por CombatSystem del atacante sobre este personaje.
 func receive_hit(damage: float, knockback: Vector2, stun: float, block_damage: float = 0.0, blockstun: float = 0.0, is_blocking: bool = false) -> void:
 	health.receive_hit(damage, knockback, stun, block_damage, blockstun, is_blocking)
+
+
+# ── SFX ─────────────────────────────────────────────────────────────────────
+func play_sfx(key: String) -> void:
+	if data and data.sfx.has(key):
+		sfx_player.stream = data.sfx[key]
+		sfx_player.play()
+
+
+func play_sfx_loop(key: String) -> void:
+	if data and data.sfx.has(key):
+		sfx_loop_player.stream = data.sfx[key]
+		sfx_loop_player.play()
+
+
+func stop_sfx() -> void:
+	sfx_loop_player.stop()
 
 
 # ── VFX ─────────────────────────────────────────────────────────────────────

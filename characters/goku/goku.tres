@@ -7,6 +7,9 @@
 [ext_resource type="Script" path="res://core/resources/hurtbox_keyframe.gd" id="3_nl1d4"]
 [ext_resource type="Texture2D" path="res://characters/goku/forms/spritesheet.png" id="4_sprite"]
 [ext_resource type="Texture2D" path="res://characters/goku/icon.png" id="5_icon"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/game/ARC_BTL_CMN_Charge_Bishi.ogg" id="6_sfx_prep"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/game/ARC_BTL_CMN_Charge_Start.ogg" id="7_sfx_start"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/game/ARC_BTL_CMN_Charge_Loop_LP.ogg" id="8_sfx_loop"]
 
 [sub_resource type="Resource" id="anim_aerial_hammer"]
 script = ExtResource("2_adata")
@@ -713,4 +716,9 @@ dust_offsets = {
 "frame_offsets": [],
 "z_index": 2
 }
+}
+sfx = {
+"charge_prep": ExtResource("6_sfx_prep"),
+"charge_start": ExtResource("7_sfx_start"),
+"charge_loop": ExtResource("8_sfx_loop")
 }
