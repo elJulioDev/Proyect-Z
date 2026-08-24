@@ -9,6 +9,8 @@ class_name CharacterAnimator extends AnimatedSprite2D
 ## (desplaza qué fila de píxeles se captura de la hoja, sin afectar colisión).
 
 var _current_data: CharacterData
+## Cuando true, _process no aplica offsets (modo sin offset del tool).
+var skip_offsets := false
 
 func setup(data: CharacterData) -> void:
 	if data == null:
@@ -90,6 +92,9 @@ func play_anim(anim_id: String) -> void:
 
 func _process(_delta: float) -> void:
 	if _current_data == null:
+		return
+	if skip_offsets:
+		offset = Vector2.ZERO
 		return
 		
 	var anim_name = animation

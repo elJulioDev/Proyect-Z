@@ -62,6 +62,8 @@ func _ready() -> void:
 	_debug_node.set_script(preload("res://characters/base/debug_draw.gd"))
 	dust_vfx = DustVFX.new()
 	add_child(dust_vfx)
+	if character_data:
+		dust_vfx.init_offsets(character_data)
 
 
 func _process(_delta: float) -> void:
@@ -136,6 +138,8 @@ func _reload_data() -> void:
 	data = character_data
 	animator.setup(data)
 	mechanics.rebuild()
+	if dust_vfx:
+		dust_vfx.init_offsets(character_data)
 	force_state("locomotion" if is_on_floor() else "air")
 
 

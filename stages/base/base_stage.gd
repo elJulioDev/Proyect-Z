@@ -52,8 +52,8 @@ func apply_config() -> void:
 		wall_limit = stage_data.background.get_size().x / 2.0 - stage_data.wall_margin
 	left_wall.position.x = -wall_limit
 	right_wall.position.x = wall_limit
-	p1_spawn.position = Vector2(-stage_data.spawn_distance, stage_data.floor_y - 50)
-	p2_spawn.position = Vector2(stage_data.spawn_distance, stage_data.floor_y - 50)
+	p1_spawn.position = Vector2(-stage_data.spawn_distance, stage_data.floor_y)
+	p2_spawn.position = Vector2(stage_data.spawn_distance, stage_data.floor_y)
 	filter.visible = stage_data.filter_enabled
 	filter.color = stage_data.filter_color
 

@@ -1,8 +1,8 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene format=3 uid="uid://cmj3t0ia522t1"]
 
-[ext_resource type="Script" path="res://tools/character_tool/character_tool.gd" id="1_tool"]
+[ext_resource type="Script" uid="uid://dcjqcesvtcc7l" path="res://tools/character_tool/character_tool.gd" id="1_tool"]
 
-[node name="CharacterTool" type="Control"]
+[node name="CharacterTool" type="Control" unique_id=7547406]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0

@@ -1,12 +1,12 @@
-[gd_resource type="Resource" script_class="CharacterData" format=3 uid="uid://derv6nxteoxo7"]
+[gd_resource type="Resource" script_class="CharacterData" format=3]
 
-[ext_resource type="Script" uid="uid://dbjvh4twsl1fo" path="res://core/resources/character_data.gd" id="1_cdata"]
-[ext_resource type="Script" uid="uid://bpy31x5ooe18r" path="res://core/resources/hitbox_keyframe.gd" id="2_6xbsd"]
-[ext_resource type="Script" uid="uid://3txiyue5yqb4" path="res://core/resources/anim_data.gd" id="2_adata"]
-[ext_resource type="Script" uid="uid://dho4t7hl5pwit" path="res://core/resources/attack_data.gd" id="3_atkdata"]
-[ext_resource type="Script" uid="uid://ccd5x01b4os3g" path="res://core/resources/hurtbox_keyframe.gd" id="3_nl1d4"]
-[ext_resource type="Texture2D" uid="uid://cegxpbm6fwa60" path="res://characters/goku/forms/spritesheet.png" id="4_sprite"]
-[ext_resource type="Texture2D" uid="uid://cpskulbkne3tk" path="res://characters/goku/icon.png" id="5_icon"]
+[ext_resource type="Script" path="res://core/resources/character_data.gd" id="1_cdata"]
+[ext_resource type="Script" path="res://core/resources/hitbox_keyframe.gd" id="2_6xbsd"]
+[ext_resource type="Script" path="res://core/resources/anim_data.gd" id="2_adata"]
+[ext_resource type="Script" path="res://core/resources/attack_data.gd" id="3_atkdata"]
+[ext_resource type="Script" path="res://core/resources/hurtbox_keyframe.gd" id="3_nl1d4"]
+[ext_resource type="Texture2D" path="res://characters/goku/forms/spritesheet.png" id="4_sprite"]
+[ext_resource type="Texture2D" path="res://characters/goku/icon.png" id="5_icon"]
 
 [sub_resource type="Resource" id="anim_aerial_hammer"]
 script = ExtResource("2_adata")
@@ -261,6 +261,35 @@ script = ExtResource("2_adata")
 frames = Array[Rect2]([Rect2(850, 920, 170, 92)])
 loop = false
 
+[sub_resource type="Resource" id="atk_aerial_heavy"]
+script = ExtResource("3_atkdata")
+id = "aerial_heavy"
+damage = 10.0
+knockback = Vector2(320, -200)
+stun = 0.24
+anim = "aerial_heavy"
+weight = 1
+startup_frames = 1
+active_frames = 2
+recovery_frames = 1
+block_damage = 2.0
+blockstun = 0.14
+
+[sub_resource type="Resource" id="atk_air_crouch_heavy"]
+script = ExtResource("3_atkdata")
+id = "air_crouch_heavy"
+damage = 12.0
+knockback = Vector2(360, -280)
+stun = 0.28
+lockout = 0.22
+anim = "air_crouch_heavy"
+weight = 2
+startup_frames = 2
+active_frames = 2
+recovery_frames = 2
+block_damage = 2.5
+blockstun = 0.16
+
 [sub_resource type="Resource" id="atk_air_ki"]
 script = ExtResource("3_atkdata")
 id = "air_ki"
@@ -304,19 +333,77 @@ recovery_frames = 1
 block_damage = 1.0
 blockstun = 0.08
 
-[sub_resource type="Resource" id="atk_aerial_heavy"]
+[sub_resource type="Resource" id="atk_crouch_heavy"]
 script = ExtResource("3_atkdata")
-id = "aerial_heavy"
-damage = 10.0
-knockback = Vector2(320, -200)
-stun = 0.24
-anim = "aerial_heavy"
+id = "crouch_heavy"
+damage = 12.0
+knockback = Vector2(400, -180)
+stun = 0.28
+lockout = 0.22
+anim = "crouch_heavy"
 weight = 1
+startup_frames = 2
+active_frames = 2
+recovery_frames = 2
+block_damage = 2.5
+blockstun = 0.16
+
+[sub_resource type="Resource" id="atk_crouch_light"]
+script = ExtResource("3_atkdata")
+id = "crouch_light"
+damage = 5.0
+knockback = Vector2(220, -60)
+stun = 0.14
+lockout = 0.18
+anim = "crouch_light"
+startup_frames = 1
+active_frames = 2
+recovery_frames = 1
+block_damage = 1.0
+blockstun = 0.08
+
+[sub_resource type="Resource" id="atk_crouch_medium"]
+script = ExtResource("3_atkdata")
+id = "crouch_medium"
+damage = 8.0
+knockback = Vector2(300, -100)
+stun = 0.22
+anim = "crouch_medium"
 startup_frames = 1
 active_frames = 2
 recovery_frames = 1
 block_damage = 2.0
 blockstun = 0.14
+
+[sub_resource type="Resource" id="atk_dive_kick"]
+script = ExtResource("3_atkdata")
+id = "dive_kick"
+damage = 14.0
+knockback = Vector2(300, 400)
+stun = 0.3
+lockout = 0.3
+anim = "dive_kick"
+weight = 3
+startup_frames = 1
+active_frames = 2
+recovery_frames = 2
+block_damage = 3.0
+blockstun = 0.2
+
+[sub_resource type="Resource" id="atk_heavy_ground"]
+script = ExtResource("3_atkdata")
+id = "heavy"
+damage = 15.0
+knockback = Vector2(440, -240)
+stun = 0.3
+lockout = 0.24
+anim = "heavy"
+weight = 2
+startup_frames = 3
+active_frames = 2
+recovery_frames = 3
+block_damage = 3.0
+blockstun = 0.18
 
 [sub_resource type="Resource" id="atk_ki"]
 script = ExtResource("3_atkdata")
@@ -376,6 +463,18 @@ active_frames = 6
 recovery_frames = 8
 block_damage = 3.0
 blockstun = 0.2
+
+[sub_resource type="Resource" id="atk_parry_ki"]
+script = ExtResource("3_atkdata")
+id = "parry_ki"
+damage = 0.0
+knockback = Vector2(200, -100)
+lockout = 0.4
+anim = "parry"
+weight = 2
+startup_frames = 1
+active_frames = 2
+recovery_frames = 2
 
 [sub_resource type="Resource" id="atk_punch"]
 script = ExtResource("3_atkdata")
@@ -458,105 +557,6 @@ anim = "dragon_rush"
 weight = 3
 startup_frames = 10
 recovery_frames = 6
-
-[sub_resource type="Resource" id="atk_crouch_light"]
-script = ExtResource("3_atkdata")
-id = "crouch_light"
-damage = 5.0
-knockback = Vector2(220, -60)
-stun = 0.14
-lockout = 0.18
-anim = "crouch_light"
-startup_frames = 1
-active_frames = 2
-recovery_frames = 1
-block_damage = 1.0
-blockstun = 0.08
-
-[sub_resource type="Resource" id="atk_crouch_medium"]
-script = ExtResource("3_atkdata")
-id = "crouch_medium"
-damage = 8.0
-knockback = Vector2(300, -100)
-stun = 0.22
-anim = "crouch_medium"
-startup_frames = 1
-active_frames = 2
-recovery_frames = 1
-block_damage = 2.0
-blockstun = 0.14
-
-[sub_resource type="Resource" id="atk_crouch_heavy"]
-script = ExtResource("3_atkdata")
-id = "crouch_heavy"
-damage = 12.0
-knockback = Vector2(400, -180)
-stun = 0.28
-lockout = 0.22
-anim = "crouch_heavy"
-weight = 1
-startup_frames = 2
-active_frames = 2
-recovery_frames = 2
-block_damage = 2.5
-blockstun = 0.16
-
-[sub_resource type="Resource" id="atk_heavy_ground"]
-script = ExtResource("3_atkdata")
-id = "heavy"
-damage = 15.0
-knockback = Vector2(440, -240)
-stun = 0.3
-lockout = 0.24
-anim = "heavy"
-weight = 2
-startup_frames = 3
-active_frames = 2
-recovery_frames = 3
-block_damage = 3.0
-blockstun = 0.18
-
-[sub_resource type="Resource" id="atk_air_crouch_heavy"]
-script = ExtResource("3_atkdata")
-id = "air_crouch_heavy"
-damage = 12.0
-knockback = Vector2(360, -280)
-stun = 0.28
-lockout = 0.22
-anim = "air_crouch_heavy"
-weight = 2
-startup_frames = 2
-active_frames = 2
-recovery_frames = 2
-block_damage = 2.5
-blockstun = 0.16
-
-[sub_resource type="Resource" id="atk_dive_kick"]
-script = ExtResource("3_atkdata")
-id = "dive_kick"
-damage = 14.0
-knockback = Vector2(300, 400)
-stun = 0.3
-lockout = 0.3
-anim = "dive_kick"
-weight = 3
-startup_frames = 1
-active_frames = 2
-recovery_frames = 2
-block_damage = 3.0
-blockstun = 0.2
-
-[sub_resource type="Resource" id="atk_parry_ki"]
-script = ExtResource("3_atkdata")
-id = "parry_ki"
-damage = 0.0
-knockback = Vector2(200, -100)
-lockout = 0.4
-anim = "parry"
-weight = 2
-startup_frames = 1
-active_frames = 2
-recovery_frames = 2
 
 [resource]
 script = ExtResource("1_cdata")
@@ -686,5 +686,31 @@ mechanics = {
 },
 "special_3": {
 "id": "rush"
+}
+}
+dust_offsets = {
+"dust1": {
+"base_offset": Vector2(0, -40),
+"fps": 12.0,
+"frame_offsets": [],
+"z_index": -2
+},
+"dust2": {
+"base_offset": Vector2(0, 0),
+"fps": 12.0,
+"frame_offsets": [],
+"z_index": -1
+},
+"dust3": {
+"base_offset": Vector2(4, -121),
+"fps": 12.0,
+"frame_offsets": [Vector2(0, 0), Vector2(0, 0), Vector2(0, 0), Vector2(0, 0), Vector2(0, 0), Vector2(0, 0), Vector2(-7, 0), Vector2(-7, 0), Vector2(0, 0), Vector2(-2, 0), Vector2(-2, 0)],
+"z_index": 2
+},
+"dust4": {
+"base_offset": Vector2(6, -77),
+"fps": 20.0,
+"frame_offsets": [],
+"z_index": 2
 }
 }

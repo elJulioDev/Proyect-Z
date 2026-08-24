@@ -43,3 +43,7 @@ class_name CharacterData extends Resource
 
 ## evento -> AudioStream (sfx por personaje).
 @export var sfx: Dictionary = {}
+
+## dust_key -> Vector2 (offsets de polvo por personaje,相对于 pies).
+## Si está vacío, DustVFX usa sus defaults hardcodeados.
+@export var dust_offsets: Dictionary = {}
