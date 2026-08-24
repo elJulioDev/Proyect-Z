@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="StageFilter" format=3 uid="uid://blh8y04dm8w1q"]
+
+[ext_resource type="Script" uid="uid://dtbo3p5wid35a" path="res://core/resources/stage_filter.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+color_grading_enabled = true
+tint_color = Color(1, 0, 0, 0.2)
+vignette_enabled = true
+vignette_intensity = 0.5
+vignette_opacity = 0.6
+distortion_enabled = true
+distortion_strength = 0.003
+distortion_speed = 0.8
+particles_enabled = true
+metadata/_custom_type_script = "uid://c7814rry63yk5"

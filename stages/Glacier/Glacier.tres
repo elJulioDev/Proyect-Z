@@ -2,11 +2,11 @@
 
 [ext_resource type="Texture2D" uid="uid://drjj5brlkajqr" path="res://stages/Glacier/Stage.png" id="1_bg"]
 [ext_resource type="Script" uid="uid://c7814rry63yk5" path="res://core/resources/stage_data.gd" id="1_script"]
+[ext_resource type="Resource" path="res://stages/Glacier/filter_glacier.tres" id="2_filter"]
 
 [resource]
 script = ExtResource("1_script")
 id = "Glacier"
 display_name = "Glaciar"
 background = ExtResource("1_bg")
-filter_enabled = true
-filter_color = Color(0, 0.3133042, 0.7021107, 0.2)
+filter = ExtResource("2_filter")

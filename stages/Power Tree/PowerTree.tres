@@ -2,13 +2,13 @@
 
 [ext_resource type="Texture2D" uid="uid://kdvl0ybqm2c7" path="res://stages/Power Tree/Stage.png" id="1_bg"]
 [ext_resource type="Script" uid="uid://c7814rry63yk5" path="res://core/resources/stage_data.gd" id="1_script"]
+[ext_resource type="Resource" path="res://stages/Power Tree/filter_power_tree.tres" id="2_filter"]
 
 [resource]
 script = ExtResource("1_script")
 id = "PowerTree"
 display_name = "Arbol de Poder"
 background = ExtResource("1_bg")
-filter_enabled = true
-filter_color = Color(0, 0.3133042, 0.69789743, 0.2)
+filter = ExtResource("2_filter")
 shadows_enabled = false
 effects_enabled = false

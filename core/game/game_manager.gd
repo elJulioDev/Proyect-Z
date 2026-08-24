@@ -53,7 +53,7 @@ func _discover_stages() -> void:
 				sub.list_dir_begin()
 				var f := sub.get_next()
 				while f != "":
-					if not sub.current_is_dir() and f.ends_with(".tres"):
+					if not sub.current_is_dir() and f.ends_with(".tres") and not f.begins_with("filter_"):
 						var path := "res://stages/%s/%s" % [folder, f]
 						var data: StageData = load(path)
 						if data and data.id != "":

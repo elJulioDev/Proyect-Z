@@ -2,12 +2,12 @@
 
 [ext_resource type="Texture2D" uid="uid://cirigoivb3x0t" path="res://stages/Destroyed Planet Namek/Stage.png" id="1_0u3wj"]
 [ext_resource type="Script" uid="uid://c7814rry63yk5" path="res://core/resources/stage_data.gd" id="1_547mu"]
+[ext_resource type="Resource" uid="uid://blh8y04dm8w1q" path="res://stages/Destroyed Planet Namek/filter_namek.tres" id="2_filter"]
 
 [resource]
 script = ExtResource("1_547mu")
 id = "DestroyedPlanetNamek"
 display_name = "Destroyed Planet Namek"
 background = ExtResource("1_0u3wj")
-filter_enabled = true
-filter_color = Color(1, 0, 0, 0.2)
+filter = ExtResource("2_filter")
 metadata/_custom_type_script = "uid://c7814rry63yk5"

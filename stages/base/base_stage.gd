@@ -14,7 +14,11 @@ const VIEWPORT_SIZE := Vector2(1280, 720)
 @onready var p1_spawn: Marker2D = $P1_Spawn
 @onready var p2_spawn: Marker2D = $P2_Spawn
 @onready var stage_camera: Camera2D = $Camera2D
-@onready var filter: ColorRect = $FilterLayer/Filter
+
+var _filter_layer: CanvasLayer
+var _particle_layer: CanvasLayer
+var _fighter_tint_shader: Shader
+var _fighter_tint_material: ShaderMaterial
 
 var player1: BaseCharacter:
 	set(v):
@@ -22,12 +26,14 @@ var player1: BaseCharacter:
 		if player1:
 			player1.shadows_enabled = stage_data.shadows_enabled if stage_data else true
 			player1.effects_enabled = stage_data.effects_enabled if stage_data else true
+			_apply_fighter_tint(player1)
 var player2: BaseCharacter:
 	set(v):
 		player2 = v
 		if player2:
 			player2.shadows_enabled = stage_data.shadows_enabled if stage_data else true
 			player2.effects_enabled = stage_data.effects_enabled if stage_data else true
+			_apply_fighter_tint(player2)
 
 ## Margen horizontal alrededor de los fighters que debe caber en pantalla.
 const ZOOM_PADDING := 240.0
@@ -44,7 +50,29 @@ func _ready() -> void:
 	if Engine.is_editor_hint():
 		return
 	background_sprite.z_index = -10
+	_setup_filter_layers()
 	apply_config()
+
+
+func _setup_filter_layers() -> void:
+	# FilterLayer: en layer 0 (con el mundo del juego), para que el HUD (layer 1) quede encima
+	_filter_layer = CanvasLayer.new()
+	_filter_layer.name = "FilterLayer"
+	_filter_layer.layer = 0
+	_filter_layer.set_script(load("res://stages/base/filter_layer.gd"))
+	add_child(_filter_layer)
+
+	# ParticleLayer: misma capa que el juego
+	_particle_layer = CanvasLayer.new()
+	_particle_layer.name = "ParticleLayer"
+	_particle_layer.layer = 0
+	_particle_layer.set_script(load("res://stages/base/particle_layer.gd"))
+	add_child(_particle_layer)
+
+	# Pre-cargar shader de tinte para fighters
+	_fighter_tint_shader = load("res://core/shaders/fighter_tint.gdshader")
+	_fighter_tint_material = ShaderMaterial.new()
+	_fighter_tint_material.shader = _fighter_tint_shader
 
 
 func apply_config() -> void:
@@ -64,8 +92,9 @@ func apply_config() -> void:
 	right_wall.position.x = wall_limit
 	p1_spawn.position = Vector2(-stage_data.spawn_distance, stage_data.floor_y)
 	p2_spawn.position = Vector2(stage_data.spawn_distance, stage_data.floor_y)
-	filter.visible = stage_data.filter_enabled
-	filter.color = stage_data.filter_color
+
+	# Filtros visuales
+	_apply_filter()
 
 	if stage_data.background:
 		var bg_size: Vector2 = stage_data.background.get_size()
@@ -82,6 +111,34 @@ func apply_config() -> void:
 
 	# La cámara mira un poco arriba del suelo
 	_cam_look_y = stage_data.floor_y - 80.0
+
+
+func _apply_filter() -> void:
+	var filter_data: StageFilter = stage_data.filter
+
+	if _filter_layer.has_method("apply"):
+		_filter_layer.apply(filter_data)
+	if _particle_layer.has_method("apply"):
+		_particle_layer.apply(filter_data)
+
+
+func _apply_fighter_tint(character: BaseCharacter) -> void:
+	if stage_data == null:
+		return
+	var filter_data: StageFilter = stage_data.filter
+	if filter_data == null or not filter_data.color_grading_enabled:
+		return
+	if filter_data.tint_color.a <= 0.01:
+		return
+
+	# Aplicar material de tinte al Sprite2D del fighter
+	var sprite := character.get_node_or_null("Sprite2D") as Sprite2D
+	if sprite == null:
+		return
+	var mat := ShaderMaterial.new()
+	mat.shader = _fighter_tint_shader
+	mat.set_shader_parameter("tint_color", filter_data.tint_color)
+	sprite.material = mat
 
 
 func _physics_process(delta: float) -> void:

@@ -17,9 +17,10 @@ class_name StageData extends Resource
 ## Distancia de aparición de los fighters respecto al centro.
 @export var spawn_distance: float = 380.0
 
-## Filtro de atmósfera: ColorRect que cubre todo el escenario por encima de los fighters.
+## Filtro de atmósfera con shaders: color grading, viñeta, distorsión, partículas.
+@export var filter: StageFilter = null
+## Legacy: backward compat. Si filter es null pero filter_enabled=true, se crea un StageFilter básico.
 @export var filter_enabled: bool = false
-@export var filter_color: Color = Color(0, 0, 0, 0.15)  ## rgba, alpha controla la intensidad
 
 ## Mostrar sombras de los fighters.
 @export var shadows_enabled: bool = true
