@@ -1,12 +1,19 @@
 class_name DustVFX extends Node2D
 ## Efectos de polvo durante carga de energía.
-## dust1/dust2/dust4: loopean mientras se mantenga la tecla.
-## dust3: se ejecuta una vez al presionar y desaparece.
-## Al soltar la tecla, los looping se detienen donde quedan.
-## Al volver a cargar, se crean nuevos efectos en la posición actual.
+## dust1/dust2/dust4: loopean mientras se mantenga la tecla de carga.
+## dust3: se dispara UNA sola vez al iniciar la sesión de carga y desaparece
+## sola al terminar su animación (no se repite aunque se siga cargando).
+##
+## Cada "sesión" de carga (desde que se presiona hasta que se suelta) fija un
+## ancla de posición UNA sola vez al iniciar (posición del personaje + suelo).
+## Las instancias spawneadas quedan ancladas a ese punto para siempre — no
+## siguen al personaje ni se "reciclan" entre sesiones. Al soltar la tecla,
+## las instancias en loop no se destruyen de golpe: dejan de loopear y
+## terminan su ciclo actual antes de autodestruirse, quedando donde estaban.
+## Al volver a cargar (en el mismo punto o en otro), se crea una sesión nueva
+## e independiente, con sus propias instancias.
 
 const MAX_FLOOR_DIST := 180.0
-const SPAWN_INTERVAL := 0.4
 
 const DUST_CONFIG := {
 	"dust1": {
@@ -27,6 +34,13 @@ const DUST_CONFIG := {
 	},
 }
 
+## Keys que loopean indefinidamente mientras se mantenga la carga (una sola
+## instancia por sesión, no se re-spawnean).
+const LOOPING_KEYS := ["dust1", "dust2", "dust4"]
+## Keys que se disparan UNA sola vez al iniciar la sesión y se autodestruyen
+## al terminar su animación.
+const BURST_KEYS := ["dust3"]
+
 const DEFAULT_OFFSETS := {
 	"dust1": Vector2(0, 0),
 	"dust2": Vector2(0, 0),
@@ -43,13 +57,19 @@ const DEFAULT_Z_INDEX := {
 
 var _dust_data: Dictionary = {}
 var _preview_sprites: Dictionary = {}
-var _sprite_frames_cache: Dictionary = {}
+## key -> SpriteFrames "plantilla" (nunca se muta ni se usa directamente en
+## gameplay; cada instancia gameplay duplica esta plantilla).
+var _sprite_frames_template: Dictionary = {}
 
-var _floor_y: float = 0.0
 var _character: BaseCharacter = null
-var _spawn_timer: float = 0.0
-## Sprites looping activos que se deben detener en stop_all().
-var _active_looping: Dictionary = {}
+
+## true mientras se mantiene la tecla de carga (una "sesión" en curso).
+var _charging_active := false
+## Posición del mundo fijada al iniciar la sesión actual. No se actualiza
+## mientras dure la sesión, aunque el personaje se mueva.
+var _session_anchor := Vector2.ZERO
+## key (de LOOPING_KEYS) -> AnimatedSprite2D activo de la sesión actual.
+var _session_loops: Dictionary = {}
 
 
 func _ready() -> void:
@@ -62,7 +82,7 @@ func _ready() -> void:
 			"fps": DUST_CONFIG[key]["fps"],
 		}
 		_build_preview_sprite(key)
-		_cache_sprite_frames(key)
+		_cache_template_sf(key)
 
 
 func init_offsets(character_data: CharacterData) -> void:
@@ -95,7 +115,7 @@ func init_offsets(character_data: CharacterData) -> void:
 			_preview_sprites[key].z_index = _dust_data[key]["z_index"]
 
 
-# ─── Accesores ──────────────────────────────────────────────────────────────
+# ─── Accesores (usados por el tool) ─────────────────────────────────────────
 
 func get_base_offset(key: String) -> Vector2:
 	return _dust_data.get(key, {}).get("base_offset", Vector2.ZERO)
@@ -151,9 +171,9 @@ func to_character_dust_offsets() -> Dictionary:
 	return result
 
 
-# ─── SpriteFrames cache ─────────────────────────────────────────────────────
+# ─── SpriteFrames plantilla ─────────────────────────────────────────────────
 
-func _cache_sprite_frames(key: String) -> void:
+func _cache_template_sf(key: String) -> void:
 	var cfg: Dictionary = DUST_CONFIG[key]
 	var tex: Texture2D = load(cfg["path"])
 	if tex == null:
@@ -170,20 +190,29 @@ func _cache_sprite_frames(key: String) -> void:
 		atlas.atlas = tex
 		atlas.region = region
 		frames.add_frame("charge_dust", atlas)
-	_sprite_frames_cache[key] = frames
+	_sprite_frames_template[key] = frames
 
 
-func _get_or_build_sf(key: String) -> SpriteFrames:
-	if key in _sprite_frames_cache:
-		return _sprite_frames_cache[key]
-	_cache_sprite_frames(key)
-	return _sprite_frames_cache.get(key)
+func _get_template_sf(key: String) -> SpriteFrames:
+	if key in _sprite_frames_template:
+		return _sprite_frames_template[key]
+	_cache_template_sf(key)
+	return _sprite_frames_template.get(key)
+
+
+## Cada instancia gameplay recibe su PROPIA copia del SpriteFrames, para poder
+## cambiarle loop/fps sin afectar a otras instancias vivas de la misma key.
+func _make_instance_sf(key: String) -> SpriteFrames:
+	var template := _get_template_sf(key)
+	if template == null:
+		return null
+	return template.duplicate(true)
 
 
 # ─── Preview (tool) ─────────────────────────────────────────────────────────
 
 func _build_preview_sprite(key: String) -> void:
-	var sf := _get_or_build_sf(key)
+	var sf := _get_template_sf(key)
 	if sf == null:
 		return
 	var sprite := AnimatedSprite2D.new()
@@ -223,52 +252,82 @@ func get_dust_loop(key: String) -> bool:
 
 # ─── Gameplay ───────────────────────────────────────────────────────────────
 
-func _process(delta: float) -> void:
-	if _character:
-		_spawn_timer -= delta
-		global_position.x = _character.global_position.x
-
-
-## Se llama desde charge_state CADA FRAME mientras se carga.
+## Se llama desde charge_state CADA FRAME mientras se mantiene la carga.
+## Solo la PRIMERA llamada de una sesión (mientras _charging_active es false)
+## fija el ancla y dispara todo (loops + burst único); las siguientes llamadas
+## de la misma sesión no hacen nada.
 func trigger_charge(character: BaseCharacter) -> void:
 	_character = character
-	if _spawn_timer > 0.0:
-		return
 	if not character.floor_ray.is_colliding():
 		return
 	var floor_y: float = character.floor_ray.get_collision_point().y
 	if absf(character.global_position.y - floor_y) > MAX_FLOOR_DIST:
 		return
-	_floor_y = floor_y
-	_spawn_timer = SPAWN_INTERVAL
-	_spawn_all_dusts()
+	if _charging_active:
+		return
+	_start_session(Vector2(character.global_position.x, floor_y))
 
 
-func _spawn_all_dusts() -> void:
-	for key in DUST_CONFIG:
-		_spawn_dust_instance(key)
+func _start_session(anchor: Vector2) -> void:
+	_charging_active = true
+	_session_anchor = anchor
+	for key in LOOPING_KEYS:
+		_spawn_loop_instance(key, anchor)
+	for key in BURST_KEYS:
+		_spawn_burst(key, anchor)
 
 
-func _spawn_dust_instance(key: String) -> void:
-	var sf := _get_or_build_sf(key)
+## Se llama UNA vez al soltar la tecla de carga (fin de sesión). Las
+## instancias en loop no se destruyen: dejan de loopear para terminar su
+## ciclo actual y luego se autodestruyen (quedan donde estaban ancladas).
+func stop_all() -> void:
+	_charging_active = false
+	_character = null
+	for key in _session_loops.keys():
+		var sprite: AnimatedSprite2D = _session_loops[key]
+		if is_instance_valid(sprite):
+			var sf: SpriteFrames = sprite.sprite_frames
+			if sf and sf.has_animation("charge_dust"):
+				sf.set_animation_loop("charge_dust", false)
+			if not sprite.animation_finished.is_connected(_on_dust_finished):
+				sprite.animation_finished.connect(_on_dust_finished.bind(sprite), CONNECT_ONE_SHOT)
+	_session_loops.clear()
+
+
+func _spawn_loop_instance(key: String, anchor: Vector2) -> void:
+	var sf := _make_instance_sf(key)
 	if sf == null:
 		return
-	var cfg: Dictionary = DUST_CONFIG[key]
 	var sprite := AnimatedSprite2D.new()
 	sprite.sprite_frames = sf
+	sprite.top_level = true
 	sprite.z_index = get_dust_z_index(key)
-	sprite.position = _get_offset(key, 0)
 	add_child(sprite)
-	sprite.visible = true
+	sprite.global_position = anchor + _get_offset(key, 0)
 	sprite.animation = "charge_dust"
-	sprite.sprite_frames.set_animation_speed("charge_dust", get_dust_fps_value(key))
-	if not cfg.get("loop", false):
-		sprite.sprite_frames.set_animation_loop("charge_dust", false)
+	sf.set_animation_speed("charge_dust", get_dust_fps_value(key))
+	sf.set_animation_loop("charge_dust", true)
 	sprite.play("charge_dust")
-	sprite.frame_changed.connect(_on_frame_changed.bind(sprite, key))
-	sprite.animation_finished.connect(_on_anim_finished.bind(sprite, key), CONNECT_ONE_SHOT)
-	if cfg.get("loop", false):
-		_active_looping[sprite.get_instance_id()] = sprite
+	sprite.frame_changed.connect(_on_dust_frame_changed.bind(sprite, key, anchor))
+	_session_loops[key] = sprite
+
+
+func _spawn_burst(key: String, anchor: Vector2) -> void:
+	var sf := _make_instance_sf(key)
+	if sf == null:
+		return
+	var sprite := AnimatedSprite2D.new()
+	sprite.sprite_frames = sf
+	sprite.top_level = true
+	sprite.z_index = get_dust_z_index(key)
+	add_child(sprite)
+	sprite.global_position = anchor + _get_offset(key, 0)
+	sprite.animation = "charge_dust"
+	sf.set_animation_speed("charge_dust", get_dust_fps_value(key))
+	sf.set_animation_loop("charge_dust", false)
+	sprite.play("charge_dust")
+	sprite.frame_changed.connect(_on_dust_frame_changed.bind(sprite, key, anchor))
+	sprite.animation_finished.connect(_on_dust_finished.bind(sprite), CONNECT_ONE_SHOT)
 
 
 func _get_offset(key: String, frame_idx: int) -> Vector2:
@@ -278,27 +337,11 @@ func _get_offset(key: String, frame_idx: int) -> Vector2:
 	return base_off + frame_off + Vector2(0, cfg["frame_h"] * 0.5)
 
 
-func _on_frame_changed(sprite: AnimatedSprite2D, key: String) -> void:
+func _on_dust_frame_changed(sprite: AnimatedSprite2D, key: String, anchor: Vector2) -> void:
 	if is_instance_valid(sprite):
-		sprite.position = _get_offset(key, sprite.frame)
+		sprite.global_position = anchor + _get_offset(key, sprite.frame)
 
 
-func _on_anim_finished(sprite: AnimatedSprite2D, key: String) -> void:
+func _on_dust_finished(sprite: AnimatedSprite2D) -> void:
 	if is_instance_valid(sprite):
-		if sprite.frame_changed.is_connected(_on_frame_changed.bind(sprite, key)):
-			sprite.frame_changed.disconnect(_on_frame_changed.bind(sprite, key))
-		var id := sprite.get_instance_id()
-		if id in _active_looping:
-			_active_looping.erase(id)
 		sprite.queue_free()
-
-
-func stop_all() -> void:
-	_character = null
-	for id in _active_looping:
-		var sprite: AnimatedSprite2D = instance_from_id(id)
-		if is_instance_valid(sprite):
-			sprite.visible = false
-			sprite.stop()
-			sprite.queue_free()
-	_active_looping.clear()
