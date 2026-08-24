@@ -26,7 +26,7 @@ class_name StageFilter extends Resource
 @export_group("Distorsión")
 @export var distortion_enabled: bool = false
 ## Fuerza de la distorsión (0.0 = sin efecto, valores altos = mucho movimiento).
-@export_range(0.0, 0.05, 0.001) var distortion_strength: float = 0.005
+@export_range(0.0, 0.05, 0.001) var distortion_strength: float = 0.015
 ## Velocidad del patrón de distorsión.
 @export_range(0.0, 10.0, 0.1) var distortion_speed: float = 1.0
 

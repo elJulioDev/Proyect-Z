@@ -15,6 +15,7 @@ corner_radius_bottom_left = 4
 
 [node name="DebugOverlay" type="CanvasLayer" unique_id=1535913436]
 script = ExtResource("1_overlay")
+layer = 10
 
 [node name="Panel" type="PanelContainer" parent="." unique_id=1163474862]
 anchors_preset = 6

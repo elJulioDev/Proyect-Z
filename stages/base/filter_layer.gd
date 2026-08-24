@@ -39,11 +39,17 @@ func apply(filter_data: StageFilter) -> void:
 	if _filter == null:
 		# _ready() aún no corrió, guardar para después
 		_pending_filter = filter_data
-		visible = filter_data.has_effects()
+		visible = _filter_has_effects(filter_data)
 		return
 
 	_apply_to_material(filter_data)
-	visible = filter_data.has_effects()
+	visible = _filter_has_effects(filter_data)
+
+
+func _filter_has_effects(filter_data: StageFilter) -> bool:
+	# Visibilidad del ColorRect (shader) solo si hay efectos de post-proceso.
+	# Partículas se manejan aparte en ParticleLayer.
+	return filter_data.color_grading_enabled or filter_data.vignette_enabled or filter_data.distortion_enabled
 
 
 func _apply_to_material(filter_data: StageFilter) -> void:

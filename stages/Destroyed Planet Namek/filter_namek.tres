@@ -6,11 +6,11 @@
 script = ExtResource("1_script")
 color_grading_enabled = true
 tint_color = Color(1, 0, 0, 0.2)
-vignette_enabled = true
-vignette_intensity = 0.5
-vignette_opacity = 0.6
 distortion_enabled = true
-distortion_strength = 0.003
-distortion_speed = 0.8
+distortion_strength = 0.011
+distortion_speed = 1.2
 particles_enabled = true
+particle_type = 3
+particle_density = 2.0
+particle_color = Color(1, 0.078431375, 0.078431375, 0.6)
 metadata/_custom_type_script = "uid://c7814rry63yk5"

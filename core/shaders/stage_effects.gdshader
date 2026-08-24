@@ -3,7 +3,7 @@ shader_type canvas_item;
 // Filtro combinado de escenario: color grading + viñeta + distorsión (calor).
 // Se aplica en un ColorRect full-screen en layer 0 (detrás del HUD).
 
-uniform sampler2D screen_texture : hint_screen_texture, filter_linear_mipmap;
+uniform sampler2D screen_texture : hint_screen_texture, filter_linear;
 
 // Color grading
 uniform bool color_grading_enabled = false;
@@ -19,7 +19,7 @@ uniform float vignette_opacity : hint_range(0.0, 1.0) = 0.6;
 
 // Distorsión (calor)
 uniform bool distortion_enabled = false;
-uniform float distortion_strength : hint_range(0.0, 0.02) = 0.003;
+uniform float distortion_strength : hint_range(0.0, 0.05) = 0.015;
 uniform float distortion_speed : hint_range(0.0, 5.0) = 0.8;
 
 vec3 adjust_saturation(vec3 color, float sat) {
@@ -75,7 +75,11 @@ void fragment() {
 
 	// Viñeta: oscurece bordes
 	if (vignette_enabled) {
+		// Corregir aspect ratio: SCREEN_UV es 0-1 en ambos ejes sin importar resolución
+		// Aplicar corrección para que la viñeta sea circular en pantalla 16:9
 		vec2 center = uv - 0.5;
+		float aspect = SCREEN_PIXEL_SIZE.y / SCREEN_PIXEL_SIZE.x;
+		center.x *= aspect;
 		float dist = length(center);
 		float vig = smoothstep(0.3, 0.85, dist);
 		color = mix(color, vec3(0.0), vig * vignette_opacity);

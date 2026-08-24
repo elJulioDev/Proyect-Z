@@ -54,6 +54,7 @@ shader_parameter/u_flip_h = true
 
 [node name="HUD" type="CanvasLayer" unique_id=948894916]
 script = ExtResource("4_hud")
+layer = 10
 
 [node name="Root" type="Control" parent="." unique_id=1054390869]
 layout_mode = 3

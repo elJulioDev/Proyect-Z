@@ -5,6 +5,7 @@
 
 [node name="FightAnnouncer" type="CanvasLayer" unique_id=1316970745]
 script = ExtResource("1_script")
+layer = 10
 
 [node name="Label" type="Label" parent="." unique_id=960320233]
 anchors_preset = 8

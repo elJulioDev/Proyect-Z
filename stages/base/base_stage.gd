@@ -16,7 +16,7 @@ const VIEWPORT_SIZE := Vector2(1280, 720)
 @onready var stage_camera: Camera2D = $Camera2D
 
 var _filter_layer: CanvasLayer
-var _particle_layer: CanvasLayer
+var _particle_layer: Node2D
 var _fighter_tint_shader: Shader
 var _fighter_tint_material: ShaderMaterial
 
@@ -62,12 +62,11 @@ func _setup_filter_layers() -> void:
 	_filter_layer.set_script(load("res://stages/base/filter_layer.gd"))
 	add_child(_filter_layer)
 
-	# ParticleLayer: misma capa que el juego
-	_particle_layer = CanvasLayer.new()
+	# ParticleLayer: hijo de Camera2D para que siga el viewport automáticamente
+	_particle_layer = Node2D.new()
 	_particle_layer.name = "ParticleLayer"
-	_particle_layer.layer = 0
 	_particle_layer.set_script(load("res://stages/base/particle_layer.gd"))
-	add_child(_particle_layer)
+	stage_camera.add_child(_particle_layer)
 
 	# Pre-cargar shader de tinte para fighters
 	_fighter_tint_shader = load("res://core/shaders/fighter_tint.gdshader")
@@ -119,7 +118,7 @@ func _apply_filter() -> void:
 	if _filter_layer.has_method("apply"):
 		_filter_layer.apply(filter_data)
 	if _particle_layer.has_method("apply"):
-		_particle_layer.apply(filter_data)
+		_particle_layer.apply(filter_data, VIEWPORT_SIZE)
 
 
 func _apply_fighter_tint(character: BaseCharacter) -> void:
