@@ -1,8 +1,8 @@
 extends Control
 ## Menú de configuración de controles P1. Filas dinámicas con reasignación por tecla.
 
-const HOVER_SFX_PATH = "res://assets/audio/sfx/Cursor.wav"
-const CLICK_SFX_PATH = "res://assets/audio/sfx/Decide_2.wav"
+const HOVER_SFX_PATH = "res://assets/audio/sfx/ui/Cursor.wav"
+const CLICK_SFX_PATH = "res://assets/audio/sfx/ui/Decide_2.wav"
 const MAIN_MENU_PATH = "res://ui/menus/main_menu/menu.tscn"
 
 var hover_player: AudioStreamPlayer

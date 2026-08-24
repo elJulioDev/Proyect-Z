@@ -1,15 +1,15 @@
-[gd_resource type="Resource" script_class="CharacterData" format=3]
+[gd_resource type="Resource" script_class="CharacterData" format=3 uid="uid://ci53nmyjtrqo5"]
 
-[ext_resource type="Script" path="res://core/resources/character_data.gd" id="1_cdata"]
-[ext_resource type="Script" path="res://core/resources/hitbox_keyframe.gd" id="2_6xbsd"]
-[ext_resource type="Script" path="res://core/resources/anim_data.gd" id="2_adata"]
-[ext_resource type="Script" path="res://core/resources/attack_data.gd" id="3_atkdata"]
-[ext_resource type="Script" path="res://core/resources/hurtbox_keyframe.gd" id="3_nl1d4"]
-[ext_resource type="Texture2D" path="res://characters/goku/forms/spritesheet.png" id="4_sprite"]
-[ext_resource type="Texture2D" path="res://characters/goku/icon.png" id="5_icon"]
-[ext_resource type="AudioStream" path="res://assets/audio/sfx/game/ARC_BTL_CMN_Charge_Bishi.ogg" id="6_sfx_prep"]
-[ext_resource type="AudioStream" path="res://assets/audio/sfx/game/ARC_BTL_CMN_Charge_Start.ogg" id="7_sfx_start"]
-[ext_resource type="AudioStream" path="res://assets/audio/sfx/game/ARC_BTL_CMN_Charge_Loop_LP.ogg" id="8_sfx_loop"]
+[ext_resource type="Script" uid="uid://dbjvh4twsl1fo" path="res://core/resources/character_data.gd" id="1_cdata"]
+[ext_resource type="Script" uid="uid://bpy31x5ooe18r" path="res://core/resources/hitbox_keyframe.gd" id="2_6xbsd"]
+[ext_resource type="Script" uid="uid://3txiyue5yqb4" path="res://core/resources/anim_data.gd" id="2_adata"]
+[ext_resource type="Script" uid="uid://dho4t7hl5pwit" path="res://core/resources/attack_data.gd" id="3_atkdata"]
+[ext_resource type="Script" uid="uid://ccd5x01b4os3g" path="res://core/resources/hurtbox_keyframe.gd" id="3_nl1d4"]
+[ext_resource type="Texture2D" uid="uid://cegxpbm6fwa60" path="res://characters/goku/forms/spritesheet.png" id="4_sprite"]
+[ext_resource type="Texture2D" uid="uid://cpskulbkne3tk" path="res://characters/goku/icon.png" id="5_icon"]
+[ext_resource type="AudioStream" uid="uid://by6lac2ign7u" path="res://assets/audio/sfx/game/ARC_BTL_CMN_Charge_Bishi.ogg" id="6_sfx_prep"]
+[ext_resource type="AudioStream" uid="uid://b77gbovdn2xr1" path="res://assets/audio/sfx/game/ARC_BTL_CMN_Charge_Start.ogg" id="7_sfx_start"]
+[ext_resource type="AudioStream" uid="uid://b0j8mo7vuvluv" path="res://assets/audio/sfx/game/ARC_BTL_CMN_Charge_Loop_LP.ogg" id="8_sfx_loop"]
 
 [sub_resource type="Resource" id="anim_aerial_hammer"]
 script = ExtResource("2_adata")
@@ -691,6 +691,11 @@ mechanics = {
 "id": "rush"
 }
 }
+sfx = {
+"charge_loop": ExtResource("8_sfx_loop"),
+"charge_prep": ExtResource("6_sfx_prep"),
+"charge_start": ExtResource("7_sfx_start")
+}
 dust_offsets = {
 "dust1": {
 "base_offset": Vector2(0, -40),
@@ -716,9 +721,4 @@ dust_offsets = {
 "frame_offsets": [],
 "z_index": 2
 }
-}
-sfx = {
-"charge_prep": ExtResource("6_sfx_prep"),
-"charge_start": ExtResource("7_sfx_start"),
-"charge_loop": ExtResource("8_sfx_loop")
 }

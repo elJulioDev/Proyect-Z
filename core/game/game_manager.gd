@@ -13,24 +13,25 @@ const BGM_DIR := "res://assets/audio/bgm"
 const ROSTER := {
 	"goku": {
 		"display_name": "Son Goku",
-		"scene": "res://characters/goku/goku.tscn",
+		"data": "res://characters/goku/goku.tres",
 		"icon": "res://characters/goku/icon.png",
 	},
 }
 
 const BASE_STAGE_SCENE := preload("res://stages/base/base_stage.tscn")
+const BASE_CHARACTER_SCENE := preload("res://characters/base/base_character.tscn")
 
 ## id de stage -> path del .tres. Se llena automáticamente en _ready()
 ## escaneando res://stages/ (excluyendo la carpeta "base").
 var stages: Dictionary = {}
 
-var p1_scene: PackedScene
-var p2_scene: PackedScene
+var p1_data: CharacterData
+var p2_data: CharacterData
 var p2_dummy := true
 var current_stage_path: String = ""
 var _fight_manager: Node
-var pending_p1: PackedScene
-var pending_p2: PackedScene
+var pending_p1: String
+var pending_p2: String
 var _bgm_player: AudioStreamPlayer
 
 
@@ -63,9 +64,9 @@ func _discover_stages() -> void:
 	root.list_dir_end()
 
 
-func start_fight(p1: PackedScene, p2: PackedScene, stage_path: String) -> void:
-	p1_scene = p1
-	p2_scene = p2
+func start_fight(p1_data_path: String, p2_data_path: String, stage_path: String) -> void:
+	p1_data = load(p1_data_path)
+	p2_data = load(p2_data_path)
 	current_stage_path = stage_path
 	TransitionManager.transition(0.8, 0.5, 0.8, func():
 		_do_fight()
@@ -84,8 +85,10 @@ func _do_fight() -> void:
 	# BGM aleatorio
 	_play_random_bgm()
 	# Fighters
-	var p1: BaseCharacter = p1_scene.instantiate()
-	var p2: BaseCharacter = p2_scene.instantiate()
+	var p1: BaseCharacter = BASE_CHARACTER_SCENE.instantiate()
+	var p2: BaseCharacter = BASE_CHARACTER_SCENE.instantiate()
+	p1.character_data = p1_data
+	p2.character_data = p2_data
 	p1.name = "BaseCharacter"
 	p2.name = "Player2"
 	# Controllers antes de add_child para evitar wasted instantiation

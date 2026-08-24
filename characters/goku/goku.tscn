@@ -1,7 +1,0 @@
-[gd_scene format=3 uid="uid://c4yng2uay1bs"]
-
-[ext_resource type="PackedScene" uid="uid://b7epvnwgpetc1" path="res://characters/base/base_character.tscn" id="1_base"]
-[ext_resource type="Resource" uid="uid://derv6nxteoxo7" path="res://characters/goku/goku.tres" id="2_data"]
-
-[node name="BaseCharacter" unique_id=896002141 instance=ExtResource("1_base")]
-character_data = ExtResource("2_data")
