@@ -36,8 +36,33 @@ var _bgm_player: AudioStreamPlayer
 
 
 func _ready() -> void:
+	_setup_custom_cursors()
 	_discover_stages()
 
+func _setup_custom_cursors() -> void:
+	var base_path := "res://assets/ui/cursor/"
+
+	# Usar constantes del enum Input.CursorShape directamente (Godot 4)
+	Input.set_custom_mouse_cursor(load(base_path + "pointer_c.svg"), Input.CURSOR_ARROW, Vector2(0, 0))
+	Input.set_custom_mouse_cursor(load(base_path + "line_vertical.svg"), Input.CURSOR_IBEAM, Vector2(16, 16))
+	Input.set_custom_mouse_cursor(load(base_path + "hand_point.svg"), Input.CURSOR_POINTING_HAND, Vector2(8, 8))
+	Input.set_custom_mouse_cursor(load(base_path + "cross_small.svg"), Input.CURSOR_CROSS, Vector2(16, 16))
+	Input.set_custom_mouse_cursor(load(base_path + "busy_hourglass.svg"), Input.CURSOR_WAIT, Vector2(16, 16))
+	Input.set_custom_mouse_cursor(load(base_path + "busy_circle.svg"), Input.CURSOR_BUSY, Vector2(16, 16))
+	Input.set_custom_mouse_cursor(load(base_path + "cursor_help.svg"), Input.CURSOR_HELP, Vector2(16, 16))
+
+	# Resize por eje (Godot 4 no tiene cursores individuales UP/DOWN/LEFT/RIGHT)
+	Input.set_custom_mouse_cursor(load(base_path + "resize_a_vertical.svg"), Input.CURSOR_VSIZE, Vector2(16, 16))
+	Input.set_custom_mouse_cursor(load(base_path + "resize_a_horizontal.svg"), Input.CURSOR_HSIZE, Vector2(16, 16))
+	Input.set_custom_mouse_cursor(load(base_path + "arrow_nw.svg"), Input.CURSOR_BDIAGSIZE, Vector2(16, 16))
+	Input.set_custom_mouse_cursor(load(base_path + "arrow_ne.svg"), Input.CURSOR_FDIAGSIZE, Vector2(16, 16))
+	Input.set_custom_mouse_cursor(load(base_path + "resize_a_cross.svg"), Input.CURSOR_MOVE, Vector2(16, 16))
+
+	# Opcionales disponibles en el enum (no mapeados por falta de assets):
+	# Input.CURSOR_DRAG, Input.CURSOR_CAN_DROP, Input.CURSOR_FORBIDDEN
+	# Input.CURSOR_VSPLIT, Input.CURSOR_HSPLIT
+
+	# Cursor oculto: Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
 
 func _discover_stages() -> void:
 	stages.clear()
