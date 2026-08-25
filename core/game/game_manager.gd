@@ -7,6 +7,7 @@ const HUDScene := preload("res://ui/hud/hud.tscn")
 const DebugScene := preload("res://ui/debug_overlay/debug_overlay.tscn")
 const FightManagerScene := preload("res://core/game/fight_manager.gd")
 const AnnouncerScene := preload("res://ui/fight_announcer/fight_announcer.tscn")
+const PauseMenuScene := preload("res://ui/menus/pause_menu/pause_menu.tscn")
 const BGM_DIR := "res://assets/audio/bgm"
 
 ## Roster de personajes disponibles. Agregar un personaje nuevo = agregar una entrada.
@@ -33,11 +34,20 @@ var _fight_manager: Node
 var pending_p1: String
 var pending_p2: String
 var _bgm_player: AudioStreamPlayer
+var _pause_menu: CanvasLayer = null
 
 
 func _ready() -> void:
 	_setup_custom_cursors()
 	_discover_stages()
+
+
+func _input(event: InputEvent) -> void:
+	if event is InputEventKey and event.pressed and not event.echo:
+		if event.keycode == KEY_ENTER or event.keycode == KEY_KP_ENTER:
+			if get_tree().current_scene is BaseStage:
+				_toggle_pause_menu()
+				get_viewport().set_input_as_handled()
 
 func _setup_custom_cursors() -> void:
 	var base_path := "res://assets/ui/cursor/"
@@ -93,6 +103,7 @@ func start_fight(p1_data_path: String, p2_data_path: String, stage_path: String)
 	p1_data = load(p1_data_path)
 	p2_data = load(p2_data_path)
 	current_stage_path = stage_path
+	_close_pause_menu()
 	TransitionManager.transition(0.8, 0.5, 0.8, func():
 		_do_fight()
 	)
@@ -162,7 +173,30 @@ func _on_fight_ended(_final_winner: int) -> void:
 	return_to_menu()
 
 
+func _toggle_pause_menu() -> void:
+	if _pause_menu and is_instance_valid(_pause_menu):
+		_pause_menu.hide_menu()
+		_pause_menu.queue_free()
+		_pause_menu = null
+	else:
+		_open_pause_menu()
+
+
+func _open_pause_menu() -> void:
+	_pause_menu = PauseMenuScene.instantiate()
+	get_tree().current_scene.add_child(_pause_menu)
+	_pause_menu.show_menu()
+
+
+func _close_pause_menu() -> void:
+	if _pause_menu and is_instance_valid(_pause_menu):
+		_pause_menu.hide_menu()
+		_pause_menu.queue_free()
+		_pause_menu = null
+
+
 func return_to_menu() -> void:
+	_close_pause_menu()
 	_stop_bgm()
 	if _fight_manager:
 		_fight_manager.queue_free()
