@@ -21,9 +21,14 @@ var last_click_time: int = 0
 
 
 func _ready() -> void:
-	hide()
 	_setup_audio()
 	_connect_buttons()
+	if Engine.is_editor_hint():
+		return
+	if get_tree().current_scene == self:
+		show_menu()
+	else:
+		hide()
 
 
 func show_menu() -> void:
@@ -82,6 +87,10 @@ func _setup_button_visual(button: Button) -> void:
 	button.add_theme_stylebox_override("hover", hover)
 	var focus := StyleBoxFlat.new()
 	focus.bg_color = Color.TRANSPARENT
+	focus.border_width_top = 0
+	focus.border_width_bottom = 0
+	focus.border_width_left = 0
+	focus.border_width_right = 0
 	button.add_theme_stylebox_override("focus", focus)
 	_btn_data[button.name] = {"normal": normal, "hover": hover, "kb_hover": hover}
 

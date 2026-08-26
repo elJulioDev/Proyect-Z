@@ -1,15 +1,16 @@
-[gd_scene load_steps=12 format=3 uid="uid://drwysncxxv4ou"]
+[gd_scene format=3 uid="uid://drwysncxxv4ou"]
 
-[ext_resource type="Script" path="res://ui/menus/pause_menu/pause_menu.gd" id="1_script"]
+[ext_resource type="Script" uid="uid://c2kx8m07vqnyd" path="res://ui/menus/pause_menu/pause_menu.gd" id="1_script"]
 [ext_resource type="FontFile" uid="uid://de8c3i7kbfoh4" path="res://assets/fonts/Aharoni Bold.ttf" id="2_font"]
-[ext_resource type="Shader" path="res://ui/menus/pause_menu/blur_overlay.gdshader" id="3_blur"]
+[ext_resource type="Shader" uid="uid://b227by5i4vb2d" path="res://ui/menus/pause_menu/blur_overlay.gdshader" id="3_blur"]
+[ext_resource type="FontFile" uid="uid://g43mgn35gdtl" path="res://assets/fonts/Great Fighter Demo.ttf" id="3_cid4m"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_blur"]
 shader = ExtResource("3_blur")
 shader_parameter/blur_size = 3.0
 shader_parameter/dark_amount = 0.5
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_normal"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2gx4h"]
 content_margin_top = 6.0
 content_margin_bottom = 6.0
 bg_color = Color(0, 0, 0, 0.8235294)
@@ -20,7 +21,9 @@ corner_radius_bottom_left = 15
 shadow_color = Color(0, 0, 0, 0.23529412)
 shadow_size = 5
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_hover"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cid4m"]
+content_margin_top = 6.0
+content_margin_bottom = 6.0
 bg_color = Color(0.98803645, 0.73403823, 0.025840001, 0.90200007)
 border_width_left = 2
 border_width_top = 2
@@ -33,7 +36,9 @@ corner_radius_bottom_right = 15
 corner_radius_bottom_left = 15
 shadow_size = 5
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_pressed"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yio2i"]
+content_margin_top = 6.0
+content_margin_bottom = 6.0
 bg_color = Color(0.99, 0.55341, 0.019799981, 0.9019608)
 border_width_left = 2
 border_width_top = 2
@@ -46,22 +51,20 @@ corner_radius_bottom_right = 15
 corner_radius_bottom_left = 15
 shadow_size = 5
 
-[node name="PauseMenu" type="CanvasLayer"]
-layer = 50
+[node name="PauseMenu" type="CanvasLayer" unique_id=326617628]
 process_mode = 3
+layer = 50
 script = ExtResource("1_script")
 
-[node name="Background" type="ColorRect" parent="."]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 0
+[node name="Background" type="ColorRect" parent="." unique_id=661708786]
 material = SubResource("ShaderMaterial_blur")
-color = Color(1, 1, 1, 1)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
-[node name="CenterContainer" type="CenterContainer" parent="."]
+[node name="CenterContainer" type="CenterContainer" parent="." unique_id=1636068958]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -69,30 +72,36 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer" unique_id=1191010389]
 layout_mode = 2
-theme_override_constants/separation = 20
 mouse_filter = 2
+theme_override_constants/separation = 20
 
-[node name="Title" type="Label" parent="CenterContainer/VBoxContainer"]
+[node name="TitleContainer" type="VBoxContainer" parent="CenterContainer/VBoxContainer"]
+layout_mode = 2
+mouse_filter = 2
+size_flags_vertical = 0
+
+[node name="Title" type="Label" parent="CenterContainer/VBoxContainer/TitleContainer" unique_id=1025024666]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.6431373)
 theme_override_constants/shadow_offset_x = 2
 theme_override_constants/shadow_offset_y = 2
-theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 36
+theme_override_fonts/font = ExtResource("3_cid4m")
+theme_override_font_sizes/font_size = 112
 text = "JUEGO EN PAUSA"
 horizontal_alignment = 1
 
-[node name="ButtonsContainer" type="VBoxContainer" parent="CenterContainer/VBoxContainer"]
+[node name="ButtonsContainer" type="VBoxContainer" parent="CenterContainer/VBoxContainer" unique_id=205759109]
 layout_mode = 2
-theme_override_constants/separation = 10
+mouse_filter = 2
+theme_override_constants/separation = 15
 alignment = 1
 
-[node name="continuar" type="Button" parent="CenterContainer/VBoxContainer/ButtonsContainer"]
-custom_minimum_size = Vector2(280, 40)
+[node name="continuar" type="Button" parent="CenterContainer/VBoxContainer/ButtonsContainer" unique_id=1022727444]
 layout_mode = 2
+size_flags_horizontal = 3
 mouse_default_cursor_shape = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
@@ -100,14 +109,14 @@ theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 5
 theme_override_fonts/font = ExtResource("2_font")
 theme_override_font_sizes/font_size = 20
-theme_override_styles/normal = SubResource("StyleBoxFlat_btn_normal")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_pressed")
-theme_override_styles/hover = SubResource("StyleBoxFlat_btn_hover")
+theme_override_styles/normal = SubResource("StyleBoxFlat_2gx4h")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_cid4m")
+theme_override_styles/hover = SubResource("StyleBoxFlat_yio2i")
 text = "Continuar"
 
-[node name="reiniciar" type="Button" parent="CenterContainer/VBoxContainer/ButtonsContainer"]
-custom_minimum_size = Vector2(280, 40)
+[node name="reiniciar" type="Button" parent="CenterContainer/VBoxContainer/ButtonsContainer" unique_id=1386889655]
 layout_mode = 2
+size_flags_horizontal = 3
 mouse_default_cursor_shape = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
@@ -115,14 +124,14 @@ theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 5
 theme_override_fonts/font = ExtResource("2_font")
 theme_override_font_sizes/font_size = 20
-theme_override_styles/normal = SubResource("StyleBoxFlat_btn_normal")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_pressed")
-theme_override_styles/hover = SubResource("StyleBoxFlat_btn_hover")
+theme_override_styles/normal = SubResource("StyleBoxFlat_2gx4h")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_cid4m")
+theme_override_styles/hover = SubResource("StyleBoxFlat_yio2i")
 text = "Reiniciar"
 
-[node name="personajes" type="Button" parent="CenterContainer/VBoxContainer/ButtonsContainer"]
-custom_minimum_size = Vector2(280, 40)
+[node name="personajes" type="Button" parent="CenterContainer/VBoxContainer/ButtonsContainer" unique_id=960129576]
 layout_mode = 2
+size_flags_horizontal = 3
 mouse_default_cursor_shape = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
@@ -130,14 +139,14 @@ theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 5
 theme_override_fonts/font = ExtResource("2_font")
 theme_override_font_sizes/font_size = 20
-theme_override_styles/normal = SubResource("StyleBoxFlat_btn_normal")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_pressed")
-theme_override_styles/hover = SubResource("StyleBoxFlat_btn_hover")
-text = "Selección de personajes"
+theme_override_styles/normal = SubResource("StyleBoxFlat_2gx4h")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_cid4m")
+theme_override_styles/hover = SubResource("StyleBoxFlat_yio2i")
+text = "Seleccionar personajes"
 
-[node name="escenario" type="Button" parent="CenterContainer/VBoxContainer/ButtonsContainer"]
-custom_minimum_size = Vector2(280, 40)
+[node name="escenario" type="Button" parent="CenterContainer/VBoxContainer/ButtonsContainer" unique_id=1073425318]
 layout_mode = 2
+size_flags_horizontal = 3
 mouse_default_cursor_shape = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
@@ -145,14 +154,14 @@ theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 5
 theme_override_fonts/font = ExtResource("2_font")
 theme_override_font_sizes/font_size = 20
-theme_override_styles/normal = SubResource("StyleBoxFlat_btn_normal")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_pressed")
-theme_override_styles/hover = SubResource("StyleBoxFlat_btn_hover")
-text = "Selección de escenario"
+theme_override_styles/normal = SubResource("StyleBoxFlat_2gx4h")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_cid4m")
+theme_override_styles/hover = SubResource("StyleBoxFlat_yio2i")
+text = "Seleccionar escenario"
 
-[node name="menu_principal" type="Button" parent="CenterContainer/VBoxContainer/ButtonsContainer"]
-custom_minimum_size = Vector2(280, 40)
+[node name="menu_principal" type="Button" parent="CenterContainer/VBoxContainer/ButtonsContainer" unique_id=2017781490]
 layout_mode = 2
+size_flags_horizontal = 3
 mouse_default_cursor_shape = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
@@ -160,7 +169,7 @@ theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 5
 theme_override_fonts/font = ExtResource("2_font")
 theme_override_font_sizes/font_size = 20
-theme_override_styles/normal = SubResource("StyleBoxFlat_btn_normal")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_pressed")
-theme_override_styles/hover = SubResource("StyleBoxFlat_btn_hover")
-text = "Menú principal"
+theme_override_styles/normal = SubResource("StyleBoxFlat_2gx4h")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_cid4m")
+theme_override_styles/hover = SubResource("StyleBoxFlat_yio2i")
+text = "Menu principal"
