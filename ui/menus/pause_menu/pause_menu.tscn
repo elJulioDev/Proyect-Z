@@ -75,12 +75,12 @@ mouse_filter = 2
 [node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer" unique_id=1191010389]
 layout_mode = 2
 mouse_filter = 2
-theme_override_constants/separation = 20
+theme_override_constants/separation = 86
 
-[node name="TitleContainer" type="VBoxContainer" parent="CenterContainer/VBoxContainer"]
+[node name="TitleContainer" type="VBoxContainer" parent="CenterContainer/VBoxContainer" unique_id=2110327458]
 layout_mode = 2
-mouse_filter = 2
 size_flags_vertical = 0
+mouse_filter = 2
 
 [node name="Title" type="Label" parent="CenterContainer/VBoxContainer/TitleContainer" unique_id=1025024666]
 layout_mode = 2
@@ -100,8 +100,9 @@ theme_override_constants/separation = 15
 alignment = 1
 
 [node name="continuar" type="Button" parent="CenterContainer/VBoxContainer/ButtonsContainer" unique_id=1022727444]
+custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
-size_flags_horizontal = 3
+size_flags_horizontal = 4
 mouse_default_cursor_shape = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
@@ -115,8 +116,9 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_yio2i")
 text = "Continuar"
 
 [node name="reiniciar" type="Button" parent="CenterContainer/VBoxContainer/ButtonsContainer" unique_id=1386889655]
+custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
-size_flags_horizontal = 3
+size_flags_horizontal = 4
 mouse_default_cursor_shape = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
@@ -130,8 +132,9 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_yio2i")
 text = "Reiniciar"
 
 [node name="personajes" type="Button" parent="CenterContainer/VBoxContainer/ButtonsContainer" unique_id=960129576]
+custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
-size_flags_horizontal = 3
+size_flags_horizontal = 4
 mouse_default_cursor_shape = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
@@ -145,8 +148,9 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_yio2i")
 text = "Seleccionar personajes"
 
 [node name="escenario" type="Button" parent="CenterContainer/VBoxContainer/ButtonsContainer" unique_id=1073425318]
+custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
-size_flags_horizontal = 3
+size_flags_horizontal = 4
 mouse_default_cursor_shape = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
@@ -160,8 +164,9 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_yio2i")
 text = "Seleccionar escenario"
 
 [node name="menu_principal" type="Button" parent="CenterContainer/VBoxContainer/ButtonsContainer" unique_id=2017781490]
+custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
-size_flags_horizontal = 3
+size_flags_horizontal = 4
 mouse_default_cursor_shape = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_hover_color = Color(1, 1, 1, 1)

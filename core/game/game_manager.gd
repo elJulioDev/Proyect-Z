@@ -30,6 +30,7 @@ var p1_data: CharacterData
 var p2_data: CharacterData
 var p2_dummy := true
 var current_stage_path: String = ""
+var match_time := 0
 var _fight_manager: Node
 var pending_p1: String
 var pending_p2: String
@@ -99,10 +100,11 @@ func _discover_stages() -> void:
 	root.list_dir_end()
 
 
-func start_fight(p1_data_path: String, p2_data_path: String, stage_path: String) -> void:
+func start_fight(p1_data_path: String, p2_data_path: String, stage_path: String, p_match_time: int = 0) -> void:
 	p1_data = load(p1_data_path)
 	p2_data = load(p2_data_path)
 	current_stage_path = stage_path
+	match_time = p_match_time
 	_close_pause_menu()
 	TransitionManager.transition(0.8, 0.5, 0.8, func():
 		_do_fight()
@@ -148,7 +150,7 @@ func _do_fight() -> void:
 	debug.setup(p1, p2)
 	# Fight manager
 	_fight_manager = FightManagerScene.new()
-	_fight_manager.setup(p1, p2)
+	_fight_manager.setup(p1, p2, match_time, hud)
 	_fight_manager.round_ended.connect(_on_round_ended.bind(stage))
 	_fight_manager.fight_ended.connect(_on_fight_ended)
 	add_child(_fight_manager)

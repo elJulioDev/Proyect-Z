@@ -11,6 +11,8 @@ extends CanvasLayer
 @onready var p2_level: RichTextLabel = $Root/Margins/Viewport/Levels/Content/P2Level
 @onready var p1_portrait: DiamondIcon = $Root/Margins/Viewport/Portraits/Content/P1Portrait
 @onready var p2_portrait: DiamondIcon = $Root/Margins/Viewport/Portraits/Content/P2Portrait
+@onready var infinity_icon: Control = $Root/Margins/Viewport/MarginContainer/Center/InfinityIcon
+@onready var timer_label: Label = $Root/Margins/Viewport/MarginContainer/Center/TimerLabel
 
 
 func _ready() -> void:
@@ -23,6 +25,15 @@ func setup(p1: BaseCharacter, p2: BaseCharacter) -> void:
 		_wire(p1, p1_health, p1_name, p1_energy, p1_level, p1_portrait, false)
 	if p2:
 		_wire(p2, p2_health, p2_name, p2_energy, p2_level, p2_portrait, true)
+
+
+func setup_timer(infinite: bool) -> void:
+	infinity_icon.visible = infinite
+	timer_label.visible = not infinite
+
+
+func update_time(seconds: int) -> void:
+	timer_label.text = "%02d" % seconds
 
 
 func _wire(fighter: BaseCharacter, bar: SlantBar, name_label: Label, energy_bar: SegmentedBar, level_label: RichTextLabel, portrait: DiamondIcon, inverted: bool) -> void:

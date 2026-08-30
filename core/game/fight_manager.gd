@@ -11,18 +11,42 @@ var p2_wins := 0
 var max_rounds := 1
 var round_num := 0
 var fight_active := false
+var match_time := 0
+var time_remaining := 0.0
+var _hud: CanvasLayer = null
 
 
-func setup(p1: BaseCharacter, p2: BaseCharacter) -> void:
+func setup(p1: BaseCharacter, p2: BaseCharacter, p_match_time: int = 0, hud: CanvasLayer = null) -> void:
 	player1 = p1
 	player2 = p2
+	match_time = p_match_time
+	_hud = hud
 	p1.health.character_died.connect(_on_p1_died)
 	p2.health.character_died.connect(_on_p2_died)
+	if _hud:
+		_hud.setup_timer(match_time == 0)
 
 
 func start_round() -> void:
 	round_num += 1
 	fight_active = true
+	if match_time > 0:
+		time_remaining = float(match_time)
+		if _hud:
+			_hud.update_time(int(time_remaining))
+
+
+func _process(delta: float) -> void:
+	if not fight_active or match_time <= 0:
+		return
+	time_remaining -= delta
+	if _hud:
+		_hud.update_time(int(ceil(time_remaining)))
+	if time_remaining <= 0.0:
+		time_remaining = 0.0
+		if _hud:
+			_hud.update_time(0)
+		_end_round(0)
 
 
 func _on_p1_died() -> void:

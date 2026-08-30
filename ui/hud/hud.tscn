@@ -8,6 +8,8 @@
 [ext_resource type="Script" uid="uid://derkk6y2ll10f" path="res://scripts/diamond_icon.gd" id="5_diamond"]
 [ext_resource type="Shader" uid="uid://cepbo8k6hdecm" path="res://ui/hud/diamond_clip.gdshader" id="6_clip"]
 [ext_resource type="FontFile" uid="uid://g43mgn35gdtl" path="res://assets/fonts/Great Fighter Demo.ttf" id="7_gfles"]
+[ext_resource type="Texture2D" uid="uid://d3vm2ht3nu71p" path="res://assets/ui/hud/infinity.svg" id="infinity_icon"]
+[ext_resource type="Shader" uid="uid://cyxy2fkgn0osc" path="res://ui/hud/infinity_tint.gdshader" id="infinity_shader"]
 [ext_resource type="Texture2D" uid="uid://lg5bojewic8h" path="res://assets/ui/hud/round_slot_1.svg" id="slot_1"]
 [ext_resource type="Texture2D" uid="uid://b6mrg0pdqdmok" path="res://assets/ui/hud/round_slot_2.svg" id="slot_2"]
 [ext_resource type="Texture2D" uid="uid://b8po5fdbtjk4n" path="res://assets/ui/hud/round_slot_3.svg" id="slot_3"]
@@ -16,7 +18,7 @@
 [ext_resource type="Texture2D" uid="uid://r3n4p1jcg0td" path="res://assets/ui/hud/round_slot_6.svg" id="slot_6"]
 [ext_resource type="Texture2D" uid="uid://cmso2po0glulu" path="res://assets/ui/hud/round_slot_7.svg" id="slot_7"]
 
-[sub_resource type="Image" id="Image_3mxrk"]
+[sub_resource type="Image" id="Image_olkg6"]
 data = {
 "data": PackedByteArray(0, 0, 0, 0),
 "format": "RGBA8",
@@ -26,7 +28,7 @@ data = {
 }
 
 [sub_resource type="ImageTexture" id="ImageTexture_hk13k"]
-image = SubResource("Image_3mxrk")
+image = SubResource("Image_olkg6")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_portrait1"]
 shader = ExtResource("6_clip")
@@ -52,9 +54,12 @@ shader_parameter/u_has_texture = true
 shader_parameter/u_fill_margin = 0.0
 shader_parameter/u_flip_h = true
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_infinity"]
+shader = ExtResource("infinity_shader")
+
 [node name="HUD" type="CanvasLayer" unique_id=948894916]
-script = ExtResource("4_hud")
 layer = 10
+script = ExtResource("4_hud")
 
 [node name="Root" type="Control" parent="." unique_id=1054390869]
 layout_mode = 3
@@ -197,6 +202,7 @@ theme_override_constants/margin_bottom = 0
 layout_mode = 2
 
 [node name="P1Health" type="Control" parent="Root/Margins/Viewport/Health/Content" unique_id=1104676235]
+texture_repeat = 2
 layout_mode = 1
 anchors_preset = 0
 offset_left = 120.0
@@ -215,6 +221,7 @@ bar_width = 490.0
 bar_height = 30.0
 
 [node name="P2Health" type="Control" parent="Root/Margins/Viewport/Health/Content" unique_id=926288259]
+texture_repeat = 2
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
@@ -388,27 +395,82 @@ border_width = 2.0
 flip = true
 slot_textures = Array[Texture2D]([ExtResource("slot_1"), ExtResource("slot_2"), ExtResource("slot_3"), ExtResource("slot_4"), ExtResource("slot_5"), ExtResource("slot_6"), ExtResource("slot_7")])
 
-[node name="Center" type="Control" parent="Root/Margins/Viewport" unique_id=667352703]
+[node name="MarginContainer" type="MarginContainer" parent="Root/Margins/Viewport" unique_id=1218241067]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -30.0
-offset_right = 30.0
-offset_bottom = 60.0
+offset_left = -20.0
+offset_right = 20.0
+offset_bottom = 40.0
 grow_horizontal = 2
+theme_override_constants/margin_top = 45
 
-[node name="InfinityLabel" type="Label" parent="Root/Margins/Viewport/Center" unique_id=501509689]
-layout_mode = 0
-offset_top = -2.0
-offset_right = 60.0
-offset_bottom = 95.0
+[node name="Center" type="Control" parent="Root/Margins/Viewport/MarginContainer" unique_id=667352703]
+layout_mode = 2
+
+[node name="InfinityIcon" type="Control" parent="Root/Margins/Viewport/MarginContainer/Center" unique_id=2003744977]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -44.0
+offset_top = -24.0
+offset_right = 44.0
+offset_bottom = 24.0
 grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Shadow" type="TextureRect" parent="Root/Margins/Viewport/MarginContainer/Center/InfinityIcon" unique_id=203697513]
+self_modulate = Color(0, 0, 0, 0.5)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -56.0
+offset_top = -29.0
+offset_right = 64.0
+offset_bottom = 31.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("infinity_icon")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="Icon" type="TextureRect" parent="Root/Margins/Viewport/MarginContainer/Center/InfinityIcon" unique_id=1822197793]
+material = SubResource("ShaderMaterial_infinity")
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -58.0
+offset_top = -31.0
+offset_right = 62.0
+offset_bottom = 29.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("infinity_icon")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="TimerLabel" type="Label" parent="Root/Margins/Viewport/MarginContainer/Center" unique_id=193296782]
+visible = false
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.5)
 theme_override_constants/shadow_offset_x = 2
 theme_override_constants/shadow_offset_y = 2
 theme_override_fonts/font = ExtResource("3_aharoni")
 theme_override_font_sizes/font_size = 60
-text = "∞"
+text = "90"
 horizontal_alignment = 1
 vertical_alignment = 1
