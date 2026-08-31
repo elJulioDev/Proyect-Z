@@ -27,13 +27,15 @@ func setup(p1: BaseCharacter, p2: BaseCharacter) -> void:
 		_wire(p2, p2_health, p2_name, p2_energy, p2_level, p2_portrait, true)
 
 
-func setup_timer(infinite: bool) -> void:
+func setup_timer(infinite: bool, initial_time: int = 0) -> void:
 	infinity_icon.visible = infinite
 	timer_label.visible = not infinite
+	if not infinite:
+		update_time(initial_time)
 
 
 func update_time(seconds: int) -> void:
-	timer_label.text = "%02d" % seconds
+	timer_label.text = str(seconds)
 
 
 func _wire(fighter: BaseCharacter, bar: SlantBar, name_label: Label, energy_bar: SegmentedBar, level_label: RichTextLabel, portrait: DiamondIcon, inverted: bool) -> void:

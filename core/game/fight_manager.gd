@@ -24,7 +24,7 @@ func setup(p1: BaseCharacter, p2: BaseCharacter, p_match_time: int = 0, hud: Can
 	p1.health.character_died.connect(_on_p1_died)
 	p2.health.character_died.connect(_on_p2_died)
 	if _hud:
-		_hud.setup_timer(match_time == 0)
+		_hud.setup_timer(match_time == 0, match_time)
 
 
 func start_round() -> void:
