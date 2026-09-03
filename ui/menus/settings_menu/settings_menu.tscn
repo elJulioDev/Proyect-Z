@@ -1,46 +1,38 @@
-[gd_scene load_steps=20 format=3]
+[gd_scene format=3 uid="uid://4obhprfbv56n"]
 
-[ext_resource type="Script" path="res://ui/menus/settings_menu/settings_menu.gd" id="1_script"]
+[ext_resource type="Script" uid="uid://b3uckm3shwmwj" path="res://ui/menus/settings_menu/settings_menu.gd" id="1_script"]
 [ext_resource type="Texture2D" uid="uid://cxnebjmg365vv" path="res://assets/ui/menus/settings.png" id="2_bg"]
-[ext_resource type="FontFile" uid="uid://g43mgn35gdtl" path="res://assets/fonts/Great Fighter Demo.ttf" id="3_title_font"]
-[ext_resource type="FontFile" uid="uid://de8c3i7kbfoh4" path="res://assets/fonts/Aharoni Bold.ttf" id="4_btn_font"]
+[ext_resource type="FontFile" uid="uid://de8c3i7kbfoh4" path="res://assets/fonts/Aharoni Bold.ttf" id="3_font"]
+[ext_resource type="Texture2D" uid="uid://6580lfijrre8" path="res://assets/ui/menus/display.png" id="4_display"]
+[ext_resource type="Texture2D" uid="uid://dll2eefudmjrf" path="res://assets/ui/menus/sound.png" id="5_sound"]
+[ext_resource type="Texture2D" uid="uid://4w0vgc80xceh" path="res://assets/ui/menus/game.png" id="6_game"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tab"]
-content_margin_left = 16.0
-content_margin_top = 8.0
-content_margin_right = 16.0
-content_margin_bottom = 8.0
-bg_color = Color(0.12, 0.11, 0.18, 0.95)
-corner_radius_top_left = 12
-corner_radius_top_right = 12
-corner_radius_bottom_right = 12
-corner_radius_bottom_left = 12
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.9, 0.6, 0.1, 0.6)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_arrow_normal"]
+bg_color = Color(0, 0, 0, 0.6)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 1, 1, 0.6)
+corner_radius_top_left = 22
+corner_radius_top_right = 22
+corner_radius_bottom_right = 22
+corner_radius_bottom_left = 22
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tab_selected"]
-content_margin_left = 16.0
-content_margin_top = 8.0
-content_margin_right = 16.0
-content_margin_bottom = 8.0
-bg_color = Color(0.08, 0.07, 0.14, 0.95)
-corner_radius_top_left = 12
-corner_radius_top_right = 12
-corner_radius_bottom_right = 12
-corner_radius_bottom_left = 12
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.99, 0.55, 0.02, 0.9)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_arrow_hover"]
+bg_color = Color(0.99, 0.55, 0.02, 0.85)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 1, 1, 0.6)
+corner_radius_top_left = 22
+corner_radius_top_right = 22
+corner_radius_bottom_right = 22
+corner_radius_bottom_left = 22
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_normal"]
-content_margin_left = 10.0
 content_margin_top = 6.0
-content_margin_right = 10.0
 content_margin_bottom = 6.0
 bg_color = Color(0, 0, 0, 0.82)
 corner_radius_top_left = 15
@@ -50,11 +42,20 @@ corner_radius_bottom_left = 15
 shadow_color = Color(0, 0, 0, 0.24)
 shadow_size = 5
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_pressed"]
+bg_color = Color(0.99, 0.73, 0.03, 0.9)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+shadow_size = 5
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_hover"]
-content_margin_left = 10.0
-content_margin_top = 6.0
-content_margin_right = 10.0
-content_margin_bottom = 6.0
 bg_color = Color(0.99, 0.55, 0.02, 0.9)
 border_width_left = 2
 border_width_top = 2
@@ -67,111 +68,34 @@ corner_radius_bottom_right = 15
 corner_radius_bottom_left = 15
 shadow_size = 5
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_focus"]
-bg_color = Color(0, 0, 0, 0)
-content_margin_left = 10.0
-content_margin_top = 6.0
-content_margin_right = 10.0
-content_margin_bottom = 6.0
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_slider_bg"]
-content_margin_left = 4.0
-content_margin_top = 4.0
-content_margin_right = 4.0
-content_margin_bottom = 4.0
-bg_color = Color(0.2, 0.2, 0.25, 1)
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_slider_fill"]
-content_margin_left = 4.0
-content_margin_top = 4.0
-content_margin_right = 4.0
-content_margin_bottom = 4.0
-bg_color = Color(0.99, 0.65, 0.02, 1)
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_slider_grab"]
-content_margin_left = 6.0
-content_margin_top = 6.0
-content_margin_right = 6.0
-content_margin_bottom = 6.0
-bg_color = Color(1, 0.85, 0.2, 1)
-corner_radius_top_left = 8
-corner_radius_top_right = 8
-corner_radius_bottom_right = 8
-corner_radius_bottom_left = 8
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_option"]
-content_margin_left = 10.0
-content_margin_top = 6.0
-content_margin_right = 10.0
-content_margin_bottom = 6.0
-bg_color = Color(0.15, 0.14, 0.22, 1)
-corner_radius_top_left = 8
-corner_radius_top_right = 8
-corner_radius_bottom_right = 8
-corner_radius_bottom_left = 8
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(0.5, 0.4, 0.1, 0.6)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_option_hover"]
-content_margin_left = 10.0
-content_margin_top = 6.0
-content_margin_right = 10.0
-content_margin_bottom = 6.0
-bg_color = Color(0.25, 0.22, 0.35, 1)
-corner_radius_top_left = 8
-corner_radius_top_right = 8
-corner_radius_bottom_right = 8
-corner_radius_bottom_left = 8
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(0.99, 0.55, 0.02, 0.8)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_check"]
-content_margin_left = 4.0
-content_margin_top = 4.0
-content_margin_right = 4.0
-content_margin_bottom = 4.0
-bg_color = Color(0.15, 0.14, 0.22, 1)
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
+content_margin_left = 34.0
+content_margin_top = 26.0
+content_margin_right = 34.0
+content_margin_bottom = 26.0
+bg_color = Color(0.04, 0.05, 0.07, 0.82)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
-border_color = Color(0.5, 0.4, 0.1, 0.6)
+border_color = Color(1, 1, 1, 0.85)
+corner_radius_top_left = 22
+corner_radius_top_right = 22
+corner_radius_bottom_right = 22
+corner_radius_bottom_left = 22
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_check_checked"]
-content_margin_left = 4.0
-content_margin_top = 4.0
-content_margin_right = 4.0
-content_margin_bottom = 4.0
-bg_color = Color(0.99, 0.65, 0.02, 1)
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(1, 0.85, 0.2, 0.8)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_separator"]
+content_margin_top = 1.0
+bg_color = Color(1, 1, 1, 0.5)
 
-[node name="SettingsMenu" type="Control"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dot"]
+bg_color = Color(1, 1, 1, 0.3)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[node name="SettingsMenu" type="Control" unique_id=31786515]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -180,518 +104,228 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_script")
 
-[node name="Background" type="TextureRect" parent="."]
+[node name="Background" type="TextureRect" parent="." unique_id=917881060]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 texture = ExtResource("2_bg")
 expand_mode = 1
 stretch_mode = 6
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="Dim" type="ColorRect" parent="." unique_id=84968341]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/margin_left = 40
-theme_override_constants/margin_top = 30
-theme_override_constants/margin_right = 40
-theme_override_constants/margin_bottom = 30
+mouse_filter = 2
+color = Color(0, 0, 0, 0.35)
 
-[node name="VBox" type="VBoxContainer" parent="MarginContainer"]
-layout_mode = 2
-theme_override_constants/separation = 20
-
-[node name="Title" type="Label" parent="MarginContainer/VBox"]
-layout_mode = 2
+[node name="PageTitle" type="Label" parent="." unique_id=1966395272]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 20.0
+offset_bottom = 70.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 6
-theme_override_fonts/font = ExtResource("3_title_font")
-theme_override_font_sizes/font_size = 48
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 42
 text = "CONFIGURACIONES"
 horizontal_alignment = 1
+vertical_alignment = 1
 
-[node name="TabContainer" type="TabContainer" parent="MarginContainer/VBox"]
-layout_mode = 2
-size_flags_vertical = 3
-theme_override_styles/panel = SubResource("StyleBoxFlat_tab")
-theme_override_styles/tab_selected = SubResource("StyleBoxFlat_tab_selected")
-theme_override_styles/tab_unselected = SubResource("StyleBoxFlat_tab")
-theme_override_constants/side_margin = 8
-
-[node name="Rendimiento" type="VBoxContainer" parent="MarginContainer/VBox/TabContainer"]
-layout_mode = 2
-theme_override_constants/separation = 16
-
-[node name="ResolutionRow" type="HBoxContainer" parent="MarginContainer/VBox/TabContainer/Rendimiento"]
-layout_mode = 2
-custom_minimum_size.y = 36
-theme_override_constants/separation = 16
-
-[node name="Label" type="Label" parent="MarginContainer/VBox/TabContainer/Rendimiento/ResolutionRow"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_fonts/font = ExtResource("4_btn_font")
-theme_override_font_sizes/font_size = 18
-text = "Resolución"
-
-[node name="OptionButton" type="OptionButton" parent="MarginContainer/VBox/TabContainer/Rendimiento/ResolutionRow"]
-layout_mode = 2
-custom_minimum_size = Vector2(200, 0)
-theme_override_fonts/font = ExtResource("4_btn_font")
-theme_override_font_sizes/font_size = 16
-theme_override_styles/normal = SubResource("StyleBoxFlat_option")
-theme_override_styles/hover = SubResource("StyleBoxFlat_option_hover")
-theme_override_styles/focus = SubResource("StyleBoxFlat_option")
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_colors/font_hover_color = Color(1, 0.85, 0.2, 1)
-item_count = 3
-popup/item_0 = "1280 x 720"
-popup/item_1 = "1920 x 1080"
-popup/item_2 = "2560 x 1440"
-
-[node name="FullscreenRow" type="HBoxContainer" parent="MarginContainer/VBox/TabContainer/Rendimiento"]
-layout_mode = 2
-custom_minimum_size.y = 36
-theme_override_constants/separation = 16
-
-[node name="Label" type="Label" parent="MarginContainer/VBox/TabContainer/Rendimiento/FullscreenRow"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_fonts/font = ExtResource("4_btn_font")
-theme_override_font_sizes/font_size = 18
-text = "Pantalla completa"
-
-[node name="CheckBox" type="CheckBox" parent="MarginContainer/VBox/TabContainer/Rendimiento/FullscreenRow"]
-layout_mode = 2
-theme_override_fonts/font = ExtResource("4_btn_font")
-theme_override_font_sizes/font_size = 16
-theme_override_styles/normal = SubResource("StyleBoxFlat_check")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_check_checked")
-theme_override_styles/hover = SubResource("StyleBoxFlat_check")
-theme_override_styles/focus = SubResource("StyleBoxFlat_check")
-theme_override_styles/normal_checked = SubResource("StyleBoxFlat_check_checked")
-theme_override_styles/hover_checked = SubResource("StyleBoxFlat_check")
-theme_override_styles/focus_checked = SubResource("StyleBoxFlat_check")
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-
-[node name="FPSRow" type="HBoxContainer" parent="MarginContainer/VBox/TabContainer/Rendimiento"]
-layout_mode = 2
-custom_minimum_size.y = 36
-theme_override_constants/separation = 16
-
-[node name="Label" type="Label" parent="MarginContainer/VBox/TabContainer/Rendimiento/FPSRow"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_fonts/font = ExtResource("4_btn_font")
-theme_override_font_sizes/font_size = 18
-text = "FPS máximo"
-
-[node name="Slider" type="HSlider" parent="MarginContainer/VBox/TabContainer/Rendimiento/FPSRow"]
-layout_mode = 2
-custom_minimum_size = Vector2(200, 0)
-size_flags_vertical = 4
-theme_override_styles/panel = SubResource("StyleBoxFlat_slider_bg")
-theme_override_styles/fill = SubResource("StyleBoxFlat_slider_fill")
-theme_override_styles/grabber = SubResource("StyleBoxFlat_slider_grab")
-theme_override_styles/grabber_highlight = SubResource("StyleBoxFlat_slider_grab")
-theme_override_styles/tick_mark = SubResource("StyleBoxFlat_slider_grab")
-theme_override_constants/tick_count = 22
-theme_override_styles/slider = SubResource("StyleBoxFlat_slider_bg")
-min_value = 30.0
-max_value = 240.0
-step = 10.0
-value = 60.0
-tick_count = 22
-ticks_on_borders = true
-
-[node name="ValueLabel" type="Label" parent="MarginContainer/VBox/TabContainer/Rendimiento/FPSRow"]
-layout_mode = 2
-custom_minimum_size = Vector2(50, 0)
-theme_override_fonts/font = ExtResource("4_btn_font")
-theme_override_font_sizes/font_size = 16
-theme_override_colors/font_color = Color(0.99, 0.85, 0.2, 1)
-text = "60"
-horizontal_alignment = 1
-
-[node name="VSyncRow" type="HBoxContainer" parent="MarginContainer/VBox/TabContainer/Rendimiento"]
-layout_mode = 2
-custom_minimum_size.y = 36
-theme_override_constants/separation = 16
-
-[node name="Label" type="Label" parent="MarginContainer/VBox/TabContainer/Rendimiento/VSyncRow"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_fonts/font = ExtResource("4_btn_font")
-theme_override_font_sizes/font_size = 18
-text = "VSync"
-
-[node name="OptionButton" type="OptionButton" parent="MarginContainer/VBox/TabContainer/Rendimiento/VSyncRow"]
-layout_mode = 2
-custom_minimum_size = Vector2(200, 0)
-theme_override_fonts/font = ExtResource("4_btn_font")
-theme_override_font_sizes/font_size = 16
-theme_override_styles/normal = SubResource("StyleBoxFlat_option")
-theme_override_styles/hover = SubResource("StyleBoxFlat_option_hover")
-theme_override_styles/focus = SubResource("StyleBoxFlat_option")
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_colors/font_hover_color = Color(1, 0.85, 0.2, 1)
-item_count = 3
-popup/item_0 = "Off"
-popup/item_1 = "On"
-popup/item_2 = "Adaptive"
-
-[node name="Sonido" type="VBoxContainer" parent="MarginContainer/VBox/TabContainer"]
-layout_mode = 2
-theme_override_constants/separation = 16
-
-[node name="MasterRow" type="HBoxContainer" parent="MarginContainer/VBox/TabContainer/Sonido"]
-layout_mode = 2
-custom_minimum_size.y = 36
-theme_override_constants/separation = 16
-
-[node name="Label" type="Label" parent="MarginContainer/VBox/TabContainer/Sonido/MasterRow"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_fonts/font = ExtResource("4_btn_font")
-theme_override_font_sizes/font_size = 18
-text = "Volumen general"
-
-[node name="Slider" type="HSlider" parent="MarginContainer/VBox/TabContainer/Sonido/MasterRow"]
-layout_mode = 2
-custom_minimum_size = Vector2(200, 0)
-size_flags_vertical = 4
-theme_override_styles/panel = SubResource("StyleBoxFlat_slider_bg")
-theme_override_styles/fill = SubResource("StyleBoxFlat_slider_fill")
-theme_override_styles/grabber = SubResource("StyleBoxFlat_slider_grab")
-theme_override_styles/grabber_highlight = SubResource("StyleBoxFlat_slider_grab")
-theme_override_styles/slider = SubResource("StyleBoxFlat_slider_bg")
-max_value = 100.0
-step = 5.0
-value = 80.0
-
-[node name="ValueLabel" type="Label" parent="MarginContainer/VBox/TabContainer/Sonido/MasterRow"]
-layout_mode = 2
-custom_minimum_size = Vector2(50, 0)
-theme_override_fonts/font = ExtResource("4_btn_font")
-theme_override_font_sizes/font_size = 16
-theme_override_colors/font_color = Color(0.99, 0.85, 0.2, 1)
-text = "80%"
-horizontal_alignment = 1
-
-[node name="MusicRow" type="HBoxContainer" parent="MarginContainer/VBox/TabContainer/Sonido"]
-layout_mode = 2
-custom_minimum_size.y = 36
-theme_override_constants/separation = 16
-
-[node name="Label" type="Label" parent="MarginContainer/VBox/TabContainer/Sonido/MusicRow"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_fonts/font = ExtResource("4_btn_font")
-theme_override_font_sizes/font_size = 18
-text = "Música"
-
-[node name="Slider" type="HSlider" parent="MarginContainer/VBox/TabContainer/Sonido/MusicRow"]
-layout_mode = 2
-custom_minimum_size = Vector2(200, 0)
-size_flags_vertical = 4
-theme_override_styles/panel = SubResource("StyleBoxFlat_slider_bg")
-theme_override_styles/fill = SubResource("StyleBoxFlat_slider_fill")
-theme_override_styles/grabber = SubResource("StyleBoxFlat_slider_grab")
-theme_override_styles/grabber_highlight = SubResource("StyleBoxFlat_slider_grab")
-theme_override_styles/slider = SubResource("StyleBoxFlat_slider_bg")
-max_value = 100.0
-step = 5.0
-value = 80.0
-
-[node name="ValueLabel" type="Label" parent="MarginContainer/VBox/TabContainer/Sonido/MusicRow"]
-layout_mode = 2
-custom_minimum_size = Vector2(50, 0)
-theme_override_fonts/font = ExtResource("4_btn_font")
-theme_override_font_sizes/font_size = 16
-theme_override_colors/font_color = Color(0.99, 0.85, 0.2, 1)
-text = "80%"
-horizontal_alignment = 1
-
-[node name="UIRow" type="HBoxContainer" parent="MarginContainer/VBox/TabContainer/Sonido"]
-layout_mode = 2
-custom_minimum_size.y = 36
-theme_override_constants/separation = 16
-
-[node name="Label" type="Label" parent="MarginContainer/VBox/TabContainer/Sonido/UIRow"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_fonts/font = ExtResource("4_btn_font")
-theme_override_font_sizes/font_size = 18
-text = "Interfaz"
-
-[node name="Slider" type="HSlider" parent="MarginContainer/VBox/TabContainer/Sonido/UIRow"]
-layout_mode = 2
-custom_minimum_size = Vector2(200, 0)
-size_flags_vertical = 4
-theme_override_styles/panel = SubResource("StyleBoxFlat_slider_bg")
-theme_override_styles/fill = SubResource("StyleBoxFlat_slider_fill")
-theme_override_styles/grabber = SubResource("StyleBoxFlat_slider_grab")
-theme_override_styles/grabber_highlight = SubResource("StyleBoxFlat_slider_grab")
-theme_override_styles/slider = SubResource("StyleBoxFlat_slider_bg")
-max_value = 100.0
-step = 5.0
-value = 80.0
-
-[node name="ValueLabel" type="Label" parent="MarginContainer/VBox/TabContainer/Sonido/UIRow"]
-layout_mode = 2
-custom_minimum_size = Vector2(50, 0)
-theme_override_fonts/font = ExtResource("4_btn_font")
-theme_override_font_sizes/font_size = 16
-theme_override_colors/font_color = Color(0.99, 0.85, 0.2, 1)
-text = "80%"
-horizontal_alignment = 1
-
-[node name="SFXRow" type="HBoxContainer" parent="MarginContainer/VBox/TabContainer/Sonido"]
-layout_mode = 2
-custom_minimum_size.y = 36
-theme_override_constants/separation = 16
-
-[node name="Label" type="Label" parent="MarginContainer/VBox/TabContainer/Sonido/SFXRow"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_fonts/font = ExtResource("4_btn_font")
-theme_override_font_sizes/font_size = 18
-text = "Efectos de sonido"
-
-[node name="Slider" type="HSlider" parent="MarginContainer/VBox/TabContainer/Sonido/SFXRow"]
-layout_mode = 2
-custom_minimum_size = Vector2(200, 0)
-size_flags_vertical = 4
-theme_override_styles/panel = SubResource("StyleBoxFlat_slider_bg")
-theme_override_styles/fill = SubResource("StyleBoxFlat_slider_fill")
-theme_override_styles/grabber = SubResource("StyleBoxFlat_slider_grab")
-theme_override_styles/grabber_highlight = SubResource("StyleBoxFlat_slider_grab")
-theme_override_styles/slider = SubResource("StyleBoxFlat_slider_bg")
-max_value = 100.0
-step = 5.0
-value = 80.0
-
-[node name="ValueLabel" type="Label" parent="MarginContainer/VBox/TabContainer/Sonido/SFXRow"]
-layout_mode = 2
-custom_minimum_size = Vector2(50, 0)
-theme_override_fonts/font = ExtResource("4_btn_font")
-theme_override_font_sizes/font_size = 16
-theme_override_colors/font_color = Color(0.99, 0.85, 0.2, 1)
-text = "80%"
-horizontal_alignment = 1
-
-[node name="GameplaySFXRow" type="HBoxContainer" parent="MarginContainer/VBox/TabContainer/Sonido"]
-layout_mode = 2
-custom_minimum_size.y = 36
-theme_override_constants/separation = 16
-
-[node name="Label" type="Label" parent="MarginContainer/VBox/TabContainer/Sonido/GameplaySFXRow"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_fonts/font = ExtResource("4_btn_font")
-theme_override_font_sizes/font_size = 18
-text = "Efectos de gameplay"
-
-[node name="Slider" type="HSlider" parent="MarginContainer/VBox/TabContainer/Sonido/GameplaySFXRow"]
-layout_mode = 2
-custom_minimum_size = Vector2(200, 0)
-size_flags_vertical = 4
-theme_override_styles/panel = SubResource("StyleBoxFlat_slider_bg")
-theme_override_styles/fill = SubResource("StyleBoxFlat_slider_fill")
-theme_override_styles/grabber = SubResource("StyleBoxFlat_slider_grab")
-theme_override_styles/grabber_highlight = SubResource("StyleBoxFlat_slider_grab")
-theme_override_styles/slider = SubResource("StyleBoxFlat_slider_bg")
-max_value = 100.0
-step = 5.0
-value = 80.0
-
-[node name="ValueLabel" type="Label" parent="MarginContainer/VBox/TabContainer/Sonido/GameplaySFXRow"]
-layout_mode = 2
-custom_minimum_size = Vector2(50, 0)
-theme_override_fonts/font = ExtResource("4_btn_font")
-theme_override_font_sizes/font_size = 16
-theme_override_colors/font_color = Color(0.99, 0.85, 0.2, 1)
-text = "80%"
-horizontal_alignment = 1
-
-[node name="Juego" type="VBoxContainer" parent="MarginContainer/VBox/TabContainer"]
-layout_mode = 2
-theme_override_constants/separation = 16
-
-[node name="MatchTimeRow" type="HBoxContainer" parent="MarginContainer/VBox/TabContainer/Juego"]
-layout_mode = 2
-custom_minimum_size.y = 36
-theme_override_constants/separation = 16
-
-[node name="Label" type="Label" parent="MarginContainer/VBox/TabContainer/Juego/MatchTimeRow"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_fonts/font = ExtResource("4_btn_font")
-theme_override_font_sizes/font_size = 18
-text = "Tiempo de juego"
-
-[node name="Slider" type="HSlider" parent="MarginContainer/VBox/TabContainer/Juego/MatchTimeRow"]
-layout_mode = 2
-custom_minimum_size = Vector2(200, 0)
-size_flags_vertical = 4
-theme_override_styles/panel = SubResource("StyleBoxFlat_slider_bg")
-theme_override_styles/fill = SubResource("StyleBoxFlat_slider_fill")
-theme_override_styles/grabber = SubResource("StyleBoxFlat_slider_grab")
-theme_override_styles/grabber_highlight = SubResource("StyleBoxFlat_slider_grab")
-theme_override_styles/slider = SubResource("StyleBoxFlat_slider_bg")
-max_value = 999.0
-step = 10.0
-value = 0.0
-tick_count = 10
-ticks_on_borders = true
-
-[node name="ValueLabel" type="Label" parent="MarginContainer/VBox/TabContainer/Juego/MatchTimeRow"]
-layout_mode = 2
-custom_minimum_size = Vector2(80, 0)
-theme_override_fonts/font = ExtResource("4_btn_font")
-theme_override_font_sizes/font_size = 16
-theme_override_colors/font_color = Color(0.99, 0.85, 0.2, 1)
-text = "Infinito"
-horizontal_alignment = 1
-
-[node name="RoundsRow" type="HBoxContainer" parent="MarginContainer/VBox/TabContainer/Juego"]
-layout_mode = 2
-custom_minimum_size.y = 36
-theme_override_constants/separation = 16
-
-[node name="Label" type="Label" parent="MarginContainer/VBox/TabContainer/Juego/RoundsRow"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_fonts/font = ExtResource("4_btn_font")
-theme_override_font_sizes/font_size = 18
-text = "Rounds"
-
-[node name="Slider" type="HSlider" parent="MarginContainer/VBox/TabContainer/Juego/RoundsRow"]
-layout_mode = 2
-custom_minimum_size = Vector2(200, 0)
-size_flags_vertical = 4
-theme_override_styles/panel = SubResource("StyleBoxFlat_slider_bg")
-theme_override_styles/fill = SubResource("StyleBoxFlat_slider_fill")
-theme_override_styles/grabber = SubResource("StyleBoxFlat_slider_grab")
-theme_override_styles/grabber_highlight = SubResource("StyleBoxFlat_slider_grab")
-theme_override_styles/slider = SubResource("StyleBoxFlat_slider_bg")
-min_value = 1.0
-max_value = 4.0
-step = 1.0
-value = 2.0
-tick_count = 4
-ticks_on_borders = true
-
-[node name="ValueLabel" type="Label" parent="MarginContainer/VBox/TabContainer/Juego/RoundsRow"]
-layout_mode = 2
-custom_minimum_size = Vector2(50, 0)
-theme_override_fonts/font = ExtResource("4_btn_font")
-theme_override_font_sizes/font_size = 16
-theme_override_colors/font_color = Color(0.99, 0.85, 0.2, 1)
-text = "2"
-horizontal_alignment = 1
-
-[node name="ControlsRow" type="HBoxContainer" parent="MarginContainer/VBox/TabContainer/Juego"]
-layout_mode = 2
-custom_minimum_size.y = 36
-theme_override_constants/separation = 16
-
-[node name="Label" type="Label" parent="MarginContainer/VBox/TabContainer/Juego/ControlsRow"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_fonts/font = ExtResource("4_btn_font")
-theme_override_font_sizes/font_size = 18
-text = "Controles"
-
-[node name="P1Button" type="Button" parent="MarginContainer/VBox/TabContainer/Juego/ControlsRow"]
-layout_mode = 2
-custom_minimum_size = Vector2(140, 36)
-theme_override_fonts/font = ExtResource("4_btn_font")
-theme_override_font_sizes/font_size = 14
-theme_override_styles/normal = SubResource("StyleBoxFlat_btn_normal")
-theme_override_styles/hover = SubResource("StyleBoxFlat_btn_hover")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_hover")
-theme_override_styles/focus = SubResource("StyleBoxFlat_btn_focus")
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_colors/font_hover_color = Color(1, 0.85, 0.2, 1)
+[node name="ArrowLeft" type="Button" parent="." unique_id=270766011]
+custom_minimum_size = Vector2(44, 44)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -450.0
+offset_top = -22.0
+offset_right = -406.0
+offset_bottom = 22.0
+grow_horizontal = 2
+grow_vertical = 2
 mouse_default_cursor_shape = 2
-text = "Jugador 1"
-
-[node name="P2Button" type="Button" parent="MarginContainer/VBox/TabContainer/Juego/ControlsRow"]
-layout_mode = 2
-custom_minimum_size = Vector2(140, 36)
-theme_override_fonts/font = ExtResource("4_btn_font")
-theme_override_font_sizes/font_size = 14
-theme_override_styles/normal = SubResource("StyleBoxFlat_btn_normal")
-theme_override_styles/hover = SubResource("StyleBoxFlat_btn_hover")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_hover")
-theme_override_styles/focus = SubResource("StyleBoxFlat_btn_focus")
 theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_colors/font_hover_color = Color(1, 0.85, 0.2, 1)
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_arrow_normal")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_arrow_hover")
+theme_override_styles/hover = SubResource("StyleBoxFlat_arrow_hover")
+text = "◀"
+
+[node name="ArrowRight" type="Button" parent="." unique_id=9122870]
+custom_minimum_size = Vector2(44, 44)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 406.0
+offset_top = -22.0
+offset_right = 450.0
+offset_bottom = 22.0
+grow_horizontal = 2
+grow_vertical = 2
 mouse_default_cursor_shape = 2
-text = "Jugador 2"
-
-[node name="LanguageRow" type="HBoxContainer" parent="MarginContainer/VBox/TabContainer/Juego"]
-layout_mode = 2
-custom_minimum_size.y = 36
-theme_override_constants/separation = 16
-
-[node name="Label" type="Label" parent="MarginContainer/VBox/TabContainer/Juego/LanguageRow"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_fonts/font = ExtResource("4_btn_font")
-theme_override_font_sizes/font_size = 18
-text = "Idioma"
-
-[node name="OptionButton" type="OptionButton" parent="MarginContainer/VBox/TabContainer/Juego/LanguageRow"]
-layout_mode = 2
-custom_minimum_size = Vector2(200, 0)
-theme_override_fonts/font = ExtResource("4_btn_font")
-theme_override_font_sizes/font_size = 16
-theme_override_styles/normal = SubResource("StyleBoxFlat_option")
-theme_override_styles/hover = SubResource("StyleBoxFlat_option_hover")
-theme_override_styles/focus = SubResource("StyleBoxFlat_option")
 theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_colors/font_hover_color = Color(1, 0.85, 0.2, 1)
-item_count = 2
-popup/item_0 = "Español"
-popup/item_1 = "English"
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_arrow_normal")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_arrow_hover")
+theme_override_styles/hover = SubResource("StyleBoxFlat_arrow_hover")
+text = "▶"
 
-[node name="BottomBar" type="HBoxContainer" parent="MarginContainer/VBox"]
+[node name="BottomMargin" type="MarginContainer" parent="." unique_id=1207833085]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -300.0
+offset_top = -70.0
+offset_right = 300.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/margin_bottom = 15
+
+[node name="BottomBar" type="HBoxContainer" parent="BottomMargin" unique_id=2493126]
 layout_mode = 2
 theme_override_constants/separation = 40
 alignment = 1
 
-[node name="ResetButton" type="Button" parent="MarginContainer/VBox/BottomBar"]
+[node name="ResetButton" type="Button" parent="BottomMargin/BottomBar" unique_id=1617227841]
+custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
-custom_minimum_size = Vector2(180, 55)
-theme_override_fonts/font = ExtResource("4_btn_font")
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 5
+theme_override_fonts/font = ExtResource("3_font")
 theme_override_font_sizes/font_size = 20
 theme_override_styles/normal = SubResource("StyleBoxFlat_btn_normal")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_pressed")
 theme_override_styles/hover = SubResource("StyleBoxFlat_btn_hover")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_hover")
-theme_override_styles/focus = SubResource("StyleBoxFlat_btn_focus")
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_colors/font_hover_color = Color(1, 0.85, 0.2, 1)
-mouse_default_cursor_shape = 2
 text = "Restablecer"
 
-[node name="BackButton" type="Button" parent="MarginContainer/VBox/BottomBar"]
+[node name="BackButton" type="Button" parent="BottomMargin/BottomBar" unique_id=875648400]
+custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
-custom_minimum_size = Vector2(180, 55)
-theme_override_fonts/font = ExtResource("4_btn_font")
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 5
+theme_override_fonts/font = ExtResource("3_font")
 theme_override_font_sizes/font_size = 20
 theme_override_styles/normal = SubResource("StyleBoxFlat_btn_normal")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_pressed")
 theme_override_styles/hover = SubResource("StyleBoxFlat_btn_hover")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_hover")
-theme_override_styles/focus = SubResource("StyleBoxFlat_btn_focus")
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_colors/font_hover_color = Color(1, 0.85, 0.2, 1)
-mouse_default_cursor_shape = 2
 text = "Volver"
+
+[node name="Panel" type="PanelContainer" parent="." unique_id=933217454]
+custom_minimum_size = Vector2(760, 480)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -380.0
+offset_top = -260.0
+offset_right = 380.0
+offset_bottom = 220.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+
+[node name="Clip" type="Control" parent="Panel" unique_id=111338624]
+clip_contents = true
+layout_mode = 2
+mouse_filter = 2
+
+[node name="PageRoot" type="VBoxContainer" parent="Panel/Clip" unique_id=793696894]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/separation = 14
+
+[node name="Header" type="HBoxContainer" parent="Panel/Clip/PageRoot" unique_id=1198577723]
+layout_mode = 2
+
+[node name="TitleLabel" type="Label" parent="Panel/Clip/PageRoot/Header" unique_id=1606392160]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 26
+
+[node name="Icon" type="TextureRect" parent="Panel/Clip/PageRoot/Header" unique_id=707471666]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+texture_filter = 0
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Separator" type="HSeparator" parent="Panel/Clip/PageRoot" unique_id=1794755869]
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxFlat_separator")
+
+[node name="Scroll" type="ScrollContainer" parent="Panel/Clip/PageRoot" unique_id=1846353826]
+custom_minimum_size = Vector2(0, 350)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="RowsContainer" type="VBoxContainer" parent="Panel/Clip/PageRoot/Scroll" unique_id=142510781]
+custom_minimum_size = Vector2(692, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 10
+
+[node name="Dots" type="HBoxContainer" parent="." unique_id=125035262]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -40.0
+offset_top = -100.0
+offset_right = 40.0
+offset_bottom = -91.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="Dot0" type="Panel" parent="Dots" unique_id=711607783]
+custom_minimum_size = Vector2(9, 9)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_dot")
+
+[node name="Dot1" type="Panel" parent="Dots" unique_id=2062966305]
+custom_minimum_size = Vector2(9, 9)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_dot")
+
+[node name="Dot2" type="Panel" parent="Dots" unique_id=386727931]
+custom_minimum_size = Vector2(9, 9)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_dot")
