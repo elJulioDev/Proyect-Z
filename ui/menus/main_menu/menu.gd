@@ -2,7 +2,7 @@ extends Control
 
 const HOVER_SFX_PATH = "res://assets/audio/sfx/ui/Cursor.wav"
 const CLICK_SFX_PATH = "res://assets/audio/sfx/ui/Decide_2.wav"
-const SETTINGS_MENU_PATH = "res://ui/menus/settings_menu/settings_menu.tscn"
+
 
 var hover_player: AudioStreamPlayer
 var click_player: AudioStreamPlayer
@@ -149,11 +149,7 @@ func _on_play_pressed():
 		get_tree().change_scene_to_file("res://ui/menus/character_select/character_select.tscn"))
 
 func _on_settings_pressed():
-	if _busy:
-		return
-	_set_busy(true)
-	TransitionManager.transition(0.5, 0.3, 0.5, func():
-		get_tree().change_scene_to_file(SETTINGS_MENU_PATH))
+	pass
 
 func _on_exit_pressed():
 	if _busy:
