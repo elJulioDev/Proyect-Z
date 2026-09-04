@@ -1,0 +1,1035 @@
+[gd_scene format=3 uid="uid://ou25ofbpt772"]
+
+[ext_resource type="Script" uid="uid://c1b75hbtw51cq" path="res://ui/menus/settings_menu/settings_menu.gd" id="1_script"]
+[ext_resource type="Script" uid="uid://ykywxg40c6xu" path="res://ui/menus/settings_menu/slider_row.gd" id="2_slider_script"]
+[ext_resource type="Script" uid="uid://bsjr50gvgcs67" path="res://ui/menus/settings_menu/cycle_row.gd" id="3_cycle_script"]
+[ext_resource type="FontFile" uid="uid://de8c3i7kbfoh4" path="res://assets/fonts/Aharoni Bold.ttf" id="4_font"]
+[ext_resource type="Texture2D" uid="uid://cxnebjmg365vv" path="res://assets/ui/menus/settings.png" id="5_bg"]
+[ext_resource type="Texture2D" uid="uid://6580lfijrre8" path="res://assets/ui/menus/display.png" id="6_icon_display"]
+[ext_resource type="Texture2D" uid="uid://dll2eefudmjrf" path="res://assets/ui/menus/sound.png" id="7_icon_sound"]
+[ext_resource type="Texture2D" uid="uid://4w0vgc80xceh" path="res://assets/ui/menus/game.png" id="8_icon_game"]
+[ext_resource type="FontFile" uid="uid://6cuptfffbliy" path="res://assets/fonts/arialroundedmtbold.ttf" id="9_sxuvl"]
+
+[sub_resource type="StyleBoxFlat" id="sb_search_normal"]
+content_margin_left = 16.0
+content_margin_top = 6.0
+content_margin_right = 16.0
+content_margin_bottom = 6.0
+bg_color = Color(0, 0, 0, 0.6)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 1, 1, 0.1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="sb_search_focus"]
+content_margin_left = 16.0
+content_margin_top = 6.0
+content_margin_right = 16.0
+content_margin_bottom = 6.0
+bg_color = Color(0, 0, 0, 0.65)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.99, 0.55341, 0.0198, 0.9)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="sb_topbtn_normal"]
+content_margin_left = 18.0
+content_margin_top = 8.0
+content_margin_right = 18.0
+content_margin_bottom = 8.0
+bg_color = Color(0, 0, 0, 0.62)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 1, 1, 0.1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="sb_topbtn_pressed"]
+content_margin_left = 18.0
+content_margin_top = 8.0
+content_margin_right = 18.0
+content_margin_bottom = 8.0
+bg_color = Color(0.35, 0.19, 0.02, 0.85)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.99, 0.55341, 0.0198, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="sb_topbtn_hover"]
+content_margin_left = 18.0
+content_margin_top = 8.0
+content_margin_right = 18.0
+content_margin_bottom = 8.0
+bg_color = Color(0.12, 0.12, 0.12, 0.75)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.99, 0.55341, 0.0198, 0.7)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxEmpty" id="sb_focus_none"]
+
+[sub_resource type="StyleBoxFlat" id="sb_cat_normal"]
+bg_color = Color(0, 0, 0, 0.55)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 1, 1, 0.06)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="sb_cat_selected"]
+bg_color = Color(0.19, 0.12, 0.03, 0.8)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.99, 0.55341, 0.0198, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="sb_cat_hover"]
+bg_color = Color(0.14, 0.14, 0.14, 0.7)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 1, 1, 0.16)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="ButtonGroup" id="CategoryGroup"]
+
+[sub_resource type="StyleBoxFlat" id="sb_panel"]
+content_margin_left = 16.0
+content_margin_top = 12.0
+content_margin_right = 16.0
+content_margin_bottom = 12.0
+bg_color = Color(0, 0, 0, 0.6)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 1, 1, 0.08)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="sb_slider_bg"]
+bg_color = Color(0, 0, 0, 0.55)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 1, 1, 0.08)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="sb_slider_fill"]
+bg_color = Color(0.99, 0.55341, 0.0198, 0.85)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[node name="SettingsMenu" type="Control" unique_id=1976512794]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_script")
+
+[node name="Background" type="TextureRect" parent="." unique_id=199565240]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("5_bg")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Dim" type="ColorRect" parent="." unique_id=79945956]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0.25)
+
+[node name="Root" type="MarginContainer" parent="." unique_id=243044383]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_top = 32
+theme_override_constants/margin_right = 40
+theme_override_constants/margin_bottom = 32
+
+[node name="Layout" type="VBoxContainer" parent="Root" unique_id=677974139]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="TopBar" type="HBoxContainer" parent="Root/Layout" unique_id=1379654846]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="SearchField" type="LineEdit" parent="Root/Layout/TopBar" unique_id=1642941967]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_placeholder_color = Color(0.65, 0.65, 0.65, 1)
+theme_override_colors/caret_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("sb_search_normal")
+theme_override_styles/focus = SubResource("sb_search_focus")
+placeholder_text = "Buscar opciones..."
+
+[node name="ResetButton" type="Button" parent="Root/Layout/TopBar" unique_id=1452076625]
+custom_minimum_size = Vector2(190, 0)
+layout_mode = 2
+size_flags_vertical = 3
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("sb_topbtn_normal")
+theme_override_styles/pressed = SubResource("sb_topbtn_pressed")
+theme_override_styles/hover = SubResource("sb_topbtn_hover")
+theme_override_styles/focus = SubResource("sb_focus_none")
+text = "Restablecer"
+
+[node name="MainArea" type="HBoxContainer" parent="Root/Layout" unique_id=263318658]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 14
+
+[node name="Sidebar" type="ScrollContainer" parent="Root/Layout/MainArea" unique_id=341581332]
+custom_minimum_size = Vector2(260, 0)
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="CategoryList" type="VBoxContainer" parent="Root/Layout/MainArea/Sidebar" unique_id=725312986]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 10
+
+[node name="CatDisplay" type="Button" parent="Root/Layout/MainArea/Sidebar/CategoryList" unique_id=1231329152]
+custom_minimum_size = Vector2(0, 46)
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_default_cursor_shape = 2
+theme_override_styles/normal = SubResource("sb_cat_normal")
+theme_override_styles/pressed = SubResource("sb_cat_selected")
+theme_override_styles/hover = SubResource("sb_cat_hover")
+theme_override_styles/hover_pressed = SubResource("sb_cat_selected")
+theme_override_styles/focus = SubResource("sb_focus_none")
+toggle_mode = true
+button_pressed = true
+button_group = SubResource("CategoryGroup")
+
+[node name="Content" type="HBoxContainer" parent="Root/Layout/MainArea/Sidebar/CategoryList/CatDisplay" unique_id=1502588550]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 14.0
+offset_top = 8.0
+offset_right = -14.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/separation = 12
+
+[node name="Icon" type="TextureRect" parent="Root/Layout/MainArea/Sidebar/CategoryList/CatDisplay/Content" unique_id=1327080246]
+custom_minimum_size = Vector2(26, 26)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+texture = ExtResource("6_icon_display")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="Root/Layout/MainArea/Sidebar/CategoryList/CatDisplay/Content" unique_id=341213936]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 20
+text = "Pantalla"
+vertical_alignment = 1
+
+[node name="CatSound" type="Button" parent="Root/Layout/MainArea/Sidebar/CategoryList" unique_id=704562436]
+custom_minimum_size = Vector2(0, 46)
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_default_cursor_shape = 2
+theme_override_styles/normal = SubResource("sb_cat_normal")
+theme_override_styles/pressed = SubResource("sb_cat_selected")
+theme_override_styles/hover = SubResource("sb_cat_hover")
+theme_override_styles/hover_pressed = SubResource("sb_cat_selected")
+theme_override_styles/focus = SubResource("sb_focus_none")
+toggle_mode = true
+button_group = SubResource("CategoryGroup")
+
+[node name="Content" type="HBoxContainer" parent="Root/Layout/MainArea/Sidebar/CategoryList/CatSound" unique_id=2057708669]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 14.0
+offset_top = 8.0
+offset_right = -14.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/separation = 12
+
+[node name="Icon" type="TextureRect" parent="Root/Layout/MainArea/Sidebar/CategoryList/CatSound/Content" unique_id=555801249]
+custom_minimum_size = Vector2(26, 26)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+texture = ExtResource("7_icon_sound")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="Root/Layout/MainArea/Sidebar/CategoryList/CatSound/Content" unique_id=215680982]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 20
+text = "Sonido"
+vertical_alignment = 1
+
+[node name="CatGame" type="Button" parent="Root/Layout/MainArea/Sidebar/CategoryList" unique_id=1230087719]
+custom_minimum_size = Vector2(0, 46)
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_default_cursor_shape = 2
+theme_override_styles/normal = SubResource("sb_cat_normal")
+theme_override_styles/pressed = SubResource("sb_cat_selected")
+theme_override_styles/hover = SubResource("sb_cat_hover")
+theme_override_styles/hover_pressed = SubResource("sb_cat_selected")
+theme_override_styles/focus = SubResource("sb_focus_none")
+toggle_mode = true
+button_group = SubResource("CategoryGroup")
+
+[node name="Content" type="HBoxContainer" parent="Root/Layout/MainArea/Sidebar/CategoryList/CatGame" unique_id=1219876]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 14.0
+offset_top = 8.0
+offset_right = -14.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/separation = 12
+
+[node name="Icon" type="TextureRect" parent="Root/Layout/MainArea/Sidebar/CategoryList/CatGame/Content" unique_id=219643002]
+custom_minimum_size = Vector2(26, 26)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+texture = ExtResource("8_icon_game")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="Root/Layout/MainArea/Sidebar/CategoryList/CatGame/Content" unique_id=1098523391]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 20
+text = "Juego"
+vertical_alignment = 1
+
+[node name="OptionsScroll" type="ScrollContainer" parent="Root/Layout/MainArea" unique_id=596868640]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="Pages" type="VBoxContainer" parent="Root/Layout/MainArea/OptionsScroll" unique_id=412907001]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 14
+
+[node name="PageDisplay" type="VBoxContainer" parent="Root/Layout/MainArea/OptionsScroll/Pages" unique_id=1286417591]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 14
+
+[node name="PanelWindowMode" type="PanelContainer" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageDisplay" unique_id=2050838396]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("sb_panel")
+
+[node name="RowWindowMode" type="HBoxContainer" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageDisplay/PanelWindowMode" unique_id=1489789380]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 14
+script = ExtResource("3_cycle_script")
+label_text = "Modo de Ventana"
+options = Array[String](["Pantalla completa", "Ventana", "Sin bordes"])
+
+[node name="Label" type="Label" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageDisplay/PanelWindowMode/RowWindowMode" unique_id=564115131]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 18
+text = "Modo de Ventana"
+vertical_alignment = 1
+
+[node name="ValueButton" type="Button" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageDisplay/PanelWindowMode/RowWindowMode" unique_id=1526654530]
+layout_mode = 2
+size_flags_vertical = 4
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(0.99, 0.65, 0.2, 1)
+theme_override_colors/font_hover_color = Color(0.9925, 0.73749995, 0.4, 1)
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 18
+text = "Pantalla completa"
+flat = true
+alignment = 2
+
+[node name="PanelDisplayToggles" type="PanelContainer" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageDisplay" unique_id=2070274930]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("sb_panel")
+
+[node name="VBox" type="VBoxContainer" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageDisplay/PanelDisplayToggles" unique_id=1782951317]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
+
+[node name="RowVSync" type="HBoxContainer" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageDisplay/PanelDisplayToggles/VBox" unique_id=491092628]
+custom_minimum_size = Vector2(0, 28)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 14
+
+[node name="Label" type="Label" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageDisplay/PanelDisplayToggles/VBox/RowVSync" unique_id=925597368]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 18
+text = "Sincronización Vertical (VSync)"
+vertical_alignment = 1
+
+[node name="Check" type="CheckBox" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageDisplay/PanelDisplayToggles/VBox/RowVSync" unique_id=1723692856]
+layout_mode = 2
+size_flags_vertical = 4
+focus_mode = 0
+button_pressed = true
+
+[node name="RowFPSCounter" type="HBoxContainer" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageDisplay/PanelDisplayToggles/VBox" unique_id=50478623]
+custom_minimum_size = Vector2(0, 28)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 14
+
+[node name="Label" type="Label" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageDisplay/PanelDisplayToggles/VBox/RowFPSCounter" unique_id=2101907984]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 18
+text = "Mostrar Contador de FPS"
+vertical_alignment = 1
+
+[node name="Check" type="CheckBox" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageDisplay/PanelDisplayToggles/VBox/RowFPSCounter" unique_id=670874629]
+layout_mode = 2
+size_flags_vertical = 4
+focus_mode = 0
+
+[node name="RowCameraShake" type="HBoxContainer" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageDisplay/PanelDisplayToggles/VBox" unique_id=1389574217]
+custom_minimum_size = Vector2(0, 28)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 14
+
+[node name="Label" type="Label" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageDisplay/PanelDisplayToggles/VBox/RowCameraShake" unique_id=862346645]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 18
+text = "Sacudida de Cámara en Impactos"
+vertical_alignment = 1
+
+[node name="Check" type="CheckBox" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageDisplay/PanelDisplayToggles/VBox/RowCameraShake" unique_id=1507485757]
+layout_mode = 2
+size_flags_vertical = 4
+focus_mode = 0
+button_pressed = true
+
+[node name="PanelDisplaySliders" type="PanelContainer" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageDisplay" unique_id=1584566447]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("sb_panel")
+
+[node name="VBox" type="VBoxContainer" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageDisplay/PanelDisplaySliders" unique_id=1472209457]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 10
+
+[node name="RowBrightness" type="HBoxContainer" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageDisplay/PanelDisplaySliders/VBox" unique_id=1037944348]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 14
+script = ExtResource("2_slider_script")
+label_text = "Brillo"
+initial_value = 0.6
+
+[node name="Label" type="Label" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageDisplay/PanelDisplaySliders/VBox/RowBrightness" unique_id=1810726506]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 18
+text = "Brillo"
+vertical_alignment = 1
+
+[node name="Slider" type="HSlider" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageDisplay/PanelDisplaySliders/VBox/RowBrightness" unique_id=1218813463]
+custom_minimum_size = Vector2(170, 20)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_styles/slider = SubResource("sb_slider_bg")
+theme_override_styles/grabber_area = SubResource("sb_slider_fill")
+theme_override_styles/grabber_area_highlight = SubResource("sb_slider_fill")
+max_value = 1.0
+step = 0.01
+value = 0.6
+
+[node name="ValueLabel" type="Label" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageDisplay/PanelDisplaySliders/VBox/RowBrightness" unique_id=1533133026]
+custom_minimum_size = Vector2(56, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.99, 0.65, 0.2, 1)
+theme_override_fonts/font = ExtResource("9_sxuvl")
+theme_override_font_sizes/font_size = 17
+text = "60%"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="RowUIScale" type="HBoxContainer" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageDisplay/PanelDisplaySliders/VBox" unique_id=1892054578]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 14
+script = ExtResource("2_slider_script")
+label_text = "Escala de Interfaz"
+slider_min = 0.5
+slider_max = 1.5
+slider_step = 0.05
+
+[node name="Label" type="Label" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageDisplay/PanelDisplaySliders/VBox/RowUIScale" unique_id=992682646]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 18
+text = "Escala de Interfaz"
+vertical_alignment = 1
+
+[node name="Slider" type="HSlider" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageDisplay/PanelDisplaySliders/VBox/RowUIScale" unique_id=2114956709]
+custom_minimum_size = Vector2(170, 20)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_styles/slider = SubResource("sb_slider_bg")
+theme_override_styles/grabber_area = SubResource("sb_slider_fill")
+theme_override_styles/grabber_area_highlight = SubResource("sb_slider_fill")
+min_value = 0.5
+max_value = 1.5
+step = 0.05
+value = 1.0
+
+[node name="ValueLabel" type="Label" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageDisplay/PanelDisplaySliders/VBox/RowUIScale" unique_id=1372845108]
+custom_minimum_size = Vector2(56, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.99, 0.65, 0.2, 1)
+theme_override_fonts/font = ExtResource("9_sxuvl")
+theme_override_font_sizes/font_size = 17
+text = "100%"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="PageSound" type="VBoxContainer" parent="Root/Layout/MainArea/OptionsScroll/Pages" unique_id=637399992]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 14
+
+[node name="PanelMasterVolume" type="PanelContainer" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageSound" unique_id=740108248]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("sb_panel")
+
+[node name="RowMasterVolume" type="HBoxContainer" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageSound/PanelMasterVolume" unique_id=1823067817]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 14
+script = ExtResource("2_slider_script")
+label_text = "Volumen General"
+initial_value = 0.8
+
+[node name="Label" type="Label" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageSound/PanelMasterVolume/RowMasterVolume" unique_id=1948609913]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 18
+text = "Volumen General"
+vertical_alignment = 1
+
+[node name="Slider" type="HSlider" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageSound/PanelMasterVolume/RowMasterVolume" unique_id=1119522338]
+custom_minimum_size = Vector2(170, 20)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_styles/slider = SubResource("sb_slider_bg")
+theme_override_styles/grabber_area = SubResource("sb_slider_fill")
+theme_override_styles/grabber_area_highlight = SubResource("sb_slider_fill")
+max_value = 1.0
+step = 0.01
+value = 0.8
+
+[node name="ValueLabel" type="Label" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageSound/PanelMasterVolume/RowMasterVolume" unique_id=556352946]
+custom_minimum_size = Vector2(56, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.99, 0.65, 0.2, 1)
+theme_override_fonts/font = ExtResource("9_sxuvl")
+theme_override_font_sizes/font_size = 17
+text = "80%"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="PanelOtherVolumes" type="PanelContainer" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageSound" unique_id=763101222]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("sb_panel")
+
+[node name="VBox" type="VBoxContainer" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageSound/PanelOtherVolumes" unique_id=467380228]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 10
+
+[node name="RowMusicVolume" type="HBoxContainer" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageSound/PanelOtherVolumes/VBox" unique_id=1547226523]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 14
+script = ExtResource("2_slider_script")
+label_text = "Música"
+initial_value = 0.7
+
+[node name="Label" type="Label" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageSound/PanelOtherVolumes/VBox/RowMusicVolume" unique_id=762772292]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 18
+text = "Música"
+vertical_alignment = 1
+
+[node name="Slider" type="HSlider" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageSound/PanelOtherVolumes/VBox/RowMusicVolume" unique_id=678851675]
+custom_minimum_size = Vector2(170, 20)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_styles/slider = SubResource("sb_slider_bg")
+theme_override_styles/grabber_area = SubResource("sb_slider_fill")
+theme_override_styles/grabber_area_highlight = SubResource("sb_slider_fill")
+max_value = 1.0
+step = 0.01
+value = 0.7
+
+[node name="ValueLabel" type="Label" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageSound/PanelOtherVolumes/VBox/RowMusicVolume" unique_id=230711176]
+custom_minimum_size = Vector2(56, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.99, 0.65, 0.2, 1)
+theme_override_fonts/font = ExtResource("9_sxuvl")
+theme_override_font_sizes/font_size = 17
+text = "70%"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="RowSFXVolume" type="HBoxContainer" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageSound/PanelOtherVolumes/VBox" unique_id=1139103593]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 14
+script = ExtResource("2_slider_script")
+label_text = "Efectos de Sonido"
+initial_value = 0.85
+
+[node name="Label" type="Label" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageSound/PanelOtherVolumes/VBox/RowSFXVolume" unique_id=908840624]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 18
+text = "Efectos de Sonido"
+vertical_alignment = 1
+
+[node name="Slider" type="HSlider" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageSound/PanelOtherVolumes/VBox/RowSFXVolume" unique_id=1614928511]
+custom_minimum_size = Vector2(170, 20)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_styles/slider = SubResource("sb_slider_bg")
+theme_override_styles/grabber_area = SubResource("sb_slider_fill")
+theme_override_styles/grabber_area_highlight = SubResource("sb_slider_fill")
+max_value = 1.0
+step = 0.01
+value = 0.85
+
+[node name="ValueLabel" type="Label" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageSound/PanelOtherVolumes/VBox/RowSFXVolume" unique_id=1029603343]
+custom_minimum_size = Vector2(56, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.99, 0.65, 0.2, 1)
+theme_override_fonts/font = ExtResource("9_sxuvl")
+theme_override_font_sizes/font_size = 17
+text = "85%"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="PanelSoundToggles" type="PanelContainer" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageSound" unique_id=972302892]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("sb_panel")
+
+[node name="VBox" type="VBoxContainer" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageSound/PanelSoundToggles" unique_id=101710592]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
+
+[node name="RowMuteUnfocused" type="HBoxContainer" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageSound/PanelSoundToggles/VBox" unique_id=1151831244]
+custom_minimum_size = Vector2(0, 28)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 14
+
+[node name="Label" type="Label" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageSound/PanelSoundToggles/VBox/RowMuteUnfocused" unique_id=604354125]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 18
+text = "Silenciar en Segundo Plano"
+vertical_alignment = 1
+
+[node name="Check" type="CheckBox" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageSound/PanelSoundToggles/VBox/RowMuteUnfocused" unique_id=362737936]
+layout_mode = 2
+size_flags_vertical = 4
+focus_mode = 0
+button_pressed = true
+
+[node name="RowMenuSounds" type="HBoxContainer" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageSound/PanelSoundToggles/VBox" unique_id=1054983453]
+custom_minimum_size = Vector2(0, 28)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 14
+
+[node name="Label" type="Label" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageSound/PanelSoundToggles/VBox/RowMenuSounds" unique_id=1989678037]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 18
+text = "Sonidos de Menú"
+vertical_alignment = 1
+
+[node name="Check" type="CheckBox" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageSound/PanelSoundToggles/VBox/RowMenuSounds" unique_id=714512550]
+layout_mode = 2
+size_flags_vertical = 4
+focus_mode = 0
+button_pressed = true
+
+[node name="PageGame" type="VBoxContainer" parent="Root/Layout/MainArea/OptionsScroll/Pages" unique_id=1181483761]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 14
+
+[node name="PanelLanguage" type="PanelContainer" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageGame" unique_id=887914655]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("sb_panel")
+
+[node name="RowLanguage" type="HBoxContainer" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageGame/PanelLanguage" unique_id=2041875592]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 14
+script = ExtResource("3_cycle_script")
+label_text = "Idioma"
+options = Array[String](["Español", "English"])
+
+[node name="Label" type="Label" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageGame/PanelLanguage/RowLanguage" unique_id=1898600130]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 18
+text = "Idioma"
+vertical_alignment = 1
+
+[node name="ValueButton" type="Button" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageGame/PanelLanguage/RowLanguage" unique_id=271175257]
+layout_mode = 2
+size_flags_vertical = 4
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(0.99, 0.65, 0.2, 1)
+theme_override_colors/font_hover_color = Color(0.9925, 0.73749995, 0.4, 1)
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 18
+text = "Español"
+flat = true
+alignment = 2
+
+[node name="PanelGameCycles" type="PanelContainer" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageGame" unique_id=646150137]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("sb_panel")
+
+[node name="VBox" type="VBoxContainer" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageGame/PanelGameCycles" unique_id=994304116]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 10
+
+[node name="RowAIDifficulty" type="HBoxContainer" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageGame/PanelGameCycles/VBox" unique_id=534041092]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 14
+script = ExtResource("3_cycle_script")
+label_text = "Dificultad de la IA"
+options = Array[String](["Fácil", "Normal", "Difícil", "Muy Difícil"])
+option_colors = Array[Color]([Color(0.4, 0.9, 0.4, 1), Color(1, 1, 1, 1), Color(1, 0.75, 0.2, 1), Color(1, 0.35, 0.35, 1)])
+selected_index = 1
+
+[node name="Label" type="Label" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageGame/PanelGameCycles/VBox/RowAIDifficulty" unique_id=2119606256]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 18
+text = "Dificultad de la IA"
+vertical_alignment = 1
+
+[node name="ValueButton" type="Button" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageGame/PanelGameCycles/VBox/RowAIDifficulty" unique_id=340727603]
+layout_mode = 2
+size_flags_vertical = 4
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 18
+text = "Normal"
+flat = true
+alignment = 2
+
+[node name="RowRoundTime" type="HBoxContainer" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageGame/PanelGameCycles/VBox" unique_id=571437859]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 14
+script = ExtResource("3_cycle_script")
+label_text = "Duración de Ronda"
+options = Array[String](["60s", "90s", "120s", "Sin límite"])
+selected_index = 1
+
+[node name="Label" type="Label" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageGame/PanelGameCycles/VBox/RowRoundTime" unique_id=776927576]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 18
+text = "Duración de Ronda"
+vertical_alignment = 1
+
+[node name="ValueButton" type="Button" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageGame/PanelGameCycles/VBox/RowRoundTime" unique_id=1736992506]
+layout_mode = 2
+size_flags_vertical = 4
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(0.99, 0.65, 0.2, 1)
+theme_override_colors/font_hover_color = Color(0.9925, 0.73749995, 0.4, 1)
+theme_override_fonts/font = ExtResource("9_sxuvl")
+theme_override_font_sizes/font_size = 18
+text = "90s"
+flat = true
+alignment = 2
+
+[node name="PanelGameToggles" type="PanelContainer" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageGame" unique_id=1615855603]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("sb_panel")
+
+[node name="VBox" type="VBoxContainer" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageGame/PanelGameToggles" unique_id=632743925]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
+
+[node name="RowDamageNumbers" type="HBoxContainer" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageGame/PanelGameToggles/VBox" unique_id=1940037272]
+custom_minimum_size = Vector2(0, 28)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 14
+
+[node name="Label" type="Label" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageGame/PanelGameToggles/VBox/RowDamageNumbers" unique_id=51122283]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 18
+text = "Números de Daño"
+vertical_alignment = 1
+
+[node name="Check" type="CheckBox" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageGame/PanelGameToggles/VBox/RowDamageNumbers" unique_id=129745990]
+layout_mode = 2
+size_flags_vertical = 4
+focus_mode = 0
+button_pressed = true
+
+[node name="RowControllerVibration" type="HBoxContainer" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageGame/PanelGameToggles/VBox" unique_id=1081625900]
+custom_minimum_size = Vector2(0, 28)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 14
+
+[node name="Label" type="Label" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageGame/PanelGameToggles/VBox/RowControllerVibration" unique_id=950302203]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 18
+text = "Vibración del Mando"
+vertical_alignment = 1
+
+[node name="Check" type="CheckBox" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageGame/PanelGameToggles/VBox/RowControllerVibration" unique_id=100167227]
+layout_mode = 2
+size_flags_vertical = 4
+focus_mode = 0
+button_pressed = true
+
+[node name="RowConfirmExit" type="HBoxContainer" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageGame/PanelGameToggles/VBox" unique_id=755631420]
+custom_minimum_size = Vector2(0, 28)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 14
+
+[node name="Label" type="Label" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageGame/PanelGameToggles/VBox/RowConfirmExit" unique_id=366517904]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 18
+text = "Confirmar antes de Salir"
+vertical_alignment = 1
+
+[node name="Check" type="CheckBox" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageGame/PanelGameToggles/VBox/RowConfirmExit" unique_id=1149965258]
+layout_mode = 2
+size_flags_vertical = 4
+focus_mode = 0
+button_pressed = true
+
+[node name="BottomBar" type="HBoxContainer" parent="Root/Layout" unique_id=333941360]
+custom_minimum_size = Vector2(0, 44)
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="Spacer" type="Control" parent="Root/Layout/BottomBar" unique_id=59038233]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="ApplyButton" type="Button" parent="Root/Layout/BottomBar" unique_id=377667278]
+custom_minimum_size = Vector2(160, 40)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("sb_topbtn_normal")
+theme_override_styles/pressed = SubResource("sb_topbtn_pressed")
+theme_override_styles/hover = SubResource("sb_topbtn_hover")
+theme_override_styles/focus = SubResource("sb_focus_none")
+text = "Aplicar"
+
+[node name="DoneButton" type="Button" parent="Root/Layout/BottomBar" unique_id=1054268307]
+custom_minimum_size = Vector2(160, 40)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("sb_topbtn_normal")
+theme_override_styles/pressed = SubResource("sb_topbtn_pressed")
+theme_override_styles/hover = SubResource("sb_topbtn_hover")
+theme_override_styles/focus = SubResource("sb_focus_none")
+text = "Listo"
