@@ -28,6 +28,10 @@ const SAVE_SECTION := "settings"
 
 ## Filas con integración real a sistemas del motor (ver _apply_live_effects).
 @onready var _window_mode_row: CycleRow = $Root/Layout/MainArea/OptionsScroll/Pages/PageDisplay/PanelWindowMode/RowWindowMode
+@onready var _resolution_row: CycleRow = $Root/Layout/MainArea/OptionsScroll/Pages/PageDisplay/PanelResolution/RowResolution
+@onready var _fps_row: SliderRow = $Root/Layout/MainArea/OptionsScroll/Pages/PageDisplay/PanelPerformance/VBox/RowFPS
+@onready var _texture_filter_row: CycleRow = $Root/Layout/MainArea/OptionsScroll/Pages/PageDisplay/PanelTextures/RowTextureFilter
+@onready var _antialiasing_row: CycleRow = $Root/Layout/MainArea/OptionsScroll/Pages/PageDisplay/PanelAntialiasing/RowAntialiasing
 @onready var _master_volume_row: SliderRow = $Root/Layout/MainArea/OptionsScroll/Pages/PageSound/PanelMasterVolume/RowMasterVolume
 
 var _pages: Array = []
@@ -44,9 +48,12 @@ func _ready() -> void:
 	_reset_button.pressed.connect(_on_reset_pressed)
 	_apply_button.pressed.connect(_on_apply_pressed)
 	_done_button.pressed.connect(_on_done_pressed)
+	if _fps_row:
+		_fps_row.special_labels = {240.0: "Sin límite"}
 	_show_page(0)
 	_store_defaults()
 	_load_settings()
+	_apply_live_effects()
 
 
 # ─── Categorías (sidebar → página) ──────────────────────────────────────────
@@ -156,10 +163,13 @@ func _on_reset_pressed() -> void:
 # ─── Aplicar / Guardar / Cargar ─────────────────────────────────────────────
 
 func _on_apply_pressed() -> void:
-	pass
+	_apply_live_effects()
+	_save_settings()
 
 
 func _on_done_pressed() -> void:
+	_apply_live_effects()
+	_save_settings()
 	TransitionManager.transition(0.5, 0.3, 0.5, func():
 		get_tree().change_scene_to_file(MAIN_MENU_PATH))
 
@@ -194,6 +204,39 @@ func _apply_live_effects() -> void:
 		if current_mode != target_mode or current_borderless != target_borderless:
 			DisplayServer.window_set_flag(DisplayServer.WINDOW_FLAG_BORDERLESS, target_borderless)
 			DisplayServer.window_set_mode(target_mode)
+	if _resolution_row:
+		var res_str: String = _resolution_row.get_value()
+		var parts := res_str.split("×")
+		if parts.size() == 2:
+			var w := int(parts[0])
+			var h := int(parts[1])
+			if DisplayServer.window_get_size() != Vector2i(w, h):
+				DisplayServer.window_set_size(Vector2i(w, h))
+	if _fps_row:
+		var fps_val: float = _fps_row.get_value()
+		Engine.max_fps = 0 if fps_val >= 240.0 else int(fps_val)
+	if _texture_filter_row:
+		var filter_val: String = _texture_filter_row.get_value()
+		var vp := get_viewport()
+		match filter_val:
+			"Nearest (Pixel Art)":
+				vp.set("canvas_item_default_texture_filter", 0)
+			"Linear (Suave)":
+				vp.set("canvas_item_default_texture_filter", 1)
+	if _antialiasing_row:
+		var aa_val: String = _antialiasing_row.get_value()
+		match aa_val:
+			"Off":
+				get_viewport().msaa_2d = Viewport.MSAA_DISABLED
+			"FXAA":
+				get_viewport().msaa_2d = Viewport.MSAA_DISABLED
+				get_viewport().screen_space_aa = Viewport.SCREEN_SPACE_AA_FXAA
+			"MSAA 2x":
+				get_viewport().screen_space_aa = Viewport.SCREEN_SPACE_AA_DISABLED
+				get_viewport().msaa_2d = Viewport.MSAA_2X
+			"MSAA 4x":
+				get_viewport().screen_space_aa = Viewport.SCREEN_SPACE_AA_DISABLED
+				get_viewport().msaa_2d = Viewport.MSAA_4X
 
 
 func _save_settings() -> void:

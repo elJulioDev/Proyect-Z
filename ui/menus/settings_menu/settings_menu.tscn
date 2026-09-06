@@ -5,10 +5,11 @@
 [ext_resource type="Script" uid="uid://bsjr50gvgcs67" path="res://ui/menus/settings_menu/cycle_row.gd" id="3_cycle_script"]
 [ext_resource type="FontFile" uid="uid://de8c3i7kbfoh4" path="res://assets/fonts/Aharoni Bold.ttf" id="4_font"]
 [ext_resource type="Texture2D" uid="uid://cxnebjmg365vv" path="res://assets/ui/menus/settings.png" id="5_bg"]
-[ext_resource type="Texture2D" uid="uid://6580lfijrre8" path="res://assets/ui/menus/display.png" id="6_icon_display"]
-[ext_resource type="Texture2D" uid="uid://dll2eefudmjrf" path="res://assets/ui/menus/sound.png" id="7_icon_sound"]
-[ext_resource type="Texture2D" uid="uid://4w0vgc80xceh" path="res://assets/ui/menus/game.png" id="8_icon_game"]
+[ext_resource type="Texture2D" uid="uid://dm3n5t6wl1lvt" path="res://assets/ui/menus/display.svg" id="5_warbl"]
+[ext_resource type="Texture2D" uid="uid://dlpnlles7coon" path="res://assets/ui/menus/sound.svg" id="6_bngqa"]
+[ext_resource type="Texture2D" uid="uid://cqscgm1sq1hcy" path="res://assets/ui/menus/game.svg" id="7_sx1nb"]
 [ext_resource type="FontFile" uid="uid://6cuptfffbliy" path="res://assets/fonts/arialroundedmtbold.ttf" id="9_sxuvl"]
+[ext_resource type="Theme" path="res://ui/menus/settings_menu/checkbox_theme.tres" id="10_theme"]
 
 [sub_resource type="StyleBoxFlat" id="sb_search_normal"]
 content_margin_left = 16.0
@@ -172,6 +173,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("10_theme")
 script = ExtResource("1_script")
 
 [node name="Background" type="TextureRect" parent="." unique_id=199565240]
@@ -293,7 +295,7 @@ custom_minimum_size = Vector2(26, 26)
 layout_mode = 2
 size_flags_vertical = 4
 mouse_filter = 2
-texture = ExtResource("6_icon_display")
+texture = ExtResource("5_warbl")
 expand_mode = 1
 stretch_mode = 5
 
@@ -339,7 +341,7 @@ custom_minimum_size = Vector2(26, 26)
 layout_mode = 2
 size_flags_vertical = 4
 mouse_filter = 2
-texture = ExtResource("7_icon_sound")
+texture = ExtResource("6_bngqa")
 expand_mode = 1
 stretch_mode = 5
 
@@ -385,7 +387,7 @@ custom_minimum_size = Vector2(26, 26)
 layout_mode = 2
 size_flags_vertical = 4
 mouse_filter = 2
-texture = ExtResource("8_icon_game")
+texture = ExtResource("7_sx1nb")
 expand_mode = 1
 stretch_mode = 5
 
@@ -445,29 +447,111 @@ focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_override_colors/font_color = Color(0.99, 0.65, 0.2, 1)
 theme_override_colors/font_hover_color = Color(0.9925, 0.73749995, 0.4, 1)
-theme_override_fonts/font = ExtResource("4_font")
+theme_override_fonts/font = ExtResource("9_sxuvl")
 theme_override_font_sizes/font_size = 18
 text = "Pantalla completa"
 flat = true
 alignment = 2
 
-[node name="PanelDisplayToggles" type="PanelContainer" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageDisplay" unique_id=2070274930]
+[node name="PanelResolution" type="PanelContainer" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageDisplay" unique_id=137841031]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_styles/panel = SubResource("sb_panel")
 
-[node name="VBox" type="VBoxContainer" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageDisplay/PanelDisplayToggles" unique_id=1782951317]
+[node name="RowResolution" type="HBoxContainer" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageDisplay/PanelResolution" unique_id=1413657035]
+custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_constants/separation = 8
+theme_override_constants/separation = 14
+script = ExtResource("3_cycle_script")
+label_text = "Resolución"
+options = Array[String](["1280×720", "1920×1080", "2560×1440"])
+selected_index = 1
 
-[node name="RowVSync" type="HBoxContainer" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageDisplay/PanelDisplayToggles/VBox" unique_id=491092628]
+[node name="Label" type="Label" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageDisplay/PanelResolution/RowResolution" unique_id=255215541]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 18
+text = "Resolución"
+vertical_alignment = 1
+
+[node name="ValueButton" type="Button" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageDisplay/PanelResolution/RowResolution" unique_id=219000740]
+layout_mode = 2
+size_flags_vertical = 4
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(0.99, 0.65, 0.2, 1)
+theme_override_colors/font_hover_color = Color(0.9925, 0.73749995, 0.4, 1)
+theme_override_fonts/font = ExtResource("9_sxuvl")
+theme_override_font_sizes/font_size = 18
+text = "1920×1080"
+flat = true
+alignment = 2
+
+[node name="PanelPerformance" type="PanelContainer" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageDisplay" unique_id=773318791]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("sb_panel")
+
+[node name="VBox" type="VBoxContainer" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageDisplay/PanelPerformance" unique_id=1453277982]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 10
+
+[node name="RowFPS" type="HBoxContainer" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageDisplay/PanelPerformance/VBox" unique_id=268407333]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 14
+script = ExtResource("2_slider_script")
+label_text = "FPS Máximos"
+value_suffix = ""
+value_multiplier = 1.0
+slider_min = 30.0
+slider_max = 240.0
+slider_step = 10.0
+initial_value = 240.0
+
+[node name="Label" type="Label" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageDisplay/PanelPerformance/VBox/RowFPS" unique_id=932614787]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 18
+text = "FPS Máximos"
+vertical_alignment = 1
+
+[node name="ValueLabel" type="Label" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageDisplay/PanelPerformance/VBox/RowFPS" unique_id=1765865785]
+custom_minimum_size = Vector2(56, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.99, 0.65, 0.2, 1)
+theme_override_fonts/font = ExtResource("9_sxuvl")
+theme_override_font_sizes/font_size = 17
+text = "240"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Slider" type="HSlider" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageDisplay/PanelPerformance/VBox/RowFPS" unique_id=1365986182]
+custom_minimum_size = Vector2(170, 20)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_styles/slider = SubResource("sb_slider_bg")
+theme_override_styles/grabber_area = SubResource("sb_slider_fill")
+theme_override_styles/grabber_area_highlight = SubResource("sb_slider_fill")
+min_value = 30.0
+max_value = 240.0
+step = 10.0
+value = 240.0
+
+[node name="RowVSync" type="HBoxContainer" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageDisplay/PanelPerformance/VBox" unique_id=1324538780]
 custom_minimum_size = Vector2(0, 28)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 14
 
-[node name="Label" type="Label" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageDisplay/PanelDisplayToggles/VBox/RowVSync" unique_id=925597368]
+[node name="Label2" type="Label" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageDisplay/PanelPerformance/VBox/RowVSync" unique_id=1832661548]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(1, 1, 1, 1)
@@ -476,103 +560,18 @@ theme_override_font_sizes/font_size = 18
 text = "Sincronización Vertical (VSync)"
 vertical_alignment = 1
 
-[node name="Check" type="CheckBox" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageDisplay/PanelDisplayToggles/VBox/RowVSync" unique_id=1723692856]
+[node name="Check" type="CheckBox" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageDisplay/PanelPerformance/VBox/RowVSync" unique_id=1038221974]
 layout_mode = 2
 size_flags_vertical = 4
 focus_mode = 0
 button_pressed = true
 
-[node name="RowFPSCounter" type="HBoxContainer" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageDisplay/PanelDisplayToggles/VBox" unique_id=50478623]
-custom_minimum_size = Vector2(0, 28)
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_constants/separation = 14
-
-[node name="Label" type="Label" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageDisplay/PanelDisplayToggles/VBox/RowFPSCounter" unique_id=2101907984]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_fonts/font = ExtResource("4_font")
-theme_override_font_sizes/font_size = 18
-text = "Mostrar Contador de FPS"
-vertical_alignment = 1
-
-[node name="Check" type="CheckBox" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageDisplay/PanelDisplayToggles/VBox/RowFPSCounter" unique_id=670874629]
-layout_mode = 2
-size_flags_vertical = 4
-focus_mode = 0
-
-[node name="RowCameraShake" type="HBoxContainer" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageDisplay/PanelDisplayToggles/VBox" unique_id=1389574217]
-custom_minimum_size = Vector2(0, 28)
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_constants/separation = 14
-
-[node name="Label" type="Label" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageDisplay/PanelDisplayToggles/VBox/RowCameraShake" unique_id=862346645]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_fonts/font = ExtResource("4_font")
-theme_override_font_sizes/font_size = 18
-text = "Sacudida de Cámara en Impactos"
-vertical_alignment = 1
-
-[node name="Check" type="CheckBox" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageDisplay/PanelDisplayToggles/VBox/RowCameraShake" unique_id=1507485757]
-layout_mode = 2
-size_flags_vertical = 4
-focus_mode = 0
-button_pressed = true
-
-[node name="PanelDisplaySliders" type="PanelContainer" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageDisplay" unique_id=1584566447]
+[node name="PanelUIScale" type="PanelContainer" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageDisplay" unique_id=470267178]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_styles/panel = SubResource("sb_panel")
 
-[node name="VBox" type="VBoxContainer" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageDisplay/PanelDisplaySliders" unique_id=1472209457]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_constants/separation = 10
-
-[node name="RowBrightness" type="HBoxContainer" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageDisplay/PanelDisplaySliders/VBox" unique_id=1037944348]
-custom_minimum_size = Vector2(0, 30)
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_constants/separation = 14
-script = ExtResource("2_slider_script")
-label_text = "Brillo"
-initial_value = 0.6
-
-[node name="Label" type="Label" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageDisplay/PanelDisplaySliders/VBox/RowBrightness" unique_id=1810726506]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_fonts/font = ExtResource("4_font")
-theme_override_font_sizes/font_size = 18
-text = "Brillo"
-vertical_alignment = 1
-
-[node name="Slider" type="HSlider" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageDisplay/PanelDisplaySliders/VBox/RowBrightness" unique_id=1218813463]
-custom_minimum_size = Vector2(170, 20)
-layout_mode = 2
-size_flags_vertical = 4
-theme_override_styles/slider = SubResource("sb_slider_bg")
-theme_override_styles/grabber_area = SubResource("sb_slider_fill")
-theme_override_styles/grabber_area_highlight = SubResource("sb_slider_fill")
-max_value = 1.0
-step = 0.01
-value = 0.6
-
-[node name="ValueLabel" type="Label" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageDisplay/PanelDisplaySliders/VBox/RowBrightness" unique_id=1533133026]
-custom_minimum_size = Vector2(56, 0)
-layout_mode = 2
-theme_override_colors/font_color = Color(0.99, 0.65, 0.2, 1)
-theme_override_fonts/font = ExtResource("9_sxuvl")
-theme_override_font_sizes/font_size = 17
-text = "60%"
-horizontal_alignment = 2
-vertical_alignment = 1
-
-[node name="RowUIScale" type="HBoxContainer" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageDisplay/PanelDisplaySliders/VBox" unique_id=1892054578]
+[node name="RowUIScale" type="HBoxContainer" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageDisplay/PanelUIScale" unique_id=1596888828]
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -583,7 +582,7 @@ slider_min = 0.5
 slider_max = 1.5
 slider_step = 0.05
 
-[node name="Label" type="Label" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageDisplay/PanelDisplaySliders/VBox/RowUIScale" unique_id=992682646]
+[node name="Label" type="Label" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageDisplay/PanelUIScale/RowUIScale" unique_id=289982667]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(1, 1, 1, 1)
@@ -592,7 +591,17 @@ theme_override_font_sizes/font_size = 18
 text = "Escala de Interfaz"
 vertical_alignment = 1
 
-[node name="Slider" type="HSlider" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageDisplay/PanelDisplaySliders/VBox/RowUIScale" unique_id=2114956709]
+[node name="ValueLabel" type="Label" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageDisplay/PanelUIScale/RowUIScale" unique_id=523619258]
+custom_minimum_size = Vector2(56, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.99, 0.65, 0.2, 1)
+theme_override_fonts/font = ExtResource("9_sxuvl")
+theme_override_font_sizes/font_size = 17
+text = "100%"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Slider" type="HSlider" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageDisplay/PanelUIScale/RowUIScale" unique_id=1012464395]
 custom_minimum_size = Vector2(170, 20)
 layout_mode = 2
 size_flags_vertical = 4
@@ -604,15 +613,103 @@ max_value = 1.5
 step = 0.05
 value = 1.0
 
-[node name="ValueLabel" type="Label" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageDisplay/PanelDisplaySliders/VBox/RowUIScale" unique_id=1372845108]
-custom_minimum_size = Vector2(56, 0)
+[node name="PanelTextures" type="PanelContainer" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageDisplay" unique_id=1494475221]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.99, 0.65, 0.2, 1)
-theme_override_fonts/font = ExtResource("9_sxuvl")
-theme_override_font_sizes/font_size = 17
-text = "100%"
-horizontal_alignment = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("sb_panel")
+
+[node name="RowTextureFilter" type="HBoxContainer" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageDisplay/PanelTextures" unique_id=1989950213]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 14
+script = ExtResource("3_cycle_script")
+label_text = "Filtros de Texturas"
+options = Array[String](["Nearest (Pixel Art)", "Linear (Suave)"])
+
+[node name="Label" type="Label" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageDisplay/PanelTextures/RowTextureFilter" unique_id=1283181785]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 18
+text = "Filtros de Texturas"
 vertical_alignment = 1
+
+[node name="ValueButton" type="Button" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageDisplay/PanelTextures/RowTextureFilter" unique_id=1521130864]
+layout_mode = 2
+size_flags_vertical = 4
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(0.99, 0.65, 0.2, 1)
+theme_override_colors/font_hover_color = Color(0.9925, 0.73749995, 0.4, 1)
+theme_override_fonts/font = ExtResource("9_sxuvl")
+theme_override_font_sizes/font_size = 18
+text = "Nearest (Pixel Art)"
+flat = true
+alignment = 2
+
+[node name="PanelParticles" type="PanelContainer" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageDisplay" unique_id=1720030040]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("sb_panel")
+
+[node name="RowParticles" type="HBoxContainer" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageDisplay/PanelParticles" unique_id=783696189]
+custom_minimum_size = Vector2(0, 28)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 14
+
+[node name="Label" type="Label" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageDisplay/PanelParticles/RowParticles" unique_id=655469916]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 18
+text = "Efectos de Partículas"
+vertical_alignment = 1
+
+[node name="Check" type="CheckBox" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageDisplay/PanelParticles/RowParticles" unique_id=1377774405]
+layout_mode = 2
+size_flags_vertical = 4
+focus_mode = 0
+button_pressed = true
+
+[node name="PanelAntialiasing" type="PanelContainer" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageDisplay" unique_id=53906351]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("sb_panel")
+
+[node name="RowAntialiasing" type="HBoxContainer" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageDisplay/PanelAntialiasing" unique_id=242596311]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 14
+script = ExtResource("3_cycle_script")
+label_text = "Antialiasing"
+options = Array[String](["Off", "FXAA", "MSAA 2x", "MSAA 4x"])
+
+[node name="Label" type="Label" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageDisplay/PanelAntialiasing/RowAntialiasing" unique_id=148906758]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 18
+text = "Antialiasing"
+vertical_alignment = 1
+
+[node name="ValueButton" type="Button" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageDisplay/PanelAntialiasing/RowAntialiasing" unique_id=1834718513]
+layout_mode = 2
+size_flags_vertical = 4
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(0.99, 0.65, 0.2, 1)
+theme_override_colors/font_hover_color = Color(0.9925, 0.73749995, 0.4, 1)
+theme_override_fonts/font = ExtResource("9_sxuvl")
+theme_override_font_sizes/font_size = 18
+text = "Off"
+flat = true
+alignment = 2
 
 [node name="PageSound" type="VBoxContainer" parent="Root/Layout/MainArea/OptionsScroll/Pages" unique_id=637399992]
 visible = false
@@ -643,6 +740,16 @@ theme_override_font_sizes/font_size = 18
 text = "Volumen General"
 vertical_alignment = 1
 
+[node name="ValueLabel" type="Label" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageSound/PanelMasterVolume/RowMasterVolume" unique_id=556352946]
+custom_minimum_size = Vector2(56, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.99, 0.65, 0.2, 1)
+theme_override_fonts/font = ExtResource("9_sxuvl")
+theme_override_font_sizes/font_size = 17
+text = "80%"
+horizontal_alignment = 2
+vertical_alignment = 1
+
 [node name="Slider" type="HSlider" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageSound/PanelMasterVolume/RowMasterVolume" unique_id=1119522338]
 custom_minimum_size = Vector2(170, 20)
 layout_mode = 2
@@ -653,16 +760,6 @@ theme_override_styles/grabber_area_highlight = SubResource("sb_slider_fill")
 max_value = 1.0
 step = 0.01
 value = 0.8
-
-[node name="ValueLabel" type="Label" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageSound/PanelMasterVolume/RowMasterVolume" unique_id=556352946]
-custom_minimum_size = Vector2(56, 0)
-layout_mode = 2
-theme_override_colors/font_color = Color(0.99, 0.65, 0.2, 1)
-theme_override_fonts/font = ExtResource("9_sxuvl")
-theme_override_font_sizes/font_size = 17
-text = "80%"
-horizontal_alignment = 2
-vertical_alignment = 1
 
 [node name="PanelOtherVolumes" type="PanelContainer" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageSound" unique_id=763101222]
 layout_mode = 2
@@ -692,6 +789,16 @@ theme_override_font_sizes/font_size = 18
 text = "Música"
 vertical_alignment = 1
 
+[node name="ValueLabel" type="Label" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageSound/PanelOtherVolumes/VBox/RowMusicVolume" unique_id=230711176]
+custom_minimum_size = Vector2(56, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.99, 0.65, 0.2, 1)
+theme_override_fonts/font = ExtResource("9_sxuvl")
+theme_override_font_sizes/font_size = 17
+text = "70%"
+horizontal_alignment = 2
+vertical_alignment = 1
+
 [node name="Slider" type="HSlider" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageSound/PanelOtherVolumes/VBox/RowMusicVolume" unique_id=678851675]
 custom_minimum_size = Vector2(170, 20)
 layout_mode = 2
@@ -702,16 +809,6 @@ theme_override_styles/grabber_area_highlight = SubResource("sb_slider_fill")
 max_value = 1.0
 step = 0.01
 value = 0.7
-
-[node name="ValueLabel" type="Label" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageSound/PanelOtherVolumes/VBox/RowMusicVolume" unique_id=230711176]
-custom_minimum_size = Vector2(56, 0)
-layout_mode = 2
-theme_override_colors/font_color = Color(0.99, 0.65, 0.2, 1)
-theme_override_fonts/font = ExtResource("9_sxuvl")
-theme_override_font_sizes/font_size = 17
-text = "70%"
-horizontal_alignment = 2
-vertical_alignment = 1
 
 [node name="RowSFXVolume" type="HBoxContainer" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageSound/PanelOtherVolumes/VBox" unique_id=1139103593]
 custom_minimum_size = Vector2(0, 30)
@@ -731,6 +828,16 @@ theme_override_font_sizes/font_size = 18
 text = "Efectos de Sonido"
 vertical_alignment = 1
 
+[node name="ValueLabel" type="Label" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageSound/PanelOtherVolumes/VBox/RowSFXVolume" unique_id=1029603343]
+custom_minimum_size = Vector2(56, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.99, 0.65, 0.2, 1)
+theme_override_fonts/font = ExtResource("9_sxuvl")
+theme_override_font_sizes/font_size = 17
+text = "85%"
+horizontal_alignment = 2
+vertical_alignment = 1
+
 [node name="Slider" type="HSlider" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageSound/PanelOtherVolumes/VBox/RowSFXVolume" unique_id=1614928511]
 custom_minimum_size = Vector2(170, 20)
 layout_mode = 2
@@ -741,16 +848,6 @@ theme_override_styles/grabber_area_highlight = SubResource("sb_slider_fill")
 max_value = 1.0
 step = 0.01
 value = 0.85
-
-[node name="ValueLabel" type="Label" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageSound/PanelOtherVolumes/VBox/RowSFXVolume" unique_id=1029603343]
-custom_minimum_size = Vector2(56, 0)
-layout_mode = 2
-theme_override_colors/font_color = Color(0.99, 0.65, 0.2, 1)
-theme_override_fonts/font = ExtResource("9_sxuvl")
-theme_override_font_sizes/font_size = 17
-text = "85%"
-horizontal_alignment = 2
-vertical_alignment = 1
 
 [node name="PanelSoundToggles" type="PanelContainer" parent="Root/Layout/MainArea/OptionsScroll/Pages/PageSound" unique_id=972302892]
 layout_mode = 2
@@ -840,7 +937,7 @@ focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_override_colors/font_color = Color(0.99, 0.65, 0.2, 1)
 theme_override_colors/font_hover_color = Color(0.9925, 0.73749995, 0.4, 1)
-theme_override_fonts/font = ExtResource("4_font")
+theme_override_fonts/font = ExtResource("9_sxuvl")
 theme_override_font_sizes/font_size = 18
 text = "Español"
 flat = true
@@ -883,7 +980,7 @@ focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
-theme_override_fonts/font = ExtResource("4_font")
+theme_override_fonts/font = ExtResource("9_sxuvl")
 theme_override_font_sizes/font_size = 18
 text = "Normal"
 flat = true

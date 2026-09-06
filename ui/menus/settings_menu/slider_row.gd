@@ -20,6 +20,7 @@ signal value_changed(value: float)
 @export var slider_max: float = 1.0
 @export var slider_step: float = 0.01
 @export var initial_value: float = 1.0
+@export var special_labels: Dictionary = {}
 
 @onready var _label: Label = $Label
 @onready var _slider: HSlider = $Slider
@@ -43,7 +44,10 @@ func _on_value_changed(v: float) -> void:
 
 
 func _refresh_value_label(v: float) -> void:
-	_value_label.text = "%s%s" % [String.num(v * value_multiplier, decimals), value_suffix]
+	if special_labels.has(v):
+		_value_label.text = special_labels[v]
+	else:
+		_value_label.text = "%s%s" % [String.num(v * value_multiplier, decimals), value_suffix]
 
 
 func get_value() -> float:
